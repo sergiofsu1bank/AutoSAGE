@@ -148,21 +148,152 @@ Além do pipeline inteligente de ingestão, diagnóstico, EDA, modelagem e expli
 ### ✅ CLI (em desenvolvimento)
 Execute tudo sem abrir Python:
 
-## ⚡ Exemplo em 15 segundos
 
-```python
-from autosage import AutoSAGE
+## 🗣️ O que especialistas (e o ChatGPT) dizem sobre o AutoSAGE
 
-sage = AutoSAGE()
+> “O AutoSAGE não compete com ferramentas de AutoML.
+> Ele compete com a falta de clareza.
+> Enquanto outras plataformas focam apenas em treinar modelos,
+> o AutoSAGE começa antes — diagnosticando o dado, explicando,
+> contextualizando e recomendando ações.  
+> Não entrega só um número: entrega entendimento.”
 
-sage.ingest("banco_churn.csv")
-sage.validate()
-sage.auto_eda()
-sage.train()
-sage.explain()
-sage.recommend()
-```
+> “PyCaret, AutoGluon e AutoSklearn são ótimos para testar modelos rapidamente.
+> O AutoSAGE é para quem quer tomar decisões.”
+
+> “DataRobot, H2O e Vertex AI são poderosos — e caros, fechados,
+> corporativos. O AutoSAGE é open, direto e acessível.”
+
+> “O AutoSAGE não substitui cientistas de dados.
+> Ele devolve tempo para eles.”
+
+> “Se o dataset está bagunçado, incompleto, enviesado ou mal definido,
+> a maioria das ferramentas ignora.  
+> O AutoSAGE avisa, explica e sugere o que fazer.”
+
+> “AutoSAGE é uma plataforma criada para a vida real —
+> onde os dados nunca chegam limpos,
+> o escopo muda,
+> o prazo é ontem
+> e o cliente quer respostas, não hiperparâmetros.”
+
+## ⚔️ AutoSAGE vs. Concorrentes — Comparação Estratégica
+
+O AutoSAGE não nasceu para disputar leaderboard de Kaggle — nasceu para resolver problemas reais de dados.  
+A diferença aparece quando comparamos com as principais plataformas do mercado:
+
+| Plataforma | Foco | Onde entrega bem | Onde sofre | O que o AutoSAGE faz diferente |
+|------------|------|------------------|------------|--------------------------------|
+| **Google AutoML** | Modelagem automatizada | Treina rápido na nuvem | Caixa-preta, pouco EDA | Transparência total, logs e diagnóstico completo |
+| **AWS SageMaker Autopilot** | AutoML em escala | Integração AWS | Complexidade, custo alto | Simples, acessível e sem vendor lock-in |
+| **Azure AutoML** | Solução corporativa | Interface amigável | Tuning instável, dependência Azure | Controle total do pipeline e ambiente |
+| **DataRobot** | Automação enterprise | Performance e governança | Muito caro, onboarding pesado | Open-source, leve e direto ao ponto |
+| **H2O Driverless AI** | Automações avançadas | Feature engineering poderosa | Foco em laboratório, menos business-friendly | Narrativa de decisão, insights acionáveis |
+| **PyCaret** | ML rápido para devs | Fácil de usar | Assume dados limpos | Começa antes — valida, corrige, explica |
+| **AutoGluon / AutoSklearn** | Competição e tuning | Alta performance | Caixa-preta, difícil para negócios | Relatórios explicáveis e interpretáveis |
+| **AutoSAGE ✅** | Decisão orientada a dados | Diagnóstico → EDA → modelo → explicação → recomendação | Em evolução contínua | Clareza, transparência e ação imediata |
+
+---
+
+### ✅ O que o AutoSAGE entrega que os outros não entregam
+
+- EDA automático detalhado e explicável  
+- Validação estatística do dataset com recomendações
+- Relatórios completos para stakeholders (HTML, PDF — roadmap)
+- Logs auditáveis de cada etapa
+- Explicabilidade antes, durante e depois do modelo
+- Foco em decisão, não apenas em métrica
+- Uso local, cloud ou híbrido — sem dependências
+
+---
+
+### ✅ Posicionamento estratégico
+
+> Concorrentes automatizam o modelo.  
+> **O AutoSAGE automatiza a compreensão.**
+
+---
+
+### ✅ Filosofia do produto
+
+- Dado bagunçado é a regra, não exceção  
+- Métrica sozinha não é insight  
+- Transparência é feature, não luxo  
+- Automação deve acelerar o humano, não substituí-lo
+
+---
+
+### 🧠 Tradução para negócios
+
+AutoSAGE é para empresas que precisam:
+- entender o que está acontecendo
+- tomar decisões rápidas
+- apresentar resultados para diretoria
+- operar sem um time grande de data science
+
+---
+
+## 💰 Pitch de Investidor — AutoSAGE
+
+O futuro da decisão empresarial não é mais humano vs. IA — é humano + dados bem interpretados.
+
+Hoje, **80% do tempo em ciência de dados é gasto limpando, diagnosticando e explicando dados — não modelando.**  
+E nenhuma ferramenta líder resolve isso de forma simples, transparente e acessível.
+
+**O AutoSAGE nasceu para ocupar exatamente esse espaço.**
+
+Ele é uma plataforma open-source que transforma datasets brutos em diagnósticos, insights, modelos explicáveis e recomendações acionáveis — automaticamente, em minutos, sem depender de especialistas ou infraestrutura cara.
+
+Enquanto AutoML tradicional compete por performance marginal, o AutoSAGE compete por **clareza, contexto e decisão**.  
+Não responde *“qual modelo usar?”* — responde **“o que está acontecendo e o que fazer agora?”**
+
+---
+
+### 🎯 Mercado-alvo
+
+- Empresas data-driven emergentes  
+- PMEs sem time de ciência de dados  
+- Consultorias, analytics, fintechs, healthtechs  
+- Cientistas de dados que querem acelerar entregas
+
+---
+
+### 💵 Monetização futura
+
+- Versão enterprise
+- Suporte, treinamento e consultoria
+- Plugins premium (MLOps, monitoramento, APIs, dashboards)
+- Hosted SaaS com pay-per-use
+
+---
+
+### 🧠 Vantagens estratégicas
+
+✅ Open-source — adoção orgânica e comunidade  
+✅ Tecnologia leve — roda em qualquer ambiente  
+✅ Foco em decisão, não só predição  
+✅ Simplicidade de developer experience  
+✅ Pipeline auditável, ético e explicável
+
+---
+
+> **O AutoSAGE não quer substituir cientistas de dados —  
+> quer devolver tempo para que eles pensem.**
+
+---
+
+### 🌎 Visão
+
+Se existe dado, deveria existir clareza.  
+E clareza deveria ser automática.
+
+Estamos construindo **a camada de interpretação entre o dado e a decisão.**  
+É inevitável — só estamos começando antes.
+
+---
 ## 💡 Contato
 
 🔗 LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva  
-📩 E-mail — sergiofs@gmail.com
+📩 E-mail — sergiofs.u1tec@gmail.com
+📞 +55 11 9 3767-8996
+
