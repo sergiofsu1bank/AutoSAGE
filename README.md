@@ -113,6 +113,40 @@ Escolha guiada por:
 ✅ Aumenta confiança de investidores, usuários e contribuidores  
 ✅ Reforça credibilidade do projeto
 
+## 🧰 Recursos adicionais do AutoSAGE
+
+Além do pipeline inteligente de ingestão, diagnóstico, EDA, modelagem e explicabilidade, o AutoSAGE oferece recursos operacionais para uso real em times de dados:
+
+### ✅ Logging estruturado
+- Logs padronizados por etapa da pipeline
+- Níveis configuráveis (`INFO`, `DEBUG`, `WARNING`, `ERROR`)
+- Persistência opcional em arquivo `.log`
+- Rastreamento completo para auditoria e troubleshooting
+
+### ✅ Relatórios automáticos
+- Sumário do dataset
+- Qualidade do dado e recomendações de limpeza
+- Comparação entre modelos
+- Interpretação e insights acionáveis
+- Exportável em HTML, PDF ou Markdown (roadmap)
+
+### ✅ Versionamento & Reprodutibilidade
+- Registro de parâmetros, métricas e modelos
+- Hash do dataset para rastreabilidade
+- Execuções reprodutíveis
+
+### ✅ Exportação de artefatos
+- Modelo treinado (`.pkl`)
+- Métricas de avaliação
+- Feature importance
+- Visualizações do Auto-EDA
+
+### ✅ Configuração flexível
+- YAML, JSON ou argumentos diretos em Python
+- Ajuste de seed, estratégia de split, métricas, imputação etc.
+
+### ✅ CLI (em desenvolvimento)
+Execute tudo sem abrir Python:
 
 ## ⚡ Exemplo em 15 segundos
 
