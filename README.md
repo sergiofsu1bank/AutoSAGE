@@ -331,6 +331,14 @@ Veja [`docs/architecture.md`](docs/architecture.md)
 
 ---
 
+## 📊 Relatório técnico do ML Pipeline
+
+Nada de slide bonitinho escondendo a realidade.
+
+👉 [Abrir relatório HTML do ML Pipeline](docs/ml_pipeline_report.html)
+
+
+
 ## 🤝 Como contribuir
 
 Veja [`CONTRIBUTING.md`](CONTRIBUTING.md)
