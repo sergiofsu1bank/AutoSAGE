@@ -43,6 +43,77 @@ Da bagunça ao insight — em minutos.
 
 ---
 
+## 🔬 Metodologia Científica do AutoSAGE
+
+O AutoSAGE segue rigor estatístico e boas práticas de ciência de dados para transformar dados brutos em decisões acionáveis.  
+Nada de “modelo na sorte” — cada etapa é guiada por fundamentos matemáticos, estatísticos e computacionais.
+
+### 1️⃣ Ingestão & Padronização
+- Detecção automática de schema
+- Identificação de tipos (numérico, categórico, temporal, texto)
+- Normalização de nomes de colunas
+- Conversão segura de encoding e datas
+
+### 2️⃣ Diagnóstico Estatístico do Dataset
+- Distribuições univariadas e densidade
+- Medidas descritivas (média, mediana, variância, assimetria, curtose)
+- Tamanho da amostra e cobertura
+- Avaliação de cardinalidade de variáveis
+
+### 3️⃣ Auditoria de Qualidade do Dado
+- Detecção de valores ausentes
+- Outliers via Z-score, IQR e robust statistics
+- Inconsistências semânticas e lógicas
+- Duplicidade e drift estrutural
+
+### 4️⃣ Relações, Hipóteses & Sinal Estatístico
+- Correlações (Pearson, Spearman, Cramér’s V)
+- Testes de hipótese (t-test, ANOVA, χ²)
+- Importância preliminar de features
+- Identificação de variáveis irrelevantes ou redundantes
+
+### 5️⃣ Seleção Inteligente de Modelos
+Com base na natureza do target:
+- Regressão → Linear, Ridge, Random Forest, XGBoost
+- Classificação → Logistic, SVM, Random Forest, Gradient Boosting
+- Time series (futuro roadmap)
+
+Escolha guiada por:
+- Bias–variance trade-off
+- Robustez estatística
+- Interpretabilidade
+
+### 6️⃣ Treinamento Reprodutível
+- Train/test split estratificado
+- Normalização e encoding automáticos
+- Busca de hiperparâmetros balanceada
+- Cross-validation para generalização
+
+### 7️⃣ Métricas Transparentes
+- Classificação → AUC, F1, recall, precision, matriz de confusão
+- Regressão → RMSE, MAE, R², MAPE
+- Comparação entre modelos e baseline obrigatório
+
+### 8️⃣ Explicabilidade & Interpretabilidade
+- Feature importance
+- SHAP values
+- Insights sobre comportamento do modelo
+- Detecção de potenciais vieses
+
+### 9️⃣ Recomendação Acionável
+- Caminhos analíticos sugeridos
+- Melhor modelo para o cenário
+- Riscos, limitações e próximos passos
+- Sugestões para coleta, limpeza e engenharia de features
+
+---
+
+✅ Metodologia clara  
+✅ Mostra ciência, não “mágica”  
+✅ Aumenta confiança de investidores, usuários e contribuidores  
+✅ Reforça credibilidade do projeto
+
+
 ## ⚡ Exemplo em 15 segundos
 
 ```python
