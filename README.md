@@ -291,6 +291,60 @@ Estamos construindo **a camada de interpretação entre o dado e a decisão.**
 É inevitável — só estamos começando antes.
 
 ---
+
+# 🧠 AutoSAGE
+
+O futuro da decisão empresarial não é humano vs. IA — é humano + dados bem interpretados.
+
+O AutoSAGE automatiza ingestão, diagnóstico, consistência, EDA, validação e modelagem,
+entregando inteligência acionável em minutos — sem PhD obrigatório.
+
+---
+
+## 🚀 Por que existe?
+
+Hoje, 80% do tempo em ciência de dados é gasto limpando, explicando e justificando dados.
+AutoSAGE nasceu para eliminar essa dor — com transparência, velocidade e acessibilidade.
+
+---
+
+## 🔥 Principais capacidades
+
+✅ Ingestão inteligente  
+✅ Validação e saneamento  
+✅ EDA automatizado e explicativo  
+✅ Logging estruturado  
+✅ ML pipeline inicial  
+✅ Insights acionáveis
+
+---
+
+## 🗺️ Roadmap
+
+O roadmap completo está em [`ROADMAP.md`](ROADMAP.md)
+
+---
+
+## 🧩 Arquitetura
+
+Veja [`docs/architecture.md`](docs/architecture.md)
+
+---
+
+## 🤝 Como contribuir
+
+Veja [`CONTRIBUTING.md`](CONTRIBUTING.md)
+
+---
+
+## 🛡️ Licença
+
+MIT — use, melhore, mas não faça cagada com nosso nome.
+
+
+
+
+
 ## 💡 Contato
 
 🔗 LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva  
