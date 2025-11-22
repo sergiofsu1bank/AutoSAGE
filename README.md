@@ -6,6 +6,11 @@
   <img src="docs/logo.png" alt="AutoSAGE Logo" width="150">
 </p>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/sergiofsu1bank/AutoSAGE/main/docs/logo.png" width="150">
+</p>
+
+
 <h1 align="center">AutoSAGE</h1>
 
 <p align="center">
