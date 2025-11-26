@@ -1,4 +1,4 @@
-🚀 AutoSAGE
+🚀 AutoSAGE
 
 A plataforma de IA que transforma dados brutos em diagnóstico, explicabilidade, modelagem e recomendações acionáveis — com foco extremo em clareza, transparência e decisão.
 
@@ -9,11 +9,11 @@ Nenhuma plataforma líder resolve essa etapa de forma simples, transparente e ac
 
 Enquanto AutoML tradicional responde:
 
-"qual modelo usar?"
+“qual modelo usar?”
 
 O AutoSAGE responde:
 
-"o que está acontecendo, por quê, e o que fazer agora?"
+“o que está acontecendo, por quê, e o que fazer agora?”
 
 Ele transforma qualquer dataset em:
 
@@ -28,7 +28,7 @@ previsões auditáveis
 recomendações acionáveis
 
 A dor real no mercado não é treinar modelo.
-É entender o dado.
+É ENTENDER o dado.
 E isso o AutoSAGE resolve melhor do que qualquer concorrente.
 
 🎯 2. Mercado-Alvo
@@ -208,7 +208,7 @@ R²
 
 MAPE
 
-Comparação com baseline obrigatório.
+Comparação com baseline obrigatória.
 
 🔎 13. Explicabilidade
 
@@ -262,7 +262,7 @@ DataRobot	Enterprise	Muito caro	Acessível
 H2O DAI	Automático	Complexo	Clareza
 PyCaret	Simples	Assume dado limpo	Diagnóstico
 AutoGluon	Performance	Inexplicável	Explicabilidade
-AutoSAGE	Diagnóstico + ação	Em evolução	Clareza + ação
+AutoSAGE	Diagnóstico + decisão	Em evolução	Clareza + ação
 📁 18. Documentação
 
 Arquitetura → docs/architecture.md
