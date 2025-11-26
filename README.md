@@ -1,35 +1,33 @@
 🚀 AutoSAGE
 
-A plataforma de IA que transforma dados brutos em diagnóstico, explicabilidade, modelagem e recomendações acionáveis — com foco extremo em clareza, transparência e decisão.
+Plataforma de IA que transforma dados brutos em diagnóstico, modelagem, explicabilidade e recomendações acionáveis — com foco em clareza, decisão e transparência.
 
 💰 1. Pitch de Investidor
 
-O AutoSAGE existe porque 80% do tempo em ciência de dados é desperdiçado limpando, diagnosticando e explicando dados, não modelando.
-Nenhuma plataforma líder resolve essa etapa de forma simples, transparente e acessível.
+O AutoSAGE existe porque 80% do tempo em Ciência de Dados é desperdiçado limpando, diagnosticando e explicando dados, e não modelando.
 
-Enquanto AutoML tradicional responde:
+Enquanto plataformas de AutoML respondem:
 
-“qual modelo usar?”
+“Qual modelo usar?”
 
 O AutoSAGE responde:
 
-“o que está acontecendo, por quê, e o que fazer agora?”
+“O que está acontecendo no meu dado? Por quê? E o que eu devo fazer agora?”
 
-Ele transforma qualquer dataset em:
+Entregando:
 
-diagnóstico claro
+Diagnóstico claro
 
-narrativa explicável
+Narrativa explicável
 
-modelo reprodutível
+Modelo reprodutível
 
-previsões auditáveis
+Previsões auditáveis
 
-recomendações acionáveis
+Recomendações acionáveis
 
-A dor real no mercado não é treinar modelo.
-É ENTENDER o dado.
-E isso o AutoSAGE resolve melhor do que qualquer concorrente.
+A dor real do mercado não é modelagem —
+é clareza sobre o dado.
 
 🎯 2. Mercado-Alvo
 
@@ -45,19 +43,19 @@ Empresas sem time de dados
 
 Corporações que querem autonomia e transparência
 
-Estes players buscam clareza e velocidade, sem depender de especialistas raros e caros.
+Todos buscam decisão com menos dependência técnica.
 
 💵 3. Monetização
 
-Licença enterprise
+Licença Enterprise
 
-Suporte premium
+Suporte Premium
+
+Plugins (MLOps, dashboards, Auto-EDA avançado)
+
+SaaS hospedado
 
 Serviços profissionais
-
-Plugins (MLOps, dashboards, APIs, Auto-EDA avançado)
-
-Versão SaaS hospedada
 
 Integrações corporativas sob demanda
 
@@ -65,30 +63,33 @@ Integrações corporativas sob demanda
 
 100% explicável
 
-Pipeline auditável fim a fim
+Pipeline auditável ponta a ponta
 
-Simples, leve, direto
+Simples, leve e direto
 
 Open-source, sem lock-in
 
-Foco em decisão, não só em modelo
+Foco em decisão, não só em modelagem
 
-Metodologia de diagnóstico superior aos AutoML tradicionais
+Diagnóstico estatístico superior às alternativas do mercado
 
 🌎 5. Visão
 
 Se existe dado, deveria existir clareza.
 Se existe clareza, deveria ser automática.
-O AutoSAGE é a camada universal entre o dado e a decisão.
+O AutoSAGE é a camada universal entre dados e decisão.
 
 ⚙️ 6. Arquitetura Técnica (Visão Geral)
 
-O AutoSAGE cobre todo o ciclo de dados:
+Fluxo completo:
 
-conectar → ingerir → diagnosticar → auditar → explorar → modelar → explicar → recomendar → expor em API
+conectar → ingerir → diagnosticar → auditar → explorar
+→ modelar → explicar → recomendar → expor em API
 
 🔌 7. Conectividade & Ingestão (DCP – Data Connector Pipeline)
-Conector nativo Postgres
+Conectores Postgres
+
+Secrets
 
 Teste via secret ou acesso direto
 
@@ -96,19 +97,19 @@ Execução segura (somente SELECT)
 
 Listagem de schemas, tabelas e colunas
 
-Sample seguro com quote_ident
+Amostragem segura com quote_ident
 
-Anti-SQL injection nativo
+Anti-SQL injection de ponta
 
-Ingestão inteligente (Streaming → Parquet)
+Ingestão Inteligente (Streaming → Parquet)
 
 Leitura de tabelas em chunks
 
-Conversão automática para Apache Parquet
+Conversão para Apache Parquet
 
 Geração de metadata JSON
 
-Padronização e validação do schema
+Padronização e validação de schema
 
 Estrutura final:
 
@@ -120,7 +121,7 @@ Estrutura final:
 
 Missing values
 
-Outliers (Z-score, IQR, robust stats)
+Outliers (Z-score, IQR, robust)
 
 Cardinalidade
 
@@ -128,7 +129,7 @@ Distribuições
 
 Drift estrutural
 
-Conversão e validação de datas
+Normalização de datas
 
 Tipagem automática
 
@@ -138,11 +139,11 @@ Correlações (Pearson, Spearman, Cramér’s V)
 
 Testes de hipótese (t-test, ANOVA, χ²)
 
-Insights de pré-modelagem
+Feature signal
 
 Identificação de variáveis fracas
 
-Análise de sinal estatístico
+Insights pré-modelagem
 
 🤖 10. Seleção Automática de Modelos
 Classificação
@@ -163,29 +164,31 @@ Random Forest
 
 XGBoost
 
-Critérios automáticos
+Critérios
 
-bias–variance
+Bias–variance
 
-estabilidade
+Estabilidade
 
-interpretabilidade
+Interpretabilidade
 
-estrutura do dataset
+Estrutura do dataset
 
 🏋️ 11. Treinamento Reprodutível
 
 Split estratificado
 
-Encoding e normalização automáticas
+Encoding automático
 
-Imputação integrada
+Imputação inteligente
+
+Normalização
 
 Cross-validation
 
 Pipeline reprodutível
 
-Salvamento de modelo + artefatos
+Salvamento de artefatos do modelo
 
 📊 12. Métricas
 Classificação
@@ -208,21 +211,21 @@ R²
 
 MAPE
 
-Comparação com baseline obrigatória.
+Compara sempre com baseline.
 
 🔎 13. Explicabilidade
 
-Importância de features
+Feature importance
 
 SHAP values
 
-Detecção de vieses
+Análise de vieses
 
-Análise de comportamento do modelo
+Comportamento do modelo
 
 📦 14. Registry & Exportação
 
-Estrutura:
+Estrutura gerada:
 
 /models/
     ├── model.pkl
@@ -237,19 +240,19 @@ Versionamento automático via hash.
 
 Endpoint /predict
 
-Pydantic para validação
+Validação via Pydantic
 
-Logging estruturado
+Logging por requisição
 
 Previsão + explicabilidade
 
 📈 16. Monitoramento & Logs
 
-Logs persistidos em /logs/
+Persistidos em /logs/
 
-IDs de execução
+Trace ID por execução
 
-Drift warnings
+Detecção de drift
 
 Auditoria ponta a ponta
 
@@ -257,27 +260,27 @@ Auditoria ponta a ponta
 Plataforma	Pontos Fortes	Limitações	AutoSAGE faz melhor
 Google AutoML	Escala	Caixa-preta	Transparência
 AWS Autopilot	Estabilidade	Complexidade	Simplicidade
-Azure AutoML	Interface	Vendor lock-in	Liberdade
+Azure AutoML	Interface	Vendor lock-in	Autonomia
 DataRobot	Enterprise	Muito caro	Acessível
-H2O DAI	Automático	Complexo	Clareza
+H2O DAI	Automatizado	Complexo	Clareza
 PyCaret	Simples	Assume dado limpo	Diagnóstico
-AutoGluon	Performance	Inexplicável	Explicabilidade
-AutoSAGE	Diagnóstico + decisão	Em evolução	Clareza + ação
+AutoGluon	Performance	Pouco explicável	Explicabilidade
+AutoSAGE	Diagnóstico + ação	Em evolução	Clareza + decisão
 📁 18. Documentação
 
 Arquitetura → docs/architecture.md
 
-Relatório técnico → docs/ml_pipeline_report.html
+Relatório Técnico → docs/ml_pipeline_report.html
 
 Roadmap → ROADMAP.md
 
-Contribuição → CONTRIBUTING.md
+Guia de Contribuição → CONTRIBUTING.md
 
 📞 19. Contato
 
 Sérgio Fonseca
-LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva
+LinkedIn: https://www.linkedin.com/in/sergiofonsecasilva
 
-Email — sergiofs.u1tec@gmail.com
+Email: sergiofs.u1tec@gmail.com
 
-Telefone — +55 11 9 3767-8996
+Telefone: +55 11 9 3767-8996
