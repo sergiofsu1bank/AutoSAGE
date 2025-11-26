@@ -1,86 +1,247 @@
 🚀 AutoSAGE
 
-1. Pitch de Investidor
-O AutoSAGE existe porque 80% do tempo em Ciência de Dados é desperdiçado limpando, diagnosticando e explicando dados, e não modelando. Enquanto AutoML tradicional responde “Qual modelo usar?”, o AutoSAGE responde “O que está acontecendo no meu dado? Por quê? E o que eu devo fazer agora?”. Entrega diagnóstico claro, narrativa explicável, modelo reprodutível, previsões auditáveis e recomendações acionáveis. A dor real não é modelagem — é clareza sobre o dado.
+Plataforma de IA que transforma dados brutos em diagnóstico, explicabilidade, modelagem e recomendações acionáveis — com foco extremo em clareza, transparência e decisão.
 
-2. Mercado-Alvo
-PMEs, consultorias, startups (fintech, healthtech, edtech), times de produto e growth, empresas sem time de dados e corporações que querem autonomia e transparência. Todos buscam decisão com menos dependência técnica.
+💰 Pitch de Investidor
 
-3. Monetização
-Licença Enterprise, suporte premium, plugins (MLOps, dashboards, Auto-EDA), SaaS hospedado, serviços profissionais e integrações corporativas sob demanda.
+O AutoSAGE resolve a maior dor real da ciência de dados:
 
-4. Vantagens Estratégicas
-100% explicável, pipeline auditável ponta a ponta, simples, leve, open-source, foco em decisão e diagnóstico superior ao mercado.
+80% do tempo é gasto limpando, diagnosticando e explicando dados — não modelando.
 
-5. Visão
-Se existe dado, deveria existir clareza. Se existe clareza, deveria ser automática. O AutoSAGE é a camada universal entre dados e decisão.
+Enquanto AutoML tradicional responde:
+“qual modelo usar?”
 
-6. Arquitetura Técnica (Visão Geral)
+O AutoSAGE responde:
+“o que está acontecendo, por quê e o que fazer agora?”
+
+Ele entrega:
+
+diagnóstico claro
+
+narrativa explicável
+
+modelo reprodutível
+
+previsões auditáveis
+
+recomendações acionáveis
+
+O AutoSAGE não disputa leaderboard.
+Ele disputa clareza.
+
+🎯 Mercado-Alvo
+
+PMEs
+
+Consultorias
+
+Startups (fintech, healthtech, edtech)
+
+Times de produto e growth
+
+Empresas sem time de dados
+
+Corporações que precisam de autonomia e transparência
+
+Todos querem clareza sem depender de especialistas caros.
+
+💵 Monetização
+
+Licença Enterprise
+
+Suporte Premium
+
+Plugins (MLOps, dashboards, Auto-EDA avançado)
+
+SaaS hospedado
+
+Treinamentos e consultoria
+
+Integrações corporativas sob demanda
+
+🧠 Vantagens Estratégicas
+
+100% explicável
+
+Pipeline auditável ponta a ponta
+
+Simples, leve e direto
+
+Open-source, sem lock-in
+
+Foco em decisão, não só predição
+
+Diagnóstico estatístico superior às plataformas AutoML
+
+🌎 Visão
+
+Se existe dado, deveria existir clareza.
+Se existe clareza, deveria ser automática.
+
+O AutoSAGE está construindo a camada universal entre o dado e a decisão.
+
+⚙️ Arquitetura Técnica (Visão Geral)
+
+Fluxo completo:
+
 conectar → ingerir → diagnosticar → auditar → explorar → modelar → explicar → recomendar → expor em API
 
-7. Conectividade & Ingestão (DCP – Data Connector Pipeline)
-Conectores Postgres: secrets, testes via secret ou acesso direto, execução somente SELECT, listagem de schemas/tabelas/colunas, amostragem segura com quote_ident, anti-SQL injection.
-Ingestão: leitura em chunks, conversão para Parquet, metadata JSON, padronização e validação.
-Estrutura:
+🔌 Conectividade & Ingestão (DCP – Data Connector Pipeline)
+
+Conector nativo Postgres
+
+Leitura segura (somente SELECT)
+
+Listagem de schemas, tabelas e colunas
+
+Amostragem segura com quote_ident
+
+Anti–SQL injection nativo
+
+Ingestão Inteligente (Streaming → Parquet):
+
+Leitura em chunks
+
+Conversão para Parquet
+
+Metadata JSON
+
+Padronização de nomes
+
+Validação de schema
+
 /data/ingestion/<tabela>/
-├── dataset.parquet
-└── metadata.json
+    ├── dataset.parquet
+    └── metadata.json
 
-8. Diagnóstico & Qualidade do Dado
-Missing values, outliers, cardinalidade, distribuições, drift estrutural, normalização de datas, tipagem automática.
+🩺 Diagnóstico & Qualidade do Dado
 
-9. Auto-EDA Inteligente
-Correlações (Pearson, Spearman, Cramér’s V), testes de hipótese, feature signal, variáveis fracas e insights estatísticos.
+Missing values
 
-10. Seleção Automática de Modelos
-Classificação: Logistic Regression, Random Forest, SVM, Gradient Boosting.
-Regressão: Linear/Ridge, Random Forest, XGBoost.
-Critérios: bias–variance, estabilidade, interpretabilidade e estrutura do dataset.
+Outliers (Z-score, IQR, robust stats)
 
-11. Treinamento Reprodutível
-Split estratificado, encoding automático, imputação inteligente, normalização, cross-validation, pipelines consistentes e salvamento de artefatos.
+Cardinalidade
 
-12. Métricas
-Classificação: AUC, F1, Precision, Recall.
-Regressão: RMSE, MAE, R², MAPE.
-Sempre compara com baseline.
+Distribuições
 
-13. Explicabilidade
-Feature importance, SHAP values, análise de vieses, comportamento do modelo.
+Tipagem automática
 
-14. Registry & Exportação
+Drift estrutural
+
+🔬 Auto-EDA Inteligente
+
+Correlações (Pearson, Spearman, Cramér’s V)
+
+Testes de hipótese (t-test, ANOVA, χ²)
+
+Feature signal
+
+Identificação de variáveis fracas
+
+Insights pré-modelagem
+
+🤖 Seleção Automática de Modelos
+
+Classificação: Logistic Regression, Random Forest, SVM, Gradient Boosting
+Regressão: Linear, Ridge, Random Forest, XGBoost
+
+Critérios:
+
+Bias–variance
+
+Estabilidade
+
+Interpretabilidade
+
+Estrutura do dataset
+
+🏋️ Treinamento Reprodutível
+
+Split estratificado
+
+Encoding automático
+
+Imputação inteligente
+
+Normalização
+
+Cross-validation
+
+Pipeline reprodutível
+
+Salvamento da execução
+
+📊 Métricas
+
+Classificação: AUC, F1, Precision, Recall
+Regressão: RMSE, MAE, R², MAPE
+
+Baseline obrigatório.
+
+🔎 Explicabilidade
+
+Feature importance
+
+SHAP values
+
+Análise de vieses
+
+Comportamento do modelo
+
+📦 Registry & Exportação
 /models/
-├── model.pkl
-├── metrics.json
-├── importance.json
-└── run.log
+    ├── model.pkl
+    ├── metrics.json
+    ├── importance.json
+    └── run.log
+
+
 Versionamento automático via hash.
 
-15. API de Inferência
-Endpoint /predict, validação Pydantic, logging por requisição, previsão + explicabilidade.
+📡 API de Inferência
 
-16. Monitoramento & Logs
-Persistido em /logs/, trace ID por execução, detecção de drift e auditoria completa.
+Endpoint /predict
 
-17. Comparativo Estratégico
-Google AutoML (escala / caixa-preta / AutoSAGE = transparência)
-AWS Autopilot (estabilidade / complexidade / AutoSAGE = simplicidade)
-Azure AutoML (interface / lock-in / AutoSAGE = autonomia)
-DataRobot (enterprise / muito caro / AutoSAGE = acessível)
-H2O DAI (automático / complexo / AutoSAGE = clareza)
-PyCaret (simples / assume dado limpo / AutoSAGE = diagnóstico)
-AutoGluon (performance / pouco explicável / AutoSAGE = explicabilidade)
-AutoSAGE (diagnóstico + ação / em evolução / AutoSAGE = decisão clara)
+Pydantic para validação
 
-18. Documentação
+Logging por requisição
+
+Previsão + explicabilidade
+
+📈 Monitoramento & Logs
+
+Persistidos em /logs/
+
+Trace ID
+
+Drift warnings
+
+Auditoria ponta a ponta
+
+⚔️ Comparativo Estratégico
+Plataforma	Pontos Fortes	Limitações	AutoSAGE faz melhor
+Google AutoML	Escala	Caixa-preta	Transparência
+AWS Autopilot	Estabilidade	Complexidade	Simplicidade
+Azure AutoML	Interface	Lock-in	Autonomia
+DataRobot	Enterprise	Caro	Acessível
+H2O DAI	Automação	Complexo	Clareza
+PyCaret	Simples	Assume dado limpo	Diagnóstico
+AutoGluon	Performance	Pouca explicação	Explicabilidade
+AutoSAGE	Diagnóstico + decisão	Em evolução	Clareza + ação
+📁 Documentação
+
 Arquitetura → docs/architecture.md
+
 Relatório Técnico → docs/ml_pipeline_report.html
+
 Roadmap → ROADMAP.md
+
 Contribuição → CONTRIBUTING.md
 
-19. Contato
+📞 Contato
 
 Sérgio Fonseca
-LinkedIn: https://www.linkedin.com/in/sergiofonsecasilva
-Email: sergiofs.u1tec@gmail.com
-Telefone: +55 11 9 3767-8996
+🔗 LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva
+📩 sergiofs.u1tec@gmail.com
+📞 +55 11 9 3767-8996
+
