@@ -1,20 +1,16 @@
-🚀 AutoSAGE
+💰 1. Pitch de Investidor
 
-Plataforma de IA que transforma dados brutos em diagnóstico, explicabilidade, modelagem e recomendações acionáveis — com foco extremo em clareza, transparência e decisão.
+O AutoSAGE resolve uma dor estrutural do mercado:
 
-💰 Pitch de Investidor
+80% do tempo em Ciência de Dados é gasto limpando, diagnosticando e explicando dados — não modelando.
 
-O AutoSAGE resolve a maior dor real da ciência de dados:
-
-80% do tempo é gasto limpando, diagnosticando e explicando dados — não modelando.
-
-Enquanto AutoML tradicional responde:
-“qual modelo usar?”
+Enquanto AutoML tradicional pergunta:
+“Qual modelo usar?”
 
 O AutoSAGE responde:
-“o que está acontecendo, por quê e o que fazer agora?”
+“O que está acontecendo no dado? Por quê? E o que fazer agora?”
 
-Ele entrega:
+Ele transforma qualquer dataset em:
 
 diagnóstico claro
 
@@ -26,10 +22,13 @@ previsões auditáveis
 
 recomendações acionáveis
 
-O AutoSAGE não disputa leaderboard.
-Ele disputa clareza.
+A dor não é modelagem.
+A dor é clareza.
+O AutoSAGE resolve isso imediatamente.
 
-🎯 Mercado-Alvo
+🎯 2. Mercado-Alvo
+
+Ideal para empresas que precisam tomar decisão rápida sem depender de um time grande de dados:
 
 PMEs
 
@@ -39,27 +38,31 @@ Startups (fintech, healthtech, edtech)
 
 Times de produto e growth
 
-Empresas sem time de dados
+Organizações sem time de IA
 
-Corporações que precisam de autonomia e transparência
+Corporações que exigem transparência
 
-Todos querem clareza sem depender de especialistas caros.
+Mercado enorme, crescente e pouco atendido.
 
-💵 Monetização
+💵 3. Monetização
+
+Modelo escalável e previsível:
 
 Licença Enterprise
 
-Suporte Premium
-
-Plugins (MLOps, dashboards, Auto-EDA avançado)
+Plugins premium (MLOps, dashboards, Auto-EDA avançado)
 
 SaaS hospedado
 
-Treinamentos e consultoria
+Suporte e consultoria
+
+Treinamentos
 
 Integrações corporativas sob demanda
 
-🧠 Vantagens Estratégicas
+🧠 4. Vantagens Estratégicas
+
+O AutoSAGE entrega o que ferramentas líderes não entregam:
 
 100% explicável
 
@@ -67,54 +70,52 @@ Pipeline auditável ponta a ponta
 
 Simples, leve e direto
 
-Open-source, sem lock-in
+Zero lock-in
 
 Foco em decisão, não só predição
 
-Diagnóstico estatístico superior às plataformas AutoML
+Diagnóstico estatístico superior aos AutoML tradicionais
 
-🌎 Visão
+🌎 5. Visão
 
 Se existe dado, deveria existir clareza.
 Se existe clareza, deveria ser automática.
+O AutoSAGE está se tornando a camada universal entre o dado e a decisão.
 
-O AutoSAGE está construindo a camada universal entre o dado e a decisão.
-
-⚙️ Arquitetura Técnica (Visão Geral)
+⚙️ 6. Arquitetura do Produto
 
 Fluxo completo:
-
 conectar → ingerir → diagnosticar → auditar → explorar → modelar → explicar → recomendar → expor em API
 
-🔌 Conectividade & Ingestão (DCP – Data Connector Pipeline)
+🔌 7. Conectividade & Ingestão (DCP – Data Connector Pipeline)
 
-Conector nativo Postgres
+Conector nativo para Postgres
 
-Leitura segura (somente SELECT)
+Execução segura (somente SELECT)
+
+Secrets seguros
 
 Listagem de schemas, tabelas e colunas
 
-Amostragem segura com quote_ident
+Sample seguro com quote_ident
 
 Anti–SQL injection nativo
 
-Ingestão Inteligente (Streaming → Parquet):
+Ingestão Inteligente (Streaming → Parquet)
 
-Leitura em chunks
+leitura em chunks
 
-Conversão para Parquet
+conversão para Parquet
 
-Metadata JSON
+metadata JSON
 
-Padronização de nomes
-
-Validação de schema
+padronização de schema
 
 /data/ingestion/<tabela>/
     ├── dataset.parquet
     └── metadata.json
 
-🩺 Diagnóstico & Qualidade do Dado
+🩺 8. Diagnóstico & Qualidade
 
 Missing values
 
@@ -128,40 +129,56 @@ Tipagem automática
 
 Drift estrutural
 
-🔬 Auto-EDA Inteligente
+🔬 9. Auto-EDA Inteligente
 
 Correlações (Pearson, Spearman, Cramér’s V)
 
-Testes de hipótese (t-test, ANOVA, χ²)
+Testes (t-test, ANOVA, χ²)
 
 Feature signal
 
-Identificação de variáveis fracas
+Variáveis fracas
 
-Insights pré-modelagem
+Insights para modelagem
 
-🤖 Seleção Automática de Modelos
+🤖 10. Seleção Automática de Modelos
+Classificação
 
-Classificação: Logistic Regression, Random Forest, SVM, Gradient Boosting
-Regressão: Linear, Ridge, Random Forest, XGBoost
+Logistic Regression
 
-Critérios:
+Random Forest
 
-Bias–variance
+SVM
 
-Estabilidade
+Gradient Boosting
 
-Interpretabilidade
+Regressão
 
-Estrutura do dataset
+Linear Regression
 
-🏋️ Treinamento Reprodutível
+Ridge
+
+Random Forest
+
+XGBoost
+
+Critérios de decisão
+
+bias–variance
+
+estabilidade
+
+interpretabilidade
+
+estrutura do dataset
+
+🏋️ 11. Treinamento Reprodutível
 
 Split estratificado
 
 Encoding automático
 
-Imputação inteligente
+Imputação
 
 Normalização
 
@@ -169,61 +186,70 @@ Cross-validation
 
 Pipeline reprodutível
 
-Salvamento da execução
+📊 12. Métricas
+Classificação
 
-📊 Métricas
+AUC
 
-Classificação: AUC, F1, Precision, Recall
-Regressão: RMSE, MAE, R², MAPE
+F1
+
+Precision
+
+Recall
+
+Regressão
+
+MAE
+
+RMSE
+
+R²
+
+MAPE
 
 Baseline obrigatório.
 
-🔎 Explicabilidade
-
-Feature importance
+🔎 13. Explicabilidade
 
 SHAP values
 
-Análise de vieses
+Feature importance
+
+Detecção de vieses
 
 Comportamento do modelo
 
-📦 Registry & Exportação
+📦 14. Registry & Artefatos
 /models/
     ├── model.pkl
     ├── metrics.json
     ├── importance.json
     └── run.log
 
-
-Versionamento automático via hash.
-
-📡 API de Inferência
+📡 15. API de Inferência
 
 Endpoint /predict
 
-Pydantic para validação
+Validação via Pydantic
 
-Logging por requisição
+Logging estruturado
 
 Previsão + explicabilidade
 
-📈 Monitoramento & Logs
+📈 16. Monitoramento & Logs
 
-Persistidos em /logs/
+logs persistidos
 
-Trace ID
+trace ID por execução
 
-Drift warnings
+detecção de drift
 
-Auditoria ponta a ponta
-
-⚔️ Comparativo Estratégico
-Plataforma	Pontos Fortes	Limitações	AutoSAGE faz melhor
+⚔️ 17. Comparativo Estratégico
+Plataforma	Pontos Fortes	Limitações	AutoSAGE se destaca em
 Google AutoML	Escala	Caixa-preta	Transparência
 AWS Autopilot	Estabilidade	Complexidade	Simplicidade
 Azure AutoML	Interface	Lock-in	Autonomia
-DataRobot	Enterprise	Caro	Acessível
+DataRobot	Governança	Muito caro	Acessível
 H2O DAI	Automação	Complexo	Clareza
 PyCaret	Simples	Assume dado limpo	Diagnóstico
 AutoGluon	Performance	Pouca explicação	Explicabilidade
@@ -240,8 +266,9 @@ Contribuição → CONTRIBUTING.md
 
 📞 Contato
 
-Sérgio Fonseca
-🔗 LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva
-📩 sergiofs.u1tec@gmail.com
-📞 +55 11 9 3767-8996
+Sérgio Fonseca da Silva
+🔗 https://www.linkedin.com/in/sergiofonsecasilva
 
+📩 sergiofs.u1tec@gmail.com
+
+📞 +55 11 9 3767-8996
