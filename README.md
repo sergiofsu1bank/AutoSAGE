@@ -89,6 +89,29 @@ Criado para empresas que precisam clareza, velocidade e decisões orientadas a d
 - Drift warnings
 - Auditoria completa do pipeline
 
+🆕 🔧 Módulo de Conectores DCP (NOVO – Desenvolvido Hoje)
+
+O módulo DCP (Data Connector Pipeline) é a nova camada do AutoSAGE para conectar bancos de dados externos e ingerir tabelas automaticamente, sem depender de uploads manuais.
+O que foi implementado
+
+Conector Postgres totalmente operacional
+Ingestão direta da tabela customer_churn do banco dcp
+Carregamento seguro de credenciais via Secrets Manager
+Registry interno para configurações
+Logs estruturados e padronizados
+Endpoint /ingest para disparo da coleta
+Alinhamento com a decisão estratégica: eliminar upload manual e focar em conectores nativos
+Pronto para expansão
+MySQL
+SQL Server
+BigQuery
+S3
+APIs REST externas
+
+Filosofia
+Conectores plugáveis
+Execução orquestrada e segura
+Arquitetura preparada para ambientes enterprise
 ---
 
 # 🔬 Metodologia Científica
