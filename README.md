@@ -1,61 +1,138 @@
-# AutoSAGE
+🚀 AutoSAGE
 
-Plataforma de IA que transforma dados brutos em diagnóstico, modelagem, explicabilidade e recomendações acionáveis — totalmente automatizada, integrada e pronta para produção.
+A plataforma de IA que transforma dados brutos em diagnóstico, explicabilidade, modelagem e recomendações acionáveis — com foco extremo em clareza, transparência e decisão.
 
-🚀 Visão Geral
+💰 1. Pitch de Investidor
 
-O AutoSAGE automatiza o fluxo completo:
+O AutoSAGE existe porque 80% do tempo em ciência de dados é desperdiçado limpando, diagnosticando e explicando dados, não modelando.
+Nenhuma plataforma líder resolve essa etapa de forma simples, transparente e acessível.
 
-conecta → ingere → diagnostica → audita → explora → modela → explica → recomenda → expõe em API
+Enquanto AutoML tradicional responde:
 
-Criado para empresas que precisam clareza, velocidade e decisões orientadas a dados — com ou sem time técnico dedicado.
+“qual modelo usar?”
 
-✨ Principais Recursos (ATUALIZADO)
-🔌 Conectividade & Ingestão (NOVO MÓDULO)
+O AutoSAGE responde:
 
-Conector nativo Postgres escrito em FastAPI
+“o que está acontecendo, por quê, e o que fazer agora?”
 
-Teste via secret, teste direto e execução segura
+Ele transforma qualquer dataset em:
 
-SQL protegido (somente SELECT, anti-injection)
+diagnóstico claro
 
-Listagem de tabelas e colunas com metadados
+narrativa explicável
+
+modelo reprodutível
+
+previsões auditáveis
+
+recomendações acionáveis
+
+A dor real no mercado não é treinar modelo.
+É ENTENDER o dado.
+E isso o AutoSAGE resolve melhor do que qualquer concorrente.
+
+🎯 2. Mercado-Alvo
+
+PMEs
+
+Consultorias
+
+Startups (fintech, healthtech, edtech)
+
+Times de produto e growth
+
+Empresas sem time de dados
+
+Corporações que querem autonomia e transparência
+
+Estes players buscam clareza e velocidade, sem depender de especialistas raros e caros.
+
+💵 3. Monetização
+
+Licença enterprise
+
+Suporte premium
+
+Serviços profissionais
+
+Plugins (MLOps, dashboards, APIs, Auto-EDA avançado)
+
+Versão SaaS hospedada
+
+Integrações corporativas sob demanda
+
+🧠 4. Vantagens Estratégicas
+
+100% explicável
+
+Pipeline auditável fim a fim
+
+Simples, leve, direto
+
+Open-source, sem lock-in
+
+Foco em decisão, não só em modelo
+
+Metodologia de diagnóstico superior aos AutoML tradicionais
+
+🌎 5. Visão
+
+Se existe dado, deveria existir clareza.
+Se existe clareza, deveria ser automática.
+O AutoSAGE é a camada universal entre o dado e a decisão.
+
+⚙️ 6. Arquitetura Técnica (Visão Geral)
+
+O AutoSAGE cobre todo o ciclo de dados:
+
+conectar → ingerir → diagnosticar → auditar → explorar → modelar → explicar → recomendar → expor em API
+
+🔌 7. Conectividade & Ingestão (DCP – Data Connector Pipeline)
+Conector nativo Postgres
+
+Teste via secret ou acesso direto
+
+Execução segura (somente SELECT)
+
+Listagem de schemas, tabelas e colunas
 
 Sample seguro com quote_ident
 
-Ingestão completa para Apache Parquet (streaming + chunks)
+Anti-SQL injection nativo
 
-Geração automática de metadata JSON
+Ingestão inteligente (Streaming → Parquet)
 
-📥 Ingestão Inteligente (ATUALIZADO)
+Leitura de tabelas em chunks
 
-Padronização automática de colunas
+Conversão automática para Apache Parquet
 
-Detecção de target
+Geração de metadata JSON
 
-Conversão de datas, normalização e validação
+Padronização e validação do schema
 
-Schema validation
+Estrutura final:
 
-Artefatos salvos em:
+/data/ingestion/<tabela>/
+    ├── dataset.parquet
+    └── metadata.json
 
-./data/ingestion/<tabela>/
-    - dataset.parquet
-    - metadata.json
+🩺 8. Diagnóstico & Qualidade do Dado
 
-🩺 Diagnóstico & Qualidade do Dado
+Missing values
 
-Contagem de nulos
+Outliers (Z-score, IQR, robust stats)
 
-Outliers (Z-score, IQR, stats robustos)
+Cardinalidade
 
-Cardinalidade e distribuições
+Distribuições
 
-Estatísticas descritivas automáticas
+Drift estrutural
 
-Drift de estrutura e semântico
+Conversão e validação de datas
 
-🔬 Auto-EDA
+Tipagem automática
+
+🔬 9. Auto-EDA Inteligente
 
 Correlações (Pearson, Spearman, Cramér’s V)
 
@@ -65,15 +142,28 @@ Insights de pré-modelagem
 
 Identificação de variáveis fracas
 
-Visualizações automáticas (roadmap)
+Análise de sinal estatístico
 
-🤖 Seleção Automática de Modelos
+🤖 10. Seleção Automática de Modelos
+Classificação
 
-Classificação: Logistic, Random Forest, SVM, Gradient Boosting
+Logistic Regression
 
-Regressão: Linear, Ridge, Random Forest, XGBoost
+Random Forest
 
-Escolha baseada em:
+SVM
+
+Gradient Boosting
+
+Regressão
+
+Linear / Ridge
+
+Random Forest
+
+XGBoost
+
+Critérios automáticos:
 
 bias–variance
 
@@ -81,216 +171,99 @@ estabilidade
 
 interpretabilidade
 
-consistência amostral
+estrutura do dataset
 
-🏋️ Treinamento
+🏋️ 11. Treinamento Reprodutível
 
 Split estratificado
 
-Normalização, encoding e imputação automáticos
+Encoding e normalização automáticas
+
+Imputação integrada
 
 Cross-validation
 
-Busca leve de hiperparâmetros
+Pipeline reprodutível
 
-Pipeline reprodutível e auditável
+Salvamento de modelo + artefatos
 
-📊 Métricas
+📊 12. Métricas
+Classificação
 
-Classificação: AUC, F1, Precision, Recall
+AUC
 
-Regressão: RMSE, MAE, R², MAPE
+F1
 
-Comparação com baseline obrigatória
+Precision
 
-🔎 Explicabilidade
+Recall
 
-SHAP values
+Regressão
+
+RMSE
+
+MAE
+
+R²
+
+MAPE
+
+Comparação com baseline obrigatório.
+
+🔎 13. Explicabilidade
 
 Importância de features
 
-Análise de impacto
+SHAP values
 
 Detecção de vieses
 
-📦 Exportação & Registry
+Análise de comportamento do modelo
 
-Salvamento automático do melhor modelo
+📦 14. Registry & Exportação
 
-Artefatos exportados:
+Estrutura:
 
-modelo
+/models/
+    ├── model.pkl
+    ├── metrics.json
+    ├── importance.json
+    └── run.log
 
-métricas
 
-feature importance
+Versionamento automático via hash.
 
-logs
+📡 15. API de Inferência
 
-Versionamento interno via hash
+Endpoint /predict
 
-📡 API de Inferência
+Pydantic para validação
 
-FastAPI
+Logging estruturado
 
-/predict com validação automática
+Previsão + explicabilidade
 
-Resposta com previsão + explicabilidade
+📈 16. Monitoramento & Logs
 
-Logging estruturado por requisição
-
-📈 Monitoramento & Logs
-
-Logs em /logs/
+Logs persistidos em /logs/
 
 IDs de execução
 
 Drift warnings
 
-Auditoria completa
-
-🔬 Metodologia Científica
-1️⃣ Ingestão & Padronização
-
-Typing automático
-
-Normalização e limpeza semântica
-
-Conversão e validação de datas
-
-2️⃣ Diagnóstico Estatístico
-
-Distribuições e densidades
-
-Estatísticas descritivas
-
-Cardinalidade e unicidade
-
-3️⃣ Auditoria de Qualidade
-
-Missing values
-
-Outliers
-
-Inconsistências
-
-Drift estrutural
-
-4️⃣ Relações & Sinal Estatístico
-
-Correlações
-
-Testes de hipótese
-
-Ranking de variáveis
-
-5️⃣ Seleção Automática de Modelos
-
-Classificação vs Regressão
-
-Modelos estáveis por tipo de dado
-
-6️⃣ Treinamento Reprodutível
-
-Splits
-
-Encodings
-
-Normalizações
-
-Validações
-
-7️⃣ Métricas Claras
-
-Classificação e regressão
-
-8️⃣ Explicabilidade
-
-SHAP
-
-Importância
-
-Viés e fairness básico
-
-9️⃣ Recomendação Acionável
-
-Diagnóstico → Decisão
-
-Insights → Ações claras
-
-⚔️ Comparação Estratégica
-Plataforma	Pontos Fortes	Limitações	AutoSAGE Faz Melhor
-Google AutoML	Rápido	Caixa-preta	Transparência total
-AWS Autopilot	Escala	Complexo	Simplicidade
-Azure AutoML	Interface	Vendor lock-in	Flexível
-DataRobot	Enterprise	Caríssimo	Open-source
-H2O DAI	Automático	Curva de aprendizado	Clareza
-PyCaret	Simples	Assume dado limpo	Diagnóstico real
-AutoGluon	Performance	Zero explicabilidade	100% explicável
-AutoSAGE	Pipeline completo	Em evolução	Diagnóstico + decisão
-💰 Pitch de Investidor (Atualizado)
-
-80% do tempo em ciência de dados é desperdiçado limpando, diagnosticando e explicando dados.
-As plataformas atuais focam em modelos — não em clareza.
-
-O AutoSAGE preenche essa lacuna:
-
-diagnóstico completo
-
-narrativa explicável
-
-modelo reprodutível
-
-previsões auditáveis
-
-sugestões acionáveis
-
-AutoML responde “qual modelo usar?”
-O AutoSAGE responde:
-👉 “O que está acontecendo? Por que? E o que fazer agora?”
-
-🎯 Mercado-Alvo
-
-PMEs
-
-Consultorias
-
-Startups
-
-Times de produto
-
-Times sem área de dados
-
-💵 Monetização
-
-Plano enterprise
-
-Suporte premium
-
-Plugins (MLOps, dashboards)
-
-SaaS hospedado
-
-🧠 Vantagens Estratégicas
-
-100% explicável
-
-Leve
-
-Open-source
-
-Foco em decisão
-
-Pipeline auditável
-
-🌎 Visão
-
-Se existe dado, deveria existir clareza.
-E clareza deveria ser automática.
-
-Estamos construindo a camada universal entre o dado e a decisão.
-
-📊 Documentação
+Auditoria ponta a ponta
+
+⚔️ 17. Comparativo Estratégico
+Plataforma	Pontos Fortes	Limitações	AutoSAGE faz melhor
+Google AutoML	Escala	Caixa-preta	Transparência
+AWS Autopilot	Estabilidade	Complexidade	Simplicidade
+Azure AutoML	Interface	Vendor lock-in	Liberdade
+DataRobot	Enterprise	Muito caro	Acessível
+H2O DAI	Automático	Complexo	Clareza
+PyCaret	Simples	Assume dado limpo	Diagnóstico
+AutoGluon	Performance	Inexplicável	Explicabilidade
+AutoSAGE	Diagnóstico + decisão	Em evolução	Clareza + ação
+📁 18. Documentação
 
 Arquitetura → docs/architecture.md
 
@@ -300,15 +273,11 @@ Roadmap → ROADMAP.md
 
 Contribuição → CONTRIBUTING.md
 
-🛡️ Licença
+📞 19. Contato
 
-MIT
+Sérgio Fonseca
+LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva
 
-💡 Contato
+Email — sergiofs.u1tec@gmail.com
 
-🔗 LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva
-
-📩 Email — sergiofs.u1tec@gmail.com
-
-📞 Telefone — +55 11 9 3767-8996
-
+Telefone — +55 11 9 3767-8996
