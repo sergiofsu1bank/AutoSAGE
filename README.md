@@ -2,6 +2,8 @@
 
 Plataforma de IA que transforma dados brutos em diagnóstico, modelagem, explicabilidade e recomendações acionáveis — totalmente automatizada, integrada e pronta para produção.
 
+[👉 Abrir Relatório Técnico do AutoSAGE](https://sergiofsu1bank.github.io/AutoSAGE/ml_pipeline_report.html)
+
 ---
 
 # 🚀 Visão Geral
@@ -15,8 +17,6 @@ Criado para empresas que precisam clareza, velocidade e decisões orientadas a d
 ---
 
 # 💰 Pitch de Investidor
-
-*(mantido — apenas enriquecido de forma alinhada à evolução arquitetural)*
 
 O AutoSAGE existe porque **80% do tempo em ciência de dados é perdido limpando, diagnosticando e explicando dados** — não modelando.
 
@@ -151,8 +151,6 @@ O módulo DCP (Data Connector Pipeline) é a nova camada do AutoSAGE para conect
 
 # 🔬 Metodologia Científica
 
-*(mantida exatamente como no original — conteúdo atualizado apenas onde necessário)*
-
 ## 1️⃣ Ingestão & Padronização
 - Tipagem automática
 - Normalização de colunas
@@ -201,20 +199,44 @@ O módulo DCP (Data Connector Pipeline) é a nova camada do AutoSAGE para conect
 ---
 
 # ⚔️ Comparação Estratégica
-*(mantido — sem alterações estruturais)*
 
+| Plataforma | Pontos Fortes | Limitações | O que o AutoSAGE faz melhor |
+|------------|---------------|------------|------------------------------|
+| Google AutoML | Treina rápido | Caixa-preta | Transparência + diagnóstico |
+| AWS Autopilot | Escala | Complexidade | Simples, direto e acessível |
+| Azure AutoML | Interface | Dependência Azure | Controle total |
+| DataRobot | Governança | Muito caro | Open-source e leve |
+| H2O DAI | Automação | Complexo para negócios | Foco em decisão |
+| PyCaret | Simples | Assume dado limpo | Auditoria + limpeza |
+| AutoGluon/Sklearn | Performance | Caixa-preta | Relatórios explicáveis |
+| **AutoSAGE** | Decisão orientada a dados | Em evolução | Clareza + ação imediata |
 
 ---
 
 # 🎯 Mercado-Alvo
-(mantido)
+
+- PMEs
+- Consultorias
+- Startups (fintech, healthtech, edtech)
+- Times de produto e growth
+- Empresas sem time de dados
+
 
 # 💵 Monetização
-(mantido)
+
+- Versão enterprise
+- Suporte premium
+- Plugins (MLOps, dashboards, APIs)
+- Hosted SaaS
 
 # 🧠 Vantagens Estratégicas
-(mantido — agora reforçado pelo novo core modular)
 
+- Open-source, transparente e auditável
+- Arquitetura modular (DCP → EDA → ML → ORC), leve e escalável
+- Explicabilidade total: cada decisão do pipeline é registrada, rastreável e justificável
+- Foco absoluto em decisão, não apenas previsão
+- Pipelines científicos reprodutíveis, versionados e governáveis
+- Compatível com ambientes enterprise (containers isolados, registry compartilhado, trace-id distribuído)
 ---
 
 # 🌎 Visão
@@ -227,7 +249,11 @@ Estamos construindo a camada universal de interpretação entre o dado e a decis
 ---
 
 # 📊 Documentação
-(mantido)
+
+- Arquitetura → `docs/architecture.md`
+- Relatório técnico → `docs/ml_pipeline_report.html`
+- Roadmap → `ROADMAP.md`
+- Contribuição → `CONTRIBUTING.md`
 
 ---
 
