@@ -250,6 +250,45 @@ Tudo conectado por registry versionado + trace ID distribuído.
 - Conversão e validação de datas
 - **Pipeline padronizado no módulo DCP**
 
+## 2️⃣ Diagnóstico Estatístico
+- Distribuições e densidades
+- Estatísticas descritivas
+- Cardinalidade
+- **Artefatos agora exportados em PARQUET**
+
+## 3️⃣ Auditoria de Qualidade
+- Missing values
+- Outliers
+- Inconsistências semânticas
+- Drift estrutural
+
+## 4️⃣ Relações & Sinal Estatístico
+- Correlações
+- Testes de hipótese
+- Feature importance preliminar
+
+## 5️⃣ Seleção Inteligente de Modelos
+- Baseado no target e estrutura de variáveis
+
+## 6️⃣ Treinamento Reprodutível
+- Splits estratificados
+- Encodings e escalas automáticas
+- Cross-validation
+- **Execução isolada no módulo ML**
+
+## 7️⃣ Métricas Transparentes
+- Classificação e regressão completas
+
+## 8️⃣ Explicabilidade
+- SHAP
+- Importância
+- Detecção de vieses
+
+## 9️⃣ Recomendação Acionável
+- Caminhos sugeridos
+- Próximos passos
+- Riscos e limitações
+
 ## ⚔️ Comparação Estratégica
 
 | Plataforma | Pontos Fortes | Limitações | O que o AutoSAGE faz melhor |
