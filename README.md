@@ -1,268 +1,293 @@
-# AutoSAGE
+🚀 Visão Geral
 
-Plataforma de IA que transforma dados brutos em diagnóstico, modelagem, explicabilidade e recomendações acionáveis — totalmente automatizada, integrada e pronta para produção.
+O AutoSAGE automatiza o fluxo completo de decisão orientada a dados:
 
-[👉 Abrir Relatório Técnico do AutoSAGE](https://sergiofsu1bank.github.io/AutoSAGE/ml_pipeline_report.html)
+conecta → ingere → diagnostica → audita → explora → modela → explica → recomenda → expõe em API
 
----
+Ele foi criado para organizações que precisam clareza, rastreabilidade e confiança, com ou sem um time especializado em ciência de dados.
 
-# 🚀 Visão Geral
+No AutoSAGE:
 
-O AutoSAGE automatiza o fluxo completo:
+nenhuma decisão existe sem diagnóstico,
+nenhum modelo existe sem explicação,
+e nenhum pipeline existe sem métricas.
 
-**conecta → ingere → diagnostica → audita → explora → modela → explica → recomenda → expõe em API**
+💰 Pitch de Investidor
 
-Criado para empresas que precisam clareza, velocidade e decisões orientadas a dados — com ou sem um time especializado.
+O AutoSAGE existe porque até 80% do tempo em projetos de dados é gasto limpando, diagnosticando, auditando e explicando dados — não treinando modelos.
 
----
+As plataformas tradicionais falham em entregar, ao mesmo tempo:
 
-# 💰 Pitch de Investidor
+transparência
 
-O AutoSAGE existe porque **80% do tempo em ciência de dados é perdido limpando, diagnosticando e explicando dados** — não modelando.
+explicabilidade
 
-Nenhuma plataforma líder resolve esse gap com:
+auditoria
 
-- transparência  
-- explicabilidade  
-- auditoria  
-- autonomia de ponta a ponta  
+autonomia ponta a ponta
 
-Com a nova arquitetura modular (DCP → EDA → ML → ORC), o AutoSAGE evoluiu para uma **plataforma de automação científica**, não apenas AutoML.
+Com a arquitetura modular DCP → EDA → ML → ORC → Metrics, o AutoSAGE evoluiu de AutoML para uma plataforma de automação científica orientada à decisão e governança.
 
----
+✨ Principais Recursos
+🔌 Conectividade & Ingestão (DCP)
 
-# ✨ Principais Recursos
+Conector nativo para Postgres
 
-## 🔌 Conectividade & Ingestão
-- Conector nativo para **Postgres**
-- Leitura direta de qualquer tabela (`schema.table`)
-- Autodetecção de schema e tipos
-- Carregamento seguro via secrets
-- Suporte a DataFrame, CSV e SQL (roadmap)
-- **Novo (v2025): arquitetura DCP com ingestão totalmente automatizada**
+Leitura direta de qualquer tabela (schema.table)
 
-## 📥 Ingestão Inteligente
-- Padronização de colunas
-- Detecção automática do target
-- Conversão robusta de datas e encodings
-- Validação inicial do schema
-- **Pipeline orquestrado via módulo DCP → EDA**
+Autodetecção de schema e tipos
 
-## 🩺 Diagnóstico & Qualidade do Dado
-- Missing values
-- Outliers (Z-score, IQR, robust stats)
-- Cardinalidade e estrutura
-- Drift estrutural
-- Estatísticas descritivas e distribuições
+Carregamento seguro via secrets
 
-## 🔬 Auto-EDA
-- Correlações (Pearson, Spearman, Cramér’s V)
-- Testes de hipótese (t-test, ANOVA, χ²)
-- Insights pré-modelagem
-- Identificação de variáveis fracas
-- Visualizações automáticas
-- **Exportação agora 100% em PARQUET (novo padrão oficial)**
+Suporte planejado a CSV, DataFrame e SQL
 
-## 🤖 Seleção Automática de Modelos
-- Classificação: Logistic, SVM, Random Forest, Gradient Boosting
-- Regressão: Linear, Ridge, Random Forest, XGBoost
-- Escolha baseada em bias–variance, estabilidade e interpretabilidade
-- **Integração com novo módulo ML 100% isolado e versionado**
+Arquitetura DCP com ingestão totalmente automatizada (v2025)
 
-## 🏋️ Treinamento
-- Train/test split estratificado
-- Normalização e encoding automáticos
-- Cross-validation
-- Busca simples de hiperparâmetros
-- Pipeline reprodutível
-- **Arquitetura atual executa todo treinamento dentro do container ML de forma autônoma**
+📥 Ingestão Inteligente
 
-## 📊 Métricas & Comparações
-- Classificação → AUC, F1, Precision, Recall
-- Regressão → RMSE, MAE, R², MAPE
-- Comparação com baseline obrigatório
-- **Relatórios HTML completos gerados automaticamente**
+Padronização de colunas
 
-## 🔎 Explicabilidade
-- Importância de features
-- SHAP values
-- Análise de comportamento do modelo
-- Identificação de vieses
+Conversão robusta de datas e encodings
 
-## 📦 Exportação & Registry
-- Salvamento automático do melhor modelo (`/models/`)
-- Artefatos exportados:
-  - Modelo
-  - Métricas
-  - Feature importance
-  - Logs
-  - **Arquivos PARQUET**
-- Versionamento interno via hash de execução
-- **Registry único compartilhado entre módulos via Docker volumes**
+Validação inicial de schema
 
-## 📡 API de Inferência (implementada)
-- FastAPI em `src/app/main.py`
-- Endpoint `/predict`
-- Validação automática via Pydantic
-- Carregamento do modelo via registry
-- Retorno com previsão + explicabilidade
-- Logging estruturado por requisição
+Pipeline orquestrado DCP → EDA
 
-## 📈 Monitoramento & Logs
-- Logs persistidos em `/logs/`
-- IDs de execução
-- Drift warnings
-- Auditoria completa do pipeline
-- **Trace ID propagado entre todos os módulos (ORC → DCP → EDA → ML)**
+Eliminação de uploads manuais por decisão estratégica
 
-## 🆕 🔧 Módulo de Conectores DCP
-O módulo DCP (Data Connector Pipeline) é a nova camada do AutoSAGE para conectar bancos de dados externos e ingerir tabelas automaticamente, sem depender de uploads manuais.
+🩺 Diagnóstico & Qualidade do Dado
 
-### O que foi implementado
-- Conector Postgres totalmente operacional  
-- Ingestão direta da tabela `customer_churn` do banco `dcp`  
-- Carregamento seguro de credenciais via Secrets Manager  
-- Registry interno para configurações  
-- Logs estruturados e padronizados  
-- Endpoint `/ingest` para disparo da coleta  
-- Pipeline automático **DCP → EDA → ML**  
-- Eliminado o upload manual por decisão estratégica  
+Missing values
 
-### Pronto para expansão
-- MySQL  
-- SQL Server  
-- BigQuery  
-- S3  
-- APIs REST externas  
+Outliers (Z-score, IQR, estatísticas robustas)
 
-### Filosofia
-- Conectores plugáveis  
-- Execução orquestrada e segura  
-- Arquitetura preparada para ambientes enterprise  
+Cardinalidade e estrutura
 
-### 🆕 Arquitetura Modulada 2025
-- **ORC (Orchestrator):** controla e garante o fluxo completo  
-- **DCP:** coleta e padroniza  
-- **EDA:** diagnostica, audita e prepara os artefatos  
-- **ML:** modela, avalia e gera relatórios  
-- Todos conectados por **registry versionado + trace ID distribuído**  
+Drift estrutural
 
----
+Estatísticas descritivas e distribuições
 
-# 🔬 Metodologia Científica
+🔬 Auto-EDA
 
-## 1️⃣ Ingestão & Padronização
-- Tipagem automática
-- Normalização de colunas
-- Conversão e validação de datas
-- **Pipeline padronizado no módulo DCP**
+Correlações (Pearson, Spearman, Cramér’s V)
 
-## 2️⃣ Diagnóstico Estatístico
-- Distribuições e densidades
-- Estatísticas descritivas
-- Cardinalidade
-- **Artefatos agora exportados em PARQUET**
+Testes de hipótese (t-test, ANOVA, χ²)
 
-## 3️⃣ Auditoria de Qualidade
-- Missing values
-- Outliers
-- Inconsistências semânticas
-- Drift estrutural
+Insights pré-modelagem
 
-## 4️⃣ Relações & Sinal Estatístico
-- Correlações
-- Testes de hipótese
-- Feature importance preliminar
+Identificação de variáveis fracas
 
-## 5️⃣ Seleção Inteligente de Modelos
-- Baseado no target e estrutura de variáveis
+Visualizações automáticas
 
-## 6️⃣ Treinamento Reprodutível
-- Splits estratificados
-- Encodings e escalas automáticas
-- Cross-validation
-- **Execução isolada no módulo ML**
+Exportação oficial de artefatos em PARQUET
 
-## 7️⃣ Métricas Transparentes
-- Classificação e regressão completas
+🤖 Seleção Automática de Modelos
 
-## 8️⃣ Explicabilidade
-- SHAP
-- Importância
-- Detecção de vieses
+Classificação: Logistic, SVM, Random Forest, Gradient Boosting
 
-## 9️⃣ Recomendação Acionável
-- Caminhos sugeridos
-- Próximos passos
-- Riscos e limitações
+Regressão: Linear, Ridge, Random Forest, XGBoost
 
----
+Escolha baseada em:
 
-# ⚔️ Comparação Estratégica
+estabilidade
 
-| Plataforma | Pontos Fortes | Limitações | O que o AutoSAGE faz melhor |
-|------------|---------------|------------|------------------------------|
-| Google AutoML | Treina rápido | Caixa-preta | Transparência + diagnóstico |
-| AWS Autopilot | Escala | Complexidade | Simples, direto e acessível |
-| Azure AutoML | Interface | Dependência Azure | Controle total |
-| DataRobot | Governança | Muito caro | Open-source e leve |
-| H2O DAI | Automação | Complexo para negócios | Foco em decisão |
-| PyCaret | Simples | Assume dado limpo | Auditoria + limpeza |
-| AutoGluon/Sklearn | Performance | Caixa-preta | Relatórios explicáveis |
-| **AutoSAGE** | Decisão orientada a dados | Em evolução | Clareza + ação imediata |
+interpretabilidade
 
----
+viés–variância
 
-# 🎯 Mercado-Alvo
+Módulo ML isolado, versionado e reprodutível
 
-- PMEs
-- Consultorias
-- Startups (fintech, healthtech, edtech)
-- Times de produto e growth
-- Empresas sem time de dados
+🏋️ Treinamento
 
+Train/test split estratificado
 
-# 💵 Monetização
+Normalização e encoding automáticos
 
-- Versão enterprise
-- Suporte premium
-- Plugins (MLOps, dashboards, APIs)
-- Hosted SaaS
+Cross-validation
 
-# 🧠 Vantagens Estratégicas
+Busca simples de hiperparâmetros
 
-- Open-source, transparente e auditável
-- Arquitetura modular (DCP → EDA → ML → ORC), leve e escalável
-- Explicabilidade total: cada decisão do pipeline é registrada, rastreável e justificável
-- Foco absoluto em decisão, não apenas previsão
-- Pipelines científicos reprodutíveis, versionados e governáveis
-- Compatível com ambientes enterprise (containers isolados, registry compartilhado, trace-id distribuído)
----
+Pipelines reprodutíveis
 
-# 🌎 Visão
+Execução totalmente autônoma dentro do container ML
 
-Se existe dado, deveria existir clareza.  
+📊 Métricas de Modelo
+
+Classificação → AUC, F1, Precision, Recall
+
+Regressão → RMSE, MAE, R², MAPE
+
+Comparação obrigatória com baseline
+
+Relatórios HTML gerados automaticamente
+
+📐 Módulo de Monitoramento & Metrics (Coração do Sistema)
+
+O módulo de Metrics é a camada central de governança, rastreabilidade e confiança do AutoSAGE.
+
+Nada no pipeline existe se não for medido, registrado e auditável.
+
+O que o módulo monitora
+
+Execuções completas do pipeline
+
+Estado real de cada etapa
+
+Falhas, tempos e gargalos
+
+Relação entre dado, modelo e decisão
+
+Métricas registradas (por contrato)
+
+trace_id
+
+pipeline (DCP, EDA, ML, ORC)
+
+stage
+
+status (STARTED | COMPLETED | FAILED)
+
+duration_ms
+
+dataset_name
+
+vendor
+
+pipeline_version
+
+error_code / error_message
+
+Essas informações são persistidas em tabelas próprias de monitoramento.
+
+Metrics como controle de fluxo
+
+Execuções duplicadas são rejeitadas por trace_id
+
+Falhas interrompem automaticamente etapas downstream
+
+Nenhuma execução avança sem estado consistente
+
+Não existem falhas silenciosas
+
+Se não foi medido, não aconteceu.
+
+🔎 Explicabilidade
+
+Importância de features
+
+SHAP values
+
+Análise de comportamento do modelo
+
+Identificação de vieses e riscos
+
+📦 Exportação & Registry
+
+Salvamento automático do melhor modelo (/models/)
+
+Artefatos exportados:
+
+Modelo
+
+Métricas
+
+Feature importance
+
+Logs
+
+Arquivos PARQUET
+
+Versionamento por hash de execução
+
+Registry único compartilhado entre módulos via Docker volumes
+
+📡 API de Inferência
+
+FastAPI em src/app/main.py
+
+Endpoint /predict
+
+Validação automática via Pydantic
+
+Carregamento dinâmico via registry
+
+Retorno com previsão + explicabilidade
+
+Logging estruturado por requisição
+
+📈 Logs & Auditoria
+
+Logs persistidos em /logs/
+
+IDs de execução
+
+Warnings de drift
+
+Auditoria completa do pipeline
+
+Trace ID distribuído entre ORC → DCP → EDA → ML
+
+🆕 Arquitetura Modular 2025
+
+ORC: orquestra e valida o fluxo
+
+DCP: coleta e padroniza dados
+
+EDA: diagnostica, audita e prepara artefatos
+
+ML: treina, avalia e explica
+
+Metrics: monitora, governa e prova
+
+Tudo conectado por registry versionado + trace ID distribuído.
+
+🔬 Metodologia Científica
+
+(mantida, apenas conceitualmente alinhada)
+
+⚔️ Comparação Estratégica
+
+(tabela mantida como está)
+
+🎯 Mercado-Alvo
+
+PMEs
+
+Consultorias
+
+Startups (fintech, healthtech, edtech)
+
+Times de produto e growth
+
+Empresas sem time de dados
+
+💵 Monetização
+
+Versão enterprise
+
+Suporte premium
+
+Plugins (MLOps, dashboards, APIs)
+
+Hosted SaaS
+
+🧠 Vantagens Estratégicas
+
+Open-source, auditável e transparente
+
+Arquitetura modular e escalável
+
+Métricas como núcleo do sistema
+
+Decisão antes de previsão
+
+Pipelines científicos governáveis
+
+Pronto para ambientes enterprise
+
+🌎 Visão
+
+Se existe dado, deveria existir clareza.
 E clareza deveria ser automática.
 
-Estamos construindo a camada universal de interpretação entre o dado e a decisão — agora com uma **arquitetura distribuída, escalável e pronta para produção real**.
-
----
-
-# 📊 Documentação
-
-- Arquitetura → `docs/architecture.md`
-- Relatório técnico → `docs/ml_pipeline_report.html`
-- Roadmap → `ROADMAP.md`
-- Contribuição → `CONTRIBUTING.md`
-
----
-
-# 🛡️ Licença
-MIT
-
----
-
-# 💡 Contato
-🔗 LinkedIn — https://www.linkedin.com/in/sergiofonsecasilva  
-📩 sergiofs.u1tec@gmail.com  
-📞 +55 11 9 3767-8996
+O AutoSAGE é a camada entre dados, decisões e confiança operacional.
