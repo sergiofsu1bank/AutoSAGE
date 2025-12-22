@@ -13,6 +13,8 @@ nenhuma decisão existe sem diagnóstico,
 nenhum modelo existe sem explicação,
 e nenhum pipeline existe sem métricas.
 
+[👉 Abrir Relatório Técnico do AutoSAGE](https://sergiofsu1bank.github.io/AutoSAGE/ml_pipeline_report.html)
+
 # 💰 Pitch de Investidor
 
 O AutoSAGE existe porque até 80% do tempo em projetos de dados é gasto limpando, diagnosticando, auditando e explicando dados — não treinando modelos.
@@ -344,3 +346,23 @@ Se existe dado, deveria existir clareza.
 E clareza deveria ser automática.
 
 O AutoSAGE é a camada entre dados, decisões e confiança operacional.
+
+
+# 📊 Documentação
+
+- Arquitetura → `docs/architecture.md`
+- Relatório técnico → `docs/ml_pipeline_report.html`
+- Roadmap → `ROADMAP.md`
+- Contribuição → `CONTRIBUTING.md`
+
+---
+
+# 🛡️ Licença
+MIT
+
+---
+
+# 💡 Contato
+🔗 https://www.linkedin.com/in/sergiofonsecasilva  
+📩 sergiofs.u1tec@gmail.com  
+📞 +55 11 9 3767-8996
