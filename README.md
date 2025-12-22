@@ -1,4 +1,5 @@
-🚀 Visão Geral
+# 🚀 VISÃO GERAL
+
 
 O AutoSAGE automatiza o fluxo completo de decisão orientada a dados:
 
@@ -12,7 +13,7 @@ nenhuma decisão existe sem diagnóstico,
 nenhum modelo existe sem explicação,
 e nenhum pipeline existe sem métricas.
 
-💰 Pitch de Investidor
+# 💰 Pitch de Investidor
 
 O AutoSAGE existe porque até 80% do tempo em projetos de dados é gasto limpando, diagnosticando, auditando e explicando dados — não treinando modelos.
 
@@ -28,8 +29,8 @@ autonomia ponta a ponta
 
 Com a arquitetura modular DCP → EDA → ML → ORC → Metrics, o AutoSAGE evoluiu de AutoML para uma plataforma de automação científica orientada à decisão e governança.
 
-✨ Principais Recursos
-🔌 Conectividade & Ingestão (DCP)
+# ✨ Principais Recursos
+## 🔌 Conectividade & Ingestão
 
 Conector nativo para Postgres
 
@@ -43,7 +44,7 @@ Suporte planejado a CSV, DataFrame e SQL
 
 Arquitetura DCP com ingestão totalmente automatizada (v2025)
 
-📥 Ingestão Inteligente
+## 📥 Ingestão Inteligente
 
 Padronização de colunas
 
@@ -55,7 +56,7 @@ Pipeline orquestrado DCP → EDA
 
 Eliminação de uploads manuais por decisão estratégica
 
-🩺 Diagnóstico & Qualidade do Dado
+## 🩺 Diagnóstico & Qualidade do Dado
 
 Missing values
 
@@ -67,7 +68,7 @@ Drift estrutural
 
 Estatísticas descritivas e distribuições
 
-🔬 Auto-EDA
+## 🔬 Auto-EDA
 
 Correlações (Pearson, Spearman, Cramér’s V)
 
@@ -81,7 +82,7 @@ Visualizações automáticas
 
 Exportação oficial de artefatos em PARQUET
 
-🤖 Seleção Automática de Modelos
+## 🤖 Seleção Automática de Modelos
 
 Classificação: Logistic, SVM, Random Forest, Gradient Boosting
 
@@ -97,7 +98,7 @@ viés–variância
 
 Módulo ML isolado, versionado e reprodutível
 
-🏋️ Treinamento
+## 🏋️ Treinamento
 
 Train/test split estratificado
 
@@ -111,7 +112,7 @@ Pipelines reprodutíveis
 
 Execução totalmente autônoma dentro do container ML
 
-📊 Métricas de Modelo
+## 📊 Métricas & Comparações
 
 Classificação → AUC, F1, Precision, Recall
 
@@ -121,7 +122,7 @@ Comparação obrigatória com baseline
 
 Relatórios HTML gerados automaticamente
 
-📐 Módulo de Monitoramento & Metrics (Coração do Sistema)
+## 📈 Monitoramento & Logs
 
 O módulo de Metrics é a camada central de governança, rastreabilidade e confiança do AutoSAGE.
 
@@ -171,7 +172,7 @@ Não existem falhas silenciosas
 
 Se não foi medido, não aconteceu.
 
-🔎 Explicabilidade
+## 🔎 Explicabilidade
 
 Importância de features
 
@@ -181,7 +182,7 @@ Análise de comportamento do modelo
 
 Identificação de vieses e riscos
 
-📦 Exportação & Registry
+## 📦 Exportação & Registry
 
 Salvamento automático do melhor modelo (/models/)
 
@@ -201,7 +202,7 @@ Versionamento por hash de execução
 
 Registry único compartilhado entre módulos via Docker volumes
 
-📡 API de Inferência
+## 📡 API de Inferência
 
 FastAPI em src/app/main.py
 
@@ -227,7 +228,7 @@ Auditoria completa do pipeline
 
 Trace ID distribuído entre ORC → DCP → EDA → ML
 
-🆕 Arquitetura Modular 2025
+## 🆕 Arquitetura Modular 2025
 
 ORC: orquestra e valida o fluxo
 
@@ -241,15 +242,28 @@ Metrics: monitora, governa e prova
 
 Tudo conectado por registry versionado + trace ID distribuído.
 
-🔬 Metodologia Científica
+# 🔬 Metodologia Científica
 
-(mantida, apenas conceitualmente alinhada)
+## 1️⃣ Ingestão & Padronização
+- Tipagem automática
+- Normalização de colunas
+- Conversão e validação de datas
+- **Pipeline padronizado no módulo DCP**
 
-⚔️ Comparação Estratégica
+## ⚔️ Comparação Estratégica
 
-(tabela mantida como está)
+| Plataforma | Pontos Fortes | Limitações | O que o AutoSAGE faz melhor |
+|------------|---------------|------------|------------------------------|
+| Google AutoML | Treina rápido | Caixa-preta | Transparência + diagnóstico |
+| AWS Autopilot | Escala | Complexidade | Simples, direto e acessível |
+| Azure AutoML | Interface | Dependência Azure | Controle total |
+| DataRobot | Governança | Muito caro | Open-source e leve |
+| H2O DAI | Automação | Complexo para negócios | Foco em decisão |
+| PyCaret | Simples | Assume dado limpo | Auditoria + limpeza |
+| AutoGluon/Sklearn | Performance | Caixa-preta | Relatórios explicáveis |
+| **AutoSAGE** | Decisão orientada a dados | Em evolução | Clareza + ação imediata |
 
-🎯 Mercado-Alvo
+# 🎯 Mercado-Alvo
 
 PMEs
 
@@ -261,7 +275,7 @@ Times de produto e growth
 
 Empresas sem time de dados
 
-💵 Monetização
+# 💵 Monetização
 
 Versão enterprise
 
@@ -271,7 +285,7 @@ Plugins (MLOps, dashboards, APIs)
 
 Hosted SaaS
 
-🧠 Vantagens Estratégicas
+# 🧠 Vantagens Estratégicas
 
 Open-source, auditável e transparente
 
@@ -285,7 +299,7 @@ Pipelines científicos governáveis
 
 Pronto para ambientes enterprise
 
-🌎 Visão
+# 🌎 Visão
 
 Se existe dado, deveria existir clareza.
 E clareza deveria ser automática.
