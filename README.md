@@ -294,6 +294,217 @@ Não é apenas execução de modelo.
 
 ---
 
-# Licença
+Decisão final:
+
+- APPROVED
+- TERMINATED
+
+Se não houver ganho estatístico relevante, o pipeline encerra.
+
+Essa decisão é arquitetural.
+
+---
+
+### 6️⃣ Metrics & Monitor
+
+Cada estágio registra:
+
+- trace_id
+- pipeline_version
+- stage
+- status
+- duration_ms
+- dataset_name
+- erro
+
+Funções:
+
+- Bloqueio de execução duplicada
+- Interrupção automática downstream
+- Auditoria total
+
+Se não foi medido, não aconteceu.
+
+---
+
+### 7️⃣ Registry Versionado
+
+Persistência de todos os artefatos:
+
+- Snapshot do dataset
+- FeatureSchema
+- Transformations
+- TrainConfig
+- Modelo final
+- Métricas
+
+Propriedades:
+
+- Imutabilidade
+- Versionamento incremental
+- Hash de execução
+- Rastreabilidade completa
+
+O Registry funciona como instrumento científico.
+
+---
+
+## 🔹 Parte II — Plataforma LLM Declarativa
+
+A plataforma LLM é baseada em contratos e grafos acíclicos (DAG).
+
+---
+
+### Contracts Layer
+
+Define contratos formais de entrada e saída.
+
+Base científica:
+
+- Teoria de Tipos
+- Design by Contract
+
+---
+
+### AgentRegistry
+
+Catálogo versionado de agentes inteligentes.
+
+Permite:
+
+- Governança
+- Evolução controlada
+- Modularidade
+
+---
+
+### Execution Engine (DAG)
+
+Interpreta grafos declarativos.
+
+Baseado em:
+
+- Teoria dos Grafos
+- Ordenação Topológica
+- Sistemas Distribuídos
+
+A engine não contém lógica de negócio.
+Ela interpreta contratos.
+
+---
+
+### RAG Module
+
+Integra:
+
+- Embeddings vetoriais
+- Similaridade por cosseno
+- Recuperação semântica
+
+Reduz:
+
+- Alucinação
+- Erro probabilístico
+
+---
+
+### Monitoring LLM
+
+Monitora:
+
+- Tokens
+- Latência
+- Custo
+- Performance
+
+Observabilidade é estrutural.
+
+---
+
+# 🧠 Decisões Arquiteturais Críticas
+
+✔ Separação físico vs lógico  
+✔ Contrato formal entre etapas  
+✔ Baseline obrigatório  
+✔ Encerramento por ausência de sinal  
+✔ Registry como instrumento científico  
+✔ Métricas como condição de existência  
+
+Poucas plataformas comerciais formalizam essas decisões.
+
+---
+
+# 🔐 Controle de Risco
+
+A arquitetura mitiga:
+
+- Data leakage
+- Overfitting
+- Alta cardinalidade
+- Instabilidade temporal
+- Execução duplicada
+- Inconsistência estrutural
+
+Adequado para ambientes regulados.
+
+---
+
+# 📦 Containerização
+
+Compatível com:
+
+- Docker
+- Execução distribuída
+- Escalabilidade horizontal
+- Cloud-native environments
+
+---
+
+# 🌎 Filosofia
+
+Se existe dado, deveria existir clareza.
+
+Clareza significa:
+
+- coerência estrutural
+- validade estatística
+- decisão justificável
+- rastreabilidade completa
+
+O AutoSAGE é a arquitetura dessa clareza.
+
+---
+
+# 🛡 Licença
 
 MIT
+
+---
+
+## 👤 Sergio Fonseca  
+**Founder & Architect — AutoSAGE**  
+Arquitetura de IA • Machine Learning Governado • LLM Platforms • Infraestrutura Científica
+
+Especialista em:
+
+- Arquitetura de Inteligência Artificial
+- Machine Learning com Governança Estatística
+- Infraestrutura para LLMs e DAGs Declarativos
+- Engenharia de Dados e Modelagem Reprodutível
+- IA aplicada a ambientes regulados (Fintech, Saúde, Crédito)
+
+---
+
+### 📫 Contato
+
+- 🔗 LinkedIn: https://www.linkedin.com/in/sergiofonsecasilva  
+- 📧 Email: sergiofs.u1tec@gmail.com  
+- 📱 Telefone: +55 11 9 3767-8996  
+- 🧠 Projeto: https://github.com/sergiofsu1bank/AutoSAGE  
+
+---
+
+> “Arquitetura não é sobre treinar modelos.  
+> É sobre garantir que decisões baseadas em dados sejam estatisticamente válidas, rastreáveis e justificáveis.”
+
+---
