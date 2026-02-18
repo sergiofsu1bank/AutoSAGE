@@ -1,368 +1,407 @@
-# 🚀 VISÃO GERAL
+# AutoSAGE
 
+Infraestrutura científica operacional para Inteligência Artificial e Large Language Models (LLMs).
 
-O AutoSAGE automatiza o fluxo completo de decisão orientada a dados:
-
-conecta → ingere → diagnostica → audita → explora → modela → explica → recomenda → expõe em API
-
-Ele foi criado para organizações que precisam clareza, rastreabilidade e confiança, com ou sem um time especializado em ciência de dados.
-
-No AutoSAGE:
-
-nenhuma decisão existe sem diagnóstico,
-nenhum modelo existe sem explicação,
-e nenhum pipeline existe sem métricas.
-
-[👉 Abrir Relatório Técnico do AutoSAGE](https://sergiofsu1bank.github.io/AutoSAGE/ml_pipeline_report.html)
-
-# 💰 Pitch de Investidor
-
-O AutoSAGE existe porque até 80% do tempo em projetos de dados é gasto limpando, diagnosticando, auditando e explicando dados — não treinando modelos.
-
-As plataformas tradicionais falham em entregar, ao mesmo tempo:
-
-transparência
-
-explicabilidade
-
-auditoria
-
-autonomia ponta a ponta
-
-Com a arquitetura modular DCP → EDA → ML → ORC → Metrics, o AutoSAGE evoluiu de AutoML para uma plataforma de automação científica orientada à decisão e governança.
-
-# ✨ Principais Recursos
-## 🔌 Conectividade & Ingestão
-
-Conector nativo para Postgres
-
-Leitura direta de qualquer tabela (schema.table)
-
-Autodetecção de schema e tipos
-
-Carregamento seguro via secrets
-
-Suporte planejado a CSV, DataFrame e SQL
-
-Arquitetura DCP com ingestão totalmente automatizada (v2025)
-
-## 📥 Ingestão Inteligente
-
-Padronização de colunas
-
-Conversão robusta de datas e encodings
-
-Validação inicial de schema
-
-Pipeline orquestrado DCP → EDA
-
-Eliminação de uploads manuais por decisão estratégica
-
-## 🩺 Diagnóstico & Qualidade do Dado
-
-Missing values
-
-Outliers (Z-score, IQR, estatísticas robustas)
-
-Cardinalidade e estrutura
-
-Drift estrutural
-
-Estatísticas descritivas e distribuições
-
-## 🔬 Auto-EDA
-
-Correlações (Pearson, Spearman, Cramér’s V)
-
-Testes de hipótese (t-test, ANOVA, χ²)
-
-Insights pré-modelagem
-
-Identificação de variáveis fracas
-
-Visualizações automáticas
-
-Exportação oficial de artefatos em PARQUET
-
-## 🤖 Seleção Automática de Modelos
-
-Classificação: Logistic, SVM, Random Forest, Gradient Boosting
-
-Regressão: Linear, Ridge, Random Forest, XGBoost
-
-Escolha baseada em:
-
-estabilidade
-
-interpretabilidade
-
-viés–variância
-
-Módulo ML isolado, versionado e reprodutível
-
-## 🏋️ Treinamento
-
-Train/test split estratificado
-
-Normalização e encoding automáticos
-
-Cross-validation
-
-Busca simples de hiperparâmetros
-
-Pipelines reprodutíveis
-
-Execução totalmente autônoma dentro do container ML
-
-## 📊 Métricas & Comparações
-
-Classificação → AUC, F1, Precision, Recall
-
-Regressão → RMSE, MAE, R², MAPE
-
-Comparação obrigatória com baseline
-
-Relatórios HTML gerados automaticamente
-
-## 📈 Monitoramento & Logs
-
-O módulo de Metrics é a camada central de governança, rastreabilidade e confiança do AutoSAGE.
-
-Nada no pipeline existe se não for medido, registrado e auditável.
-
-O que o módulo monitora
-
-Execuções completas do pipeline
-
-Estado real de cada etapa
-
-Falhas, tempos e gargalos
-
-Relação entre dado, modelo e decisão
-
-Métricas registradas (por contrato)
-
-trace_id
-
-pipeline (DCP, EDA, ML, ORC)
-
-stage
-
-status (STARTED | COMPLETED | FAILED)
-
-duration_ms
-
-dataset_name
-
-vendor
-
-pipeline_version
-
-error_code / error_message
-
-Essas informações são persistidas em tabelas próprias de monitoramento.
-
-Metrics como controle de fluxo
-
-Execuções duplicadas são rejeitadas por trace_id
-
-Falhas interrompem automaticamente etapas downstream
-
-Nenhuma execução avança sem estado consistente
-
-Não existem falhas silenciosas
-
-Se não foi medido, não aconteceu.
-
-## 🔎 Explicabilidade
-
-Importância de features
-
-SHAP values
-
-Análise de comportamento do modelo
-
-Identificação de vieses e riscos
-
-## 📦 Exportação & Registry
-
-Salvamento automático do melhor modelo (/models/)
-
-Artefatos exportados:
-
-Modelo
-
-Métricas
-
-Feature importance
-
-Logs
-
-Arquivos PARQUET
-
-Versionamento por hash de execução
-
-Registry único compartilhado entre módulos via Docker volumes
-
-## 📡 API de Inferência
-
-FastAPI em src/app/main.py
-
-Endpoint /predict
-
-Validação automática via Pydantic
-
-Carregamento dinâmico via registry
-
-Retorno com previsão + explicabilidade
-
-Logging estruturado por requisição
-
-📈 Logs & Auditoria
-
-Logs persistidos em /logs/
-
-IDs de execução
-
-Warnings de drift
-
-Auditoria completa do pipeline
-
-Trace ID distribuído entre ORC → DCP → EDA → ML
-
-## 🆕 Arquitetura Modular 2025
-
-ORC: orquestra e valida o fluxo
-
-DCP: coleta e padroniza dados
-
-EDA: diagnostica, audita e prepara artefatos
-
-ML: treina, avalia e explica
-
-Metrics: monitora, governa e prova
-
-Tudo conectado por registry versionado + trace ID distribuído.
-
-# 🔬 Metodologia Científica
-
-## 1️⃣ Ingestão & Padronização
-- Tipagem automática
-- Normalização de colunas
-- Conversão e validação de datas
-- **Pipeline padronizado no módulo DCP**
-
-## 2️⃣ Diagnóstico Estatístico
-- Distribuições e densidades
-- Estatísticas descritivas
-- Cardinalidade
-- **Artefatos agora exportados em PARQUET**
-
-## 3️⃣ Auditoria de Qualidade
-- Missing values
-- Outliers
-- Inconsistências semânticas
-- Drift estrutural
-
-## 4️⃣ Relações & Sinal Estatístico
-- Correlações
-- Testes de hipótese
-- Feature importance preliminar
-
-## 5️⃣ Seleção Inteligente de Modelos
-- Baseado no target e estrutura de variáveis
-
-## 6️⃣ Treinamento Reprodutível
-- Splits estratificados
-- Encodings e escalas automáticas
-- Cross-validation
-- **Execução isolada no módulo ML**
-
-## 7️⃣ Métricas Transparentes
-- Classificação e regressão completas
-
-## 8️⃣ Explicabilidade
-- SHAP
-- Importância
-- Detecção de vieses
-
-## 9️⃣ Recomendação Acionável
-- Caminhos sugeridos
-- Próximos passos
-- Riscos e limitações
-
-## ⚔️ Comparação Estratégica
-
-| Plataforma | Pontos Fortes | Limitações | O que o AutoSAGE faz melhor |
-|------------|---------------|------------|------------------------------|
-| Google AutoML | Treina rápido | Caixa-preta | Transparência + diagnóstico |
-| AWS Autopilot | Escala | Complexidade | Simples, direto e acessível |
-| Azure AutoML | Interface | Dependência Azure | Controle total |
-| DataRobot | Governança | Muito caro | Open-source e leve |
-| H2O DAI | Automação | Complexo para negócios | Foco em decisão |
-| PyCaret | Simples | Assume dado limpo | Auditoria + limpeza |
-| AutoGluon/Sklearn | Performance | Caixa-preta | Relatórios explicáveis |
-| **AutoSAGE** | Decisão orientada a dados | Em evolução | Clareza + ação imediata |
-
-# 🎯 Mercado-Alvo
-
-PMEs
-
-Consultorias
-
-Startups (fintech, healthtech, edtech)
-
-Times de produto e growth
-
-Empresas sem time de dados
-
-# 💵 Monetização
-
-Versão enterprise
-
-Suporte premium
-
-Plugins (MLOps, dashboards, APIs)
-
-Hosted SaaS
-
-# 🧠 Vantagens Estratégicas
-
-Open-source, auditável e transparente
-
-Arquitetura modular e escalável
-
-Métricas como núcleo do sistema
-
-Decisão antes de previsão
-
-Pipelines científicos governáveis
-
-Pronto para ambientes enterprise
-
-# 🌎 Visão
-
-Se existe dado, deveria existir clareza.
-E clareza deveria ser automática.
-
-O AutoSAGE é a camada entre dados, decisões e confiança operacional.
-
-
-# 📊 Documentação
-
-- Arquitetura → `docs/architecture.md`
-- Relatório técnico → `docs/ml_pipeline_report.html`
-- Roadmap → `ROADMAP.md`
-- Contribuição → `CONTRIBUTING.md`
+O AutoSAGE formaliza o método científico como arquitetura computacional, integrando estatística, machine learning, engenharia de dados, teoria dos grafos e governança em um sistema modular, versionado e auditável.
 
 ---
 
-# 🛡️ Licença
-MIT
+# Visão Geral
+
+O AutoSAGE resolve um problema estrutural da IA moderna:
+
+> Projetos de IA falham menos por limitação algorítmica e mais por ausência de formalização arquitetural do método científico.
+
+A plataforma é dividida em duas frentes:
+
+1. IA & ML Pipelines (ORC, DCP, EDA, ML, Monitoramento)
+2. Plataforma LLM Genérica baseada em contratos e execução declarativa (DAG)
 
 ---
 
-# 💡 Contato
-🔗 https://www.linkedin.com/in/sergiofonsecasilva  
-📩 sergiofs.u1tec@gmail.com  
-📞 +55 11 9 3767-8996
+# Parte I — IA & ML nos Pipelines do AutoSAGE
+
+---
+
+## 1. ORC — Orchestrator
+
+### Para que serve
+Coordena epistemologicamente o sistema. Formaliza hipótese analítica (target) e inicia o fluxo experimental.
+
+### O que resolve
+- Modelagem sem variável dependente clara  
+- Ambiguidade de problema (classificação, regressão, segmentação)  
+- Execução analítica desordenada  
+
+### Ganho
+- Reprodutibilidade  
+- Clareza causal  
+- Padronização científica  
+
+### Diferencial
+Valida o problema antes da modelagem. Impede experimentação arbitrária.
+
+### Metodologias científicas
+- Método hipotético-dedutivo  
+- Analytical Hierarchy Process (AHP)  
+- Teoria da Decisão Estatística  
+
+Justificativa: garante coerência entre objetivo, métrica e técnica aplicada.
+
+---
+
+## 2. DCP — Data Collection Pipeline
+
+### Para que serve
+Ingestão estruturada, versionada e auditável de dados.
+
+### O que resolve
+- Mudanças silenciosas de schema  
+- Dados inconsistentes  
+- Ausência de rastreabilidade  
+
+### Ganho
+- Governança  
+- Integridade estatística  
+- Base confiável para inferência  
+
+### Diferencial
+Ingestão orientada a contrato com artefatos versionados.
+
+### Metodologias científicas
+- Teoria de Amostragem Estatística  
+- Engenharia de Dados orientada a contratos  
+- Arquitetura distribuída (Cloud-native)  
+
+Justificativa: validade inferencial depende da qualidade e integridade da amostra.
+
+---
+
+## 3. EDA Explore
+
+### Para que serve
+Exploração estatística multivariada e identificação de estrutura latente.
+
+### O que resolve
+- Colinearidade  
+- Variáveis redundantes  
+- Outliers críticos  
+- Estrutura oculta  
+
+### Ganho
+- Redução de dimensionalidade  
+- Melhor seleção de features  
+- Redução de overfitting  
+
+### Diferencial
+Exploração com métricas formais e geração automática de alertas estatísticos.
+
+### Metodologias científicas
+- Estatística Descritiva e Inferencial  
+- PCA e Análise Fatorial  
+- Clustering (K-means, Hierárquico)  
+- Análise de Correspondência  
+
+Justificativa: compreender a estrutura dos dados antes da modelagem reduz erro estrutural.
+
+---
+
+## 4. EDA Prepare
+
+### Para que serve
+Transformações reprodutíveis e determinísticas.
+
+### O que resolve
+- Data leakage  
+- Divergência treino-produção  
+- Encoding inconsistente  
+
+### Ganho
+- Invariância estatística  
+- Consistência operacional  
+
+### Diferencial
+Transformações versionadas como artefatos auditáveis.
+
+### Metodologias científicas
+- Robust Statistics  
+- Normalização (Z-score, MinMax)  
+- Pipeline determinístico de Data Wrangling  
+
+Justificativa: garantir que a função estatística aplicada no treino seja idêntica à produção.
+
+---
+
+## 5. ML — Modelagem
+
+### Para que serve
+Modelagem supervisionada e não supervisionada com validação formal.
+
+### O que resolve
+- Overfitting  
+- Escolha inadequada de modelo  
+- Métricas incorretas  
+
+### Ganho
+- Generalização robusta  
+- Inferência válida  
+- Performance sustentável  
+
+### Diferencial
+Integra estatística clássica e ML moderno sob governança única.
+
+### Metodologias científicas
+- Regressão Linear e Logística  
+- Modelos de Contagem (Poisson, NegBin)  
+- Modelagem Multinível  
+- Árvores e Ensembles  
+- Deep Learning  
+- Validação Cruzada K-fold  
+
+Justificativa: escolha do modelo baseada na natureza do problema e não em tendência tecnológica.
+
+---
+
+## 6. Metrics & Monitor
+
+### Para que serve
+Monitoramento de performance e estabilidade estatística em produção.
+
+### O que resolve
+- Concept drift  
+- Data drift  
+- Degradação silenciosa  
+
+### Ganho
+- Manutenção de performance  
+- Redução de risco  
+
+### Diferencial
+Monitoramento integrado desde a concepção do pipeline.
+
+### Metodologias científicas
+- PSI (Population Stability Index)  
+- KL Divergence  
+- Teste KS  
+- Analytics e Gestão de Riscos  
+
+Justificativa: estabilidade estatística é condição para confiabilidade operacional.
+
+---
+
+# Parte II — Plataforma AutoSAGE LLM
+
+---
+
+## Arquitetura Conceitual
+
+A Plataforma LLM é genérica e orientada a contratos.
+
+Ela transforma LLMs em componentes composicionais dentro de um grafo declarativo (DAG).
+
+---
+
+## 7. Contracts Layer
+
+### Para que serve
+Define contratos formais de entrada e saída.
+
+### O que resolve
+- Ambiguidade de interface  
+- Acoplamento excessivo  
+
+### Ganho
+- Modularidade  
+- Substituição segura  
+
+### Diferencial
+Inteligência formalizada como tipo estrutural.
+
+### Metodologias científicas
+- Teoria de Tipos  
+- Design by Contract  
+
+Justificativa: reduzir falhas sistêmicas por ambiguidade estrutural.
+
+---
+
+## 8. AgentRegistry
+
+### Para que serve
+Catálogo versionado de agentes.
+
+### O que resolve
+- Falta de controle evolutivo  
+- Duplicação de lógica  
+
+### Ganho
+- Governança  
+- Rastreamento histórico  
+
+### Diferencial
+Composição industrial de agentes como microserviços de inteligência.
+
+### Metodologias
+- Arquitetura de Microserviços  
+- Versionamento Semântico  
+- Governança de Configuração  
+
+---
+
+## 9. Execution Engine
+
+### Para que serve
+Interpreta e executa DAGs declarativos.
+
+### O que resolve
+- Execução procedural rígida  
+- Dependências implícitas  
+
+### Ganho
+- Determinismo  
+- Paralelização natural  
+- Escalabilidade  
+
+### Diferencial
+Engine interpreta grafos, não contém lógica de negócio.
+
+### Metodologias científicas
+- Teoria dos Grafos (DAG)  
+- Ordenação Topológica  
+- Sistemas Distribuídos  
+
+Justificativa: execução acíclica garante previsibilidade computacional.
+
+---
+
+## 10. OpenAI Integration Layer
+
+### Para que serve
+Abstrai provedores de LLM.
+
+### O que resolve
+- Dependência rígida de API  
+- Dificuldade de troca de modelo  
+
+### Ganho
+- Flexibilidade  
+- Controle de custo  
+
+### Diferencial
+LLM é plugin arquitetural.
+
+### Metodologias
+- Padrão Adapter  
+- Abstração de Interface  
+
+---
+
+## 11. RAG Module
+
+### Para que serve
+Integra recuperação vetorial com geração de linguagem.
+
+### O que resolve
+- Alucinação  
+- Falta de grounding factual  
+
+### Ganho
+- Precisão contextual  
+- Redução de risco reputacional  
+
+### Diferencial
+RAG nativo na arquitetura.
+
+### Metodologias científicas
+- Embeddings Vetoriais  
+- Similaridade por Cosseno  
+- Recuperação Semântica  
+
+Justificativa: grounding reduz erro probabilístico da geração.
+
+---
+
+## 12. Pipelines Declarativos (DAG)
+
+### Para que serve
+Composição formal de múltiplos agentes.
+
+### O que resolve
+- Fluxos rígidos  
+- Baixa reutilização  
+
+### Ganho
+- Modularidade extrema  
+- Escalabilidade composicional  
+
+### Diferencial
+Inteligência tratada como grafo computacional.
+
+### Metodologias
+- Programação Declarativa  
+- Modelagem Computacional em Grafos  
+- Composição Funcional  
+
+---
+
+## 13. Execution Artifacts Store
+
+### Para que serve
+Armazena outputs intermediários e metadados.
+
+### O que resolve
+- Falta de auditoria  
+- Impossibilidade de reprodução  
+
+### Ganho
+- Compliance  
+- Transparência  
+- Governança  
+
+### Diferencial
+Cada execução torna-se evidência auditável.
+
+### Metodologias
+- Event Sourcing  
+- Versionamento de Artefatos  
+- Governança de Dados  
+
+---
+
+## 14. Monitoring & Metrics (LLM)
+
+### Para que serve
+Monitora tokens, latência, custo e qualidade.
+
+### O que resolve
+- Custos imprevisíveis  
+- Performance instável  
+
+### Ganho
+- Sustentabilidade econômica  
+- Controle operacional  
+
+### Diferencial
+Observabilidade embutida na arquitetura.
+
+### Metodologias
+- Observabilidade (SRE)  
+- Análise Estatística de Performance  
+- Controle de Custos Computacionais  
+
+---
+
+# Síntese Final
+
+O AutoSAGE integra:
+
+- Estatística clássica  
+- Machine Learning moderno  
+- Engenharia de dados  
+- Teoria dos grafos  
+- NLP e LLMs  
+- Governança e risco  
+
+Não é apenas execução de modelo.
+
+É a formalização arquitetural do método científico aplicada à Inteligência Artificial.
