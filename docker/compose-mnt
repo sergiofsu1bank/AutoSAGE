@@ -1,0 +1,28 @@
+  autosage-mnt:
+    build:
+      context: ./dev/mnt_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-mnt
+    restart: unless-stopped
+
+    environment:
+      MNT_DATABASE_HOST: ${POSTGRES_HOST}
+      MNT_DATABASE_PORT: ${POSTGRES_PORT}
+      MNT_DATABASE_NAME: ${POSTGRES_DB}
+      MNT_DATABASE_USER: ${POSTGRES_USER}
+      MNT_DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      MNT_REGISTRY_BASE: /app/registry/mnt
+
+      MNT_ORC_URL: http://autosage-orc:8000
+      MNT_METRICS_URL: http://autosage-mtrcs:8001
+      MNT_DCP_URL: http://autosage-dcp:8002
+      MNT_EDA_EXPLORE_URL: http://autosage-edaexp:8003
+      MNT_EDA_PREPARE_URL: http://autosage-edapre:8004
+      MNT_ML_URL: http://autosage-ml:8005
+      MNT_LLM_URL: http://autosage-llm:8006
+      MNT_MONITOR_URL: http://autosage-monitor:9000
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/mnt_pipeline/src:/app/src
+    ports:
+      - "9000:9000"

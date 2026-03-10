@@ -1,0 +1,208 @@
+CHECKPOINT – Continuação do desenvolvimento do Monitor AutoSAGE
+
+Hoje implementamos a primeira versão funcional do AutoSAGE Monitor UI integrado ao backend.
+
+Arquitetura atual
+
+Frontend:
+
+React + Vite
+src/web
+
+Backend:
+
+FastAPI
+mnt_pipeline
+
+Comunicação via:
+
+trace-id header
+Endpoints utilizados
+GET /datasets
+GET /datasets/{dataset}/latest
+GET /datasets/{dataset}/pipeline
+GET /datasets/{dataset}/runs
+Página 1 – Dataset Registry
+
+Tela:
+
+/datasets
+
+Mostra:
+
+Dataset
+Model
+Metric
+Pipeline
+Last Run
+
+Fonte de dados:
+
+DatasetRunRepository.list_datasets()
+
+Essa tela já funciona corretamente.
+
+Página 2 – Dataset Detail
+
+Tela:
+
+/datasets/{dataset}
+
+Mostra três blocos:
+
+1️⃣ Latest Run
+
+Dados de:
+
+GET /datasets/{dataset}/latest
+
+Campos exibidos:
+
+model_name
+metric_name
+metric_value
+duration_ms
+2️⃣ Pipeline Execution
+
+Dados de:
+
+GET /datasets/{dataset}/pipeline
+
+Mostra:
+
+pipeline_version
+total_duration_ms
+stages
+
+Stages:
+
+DCP
+EDA Explore
+EDA Prepare
+ML
+
+Cada stage mostra:
+
+status
+duration
+3️⃣ Run History
+
+Dados de:
+
+GET /datasets/{dataset}/runs
+
+Mostra histórico:
+
+pipeline_version
+model_name
+metric_name
+metric_value
+duration_ms
+
+Tabela:
+
+Pipeline | Model | Metric | Duration
+Monitor já implementado
+
+Hoje o monitor já tem:
+
+Datasets
+   ↓
+Dataset Detail
+   ↓
+Latest Run
+Pipeline Stages
+Run History
+
+Isso já é uma observabilidade básica de pipelines ML.
+
+Próxima melhoria planejada
+
+Adicionar gráfico de evolução da métrica do modelo.
+
+Biblioteca:
+
+chart.js
+react-chartjs-2
+
+Objetivo:
+
+Mostrar evolução:
+
+Metric Evolution
+
+0.86 ┤
+0.84 ┤        ●
+0.82 ┤   ●
+0.80 ┤ ●
+     └────────────
+       18 19 20
+
+Fonte de dados:
+
+/datasets/{dataset}/runs
+
+Campo:
+
+metric_value
+Melhorias futuras planejadas
+
+1️⃣ Dashboard de saúde dos modelos
+
+🟢 healthy
+🟡 degrading
+🔴 critical
+
+na tela:
+
+/datasets
+
+2️⃣ Gráfico de duração do pipeline
+
+Pipeline Duration History
+
+3️⃣ Página de observabilidade completa
+
+Dataset
+   ↓
+Pipeline Runs
+   ↓
+Metrics evolution
+   ↓
+Pipeline duration evolution
+Estado atual do projeto
+
+Sistema está funcionando:
+
+React UI
+   ↓
+FastAPI Monitor
+   ↓
+Postgres
+
+Integrações funcionando:
+
+datasets
+latest run
+pipeline execution
+run history
+Ponto exato para retomada amanhã
+
+Implementar o gráfico:
+
+Metric Evolution
+
+usando:
+
+Chart.js
+
+na página:
+
+DatasetPage.tsx
+
+usando dados de:
+
+runs.metric_value
+runs.pipeline_version
+
+Quando você colar isso amanhã, retomamos direto da implementação do gráfico.

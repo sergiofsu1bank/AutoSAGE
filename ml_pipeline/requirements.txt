@@ -1,0 +1,28 @@
+# ==================================================
+# AutoSAGE ML — Unified Requirements
+# Válido para dev / test / batch / API / prod
+# ==================================================
+
+# --- API / Runtime ---
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+httpx>=0.25.0
+
+# --- Core Data / ML ---
+numpy>=1.26.0
+pandas>=2.2.0
+scikit-learn>=1.5.0
+joblib>=1.4.0
+
+# --- Data Formats / IO ---
+pyarrow>=17.0.0
+fastparquet>=2024.5.0
+
+# --- Observabilidade / Infra ---
+python-dotenv>=1.0.0
+loguru>=0.7.2
+mlflow>=2.14.0
+
+# --- Statistical Modeling ---
+statsmodels>=0.14.0
+xgboost>=2.0.0

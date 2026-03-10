@@ -1,0 +1,796 @@
+SELECT
+    column_name,
+    data_type,
+    is_nullable,
+    column_default
+FROM information_schema.columns
+WHERE table_name = 'ml_experiment_result'
+ORDER BY ordinal_position;
+
+tabelas:
+pipeline_metrics
+dcp_monitor_event
+eda_explore_snapshot
+eda_prepare_snapshots
+ml_experiment_result
+
+
+tabela: pipeline_metrics
+"column_name","data_type","is_nullable","column_default"
+"id","integer","NO","nextval('pipeline_metrics_id_seq'::regclass)"
+"trace_id","text","NO",""
+"pipeline","text","NO",""
+"pipeline_version","integer","NO",""
+"stage","text","NO",""
+"status","text","NO",""
+"started_at","timestamp with time zone","YES",""
+"finished_at","timestamp with time zone","YES",""
+"duration_ms","integer","YES",""
+"vendor","text","YES",""
+"dataset_name","text","YES",""
+"error_code","text","YES",""
+"error_message","text","YES",""
+"created_at","timestamp with time zone","YES","now()"
+
+
+tabela: dcp_monitor_event
+"column_name","data_type","is_nullable","column_default"
+"id","bigint","NO","nextval('dcp_monitor_event_id_seq'::regclass)"
+"trace_id","character varying","NO",""
+"dataset_name","character varying","NO",""
+"vendor","character varying","NO",""
+"rows_count","bigint","NO",""
+"columns_count","integer","NO",""
+"memory_mb","numeric","YES",""
+"schema_hash","character varying","NO",""
+"artifact_path","text","NO",""
+"artifact_size_mb","numeric","YES",""
+"columns_metadata","jsonb","NO",""
+"null_analysis","jsonb","YES",""
+"created_at","timestamp without time zone","NO","now()"
+"pipeline_version","integer","YES",""
+"dataset_hash","character varying","YES",""
+
+
+tabela: eda_explore_snapshot
+"column_name","data_type","is_nullable","column_default"
+"id","uuid","NO","gen_random_uuid()"
+"trace_id","character varying","NO",""
+"pipeline","character varying","NO",""
+"pipeline_version","integer","NO",""
+"vendor","character varying","YES",""
+"dataset_name","character varying","NO",""
+"rows_count","integer","NO",""
+"columns_count","integer","NO",""
+"target_name","character varying","YES",""
+"majority_class_ratio","double precision","YES",""
+"baseline_accuracy","double precision","YES",""
+"baseline_auc","double precision","YES",""
+"max_separability","double precision","YES",""
+"numeric_columns","integer","YES",""
+"categorical_columns","integer","YES",""
+"identifier_columns","integer","YES",""
+"schema_json","jsonb","NO",""
+"statistics_json","jsonb","NO",""
+"target_distribution_json","jsonb","YES",""
+"separability_json","jsonb","YES",""
+"warnings_json","jsonb","YES",""
+"report_path","text","YES",""
+"created_at","timestamp without time zone","NO","now()"
+
+tabela: eda_prepare_snapshots
+"column_name","data_type","is_nullable","column_default"
+"id","bigint","NO","nextval('eda_prepare_snapshots_id_seq'::regclass)"
+"trace_id","text","NO",""
+"pipeline","text","NO",""
+"pipeline_version","integer","NO",""
+"vendor","text","NO",""
+"dataset_name","text","NO",""
+"target_name","text","NO",""
+"created_at","timestamp without time zone","NO",""
+"rows_count","integer","NO",""
+"columns_count","integer","NO",""
+"numeric_columns","integer","NO",""
+"categorical_columns","integer","NO",""
+"identifier_columns","integer","NO",""
+"problem_type","text","NO",""
+"metric","text","NO",""
+"split_strategy","text","NO",""
+"n_features","integer","NO",""
+"dropped_features_count","integer","NO",""
+"forced_drops_count","integer","NO",""
+"schema_json","jsonb","NO",""
+"statistics_json","jsonb","NO",""
+"feature_schema_json","jsonb","NO",""
+"physical_schema_json","jsonb","NO",""
+"transformations_json","jsonb","NO",""
+"train_config_json","jsonb","NO",""
+"warnings_json","jsonb","YES",""
+"problem_details_json","jsonb","NO","'{}'::jsonb"
+"registry_path","text","NO",""
+"report_path","text","YES",""
+
+tabela: ml_experiment_result
+"column_name","data_type","is_nullable","column_default"
+"trace_id","text","NO",""
+"pipeline","text","NO",""
+"pipeline_version","integer","NO",""
+"vendor","text","NO",""
+"dataset_name","text","NO",""
+"experiment_id","text","NO",""
+"problem_type","text","NO",""
+"strategy_name","text","NO",""
+"metric_name","text","NO",""
+"metric_value","double precision","NO",""
+"decision","text","NO",""
+"reason","text","NO",""
+"model_name","text","YES",""
+"training_report","jsonb","YES",""
+"created_at","timestamp without time zone","NO","now()"
+
+
+
+root@921454beb0b7:/app/registry/edapre/processed/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0017# cat feature_schema.json
+[
+  {
+    "name": "age",
+    "type": "numeric",
+    "scaler": "minmax",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "gender",
+    "type": "categorical",
+    "encoding": "onehot",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "tenure_months",
+    "type": "numeric",
+    "scaler": "minmax",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "contract_type",
+    "type": "categorical",
+    "encoding": "onehot",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "payment_method",
+    "type": "categorical",
+    "encoding": "onehot",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "internet_service",
+    "type": "categorical",
+    "encoding": "onehot",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "support_calls_last_6m",
+    "type": "numeric",
+    "scaler": "standard",
+    "missing_policy": "none",
+    "outlier_policy": "clip"
+  },
+  {
+    "name": "late_payments_last_12m",
+    "type": "numeric",
+    "scaler": "standard",
+    "missing_policy": "none",
+    "outlier_policy": "clip"
+  },
+  {
+    "name": "avg_data_usage_gb",
+    "type": "numeric",
+    "scaler": "standard",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  },
+  {
+    "name": "region",
+    "type": "categorical",
+    "encoding": "onehot",
+    "missing_policy": "none",
+    "outlier_policy": "none"
+  }
+
+root@921454beb0b7:/app/registry/edapre/processed/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0017# cat manifest.json
+{
+  "trace_id": "autosage-0a22b3e16b6a",
+  "dataset": "telecom_customer_behavior_balanced",
+  "version": "telecom_customer_behavior_balanced_v0017",
+  "target": "churn",
+  "created_at": "2026-03-04T22:01:39.884003",
+  "artifacts": [
+    "feature_schema.json",
+    "physical_schema.json",
+    "train_config.json",
+    "transformations.json"
+  ]
+
+
+  root@921454beb0b7:/app/registry/edapre/processed/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0017# cat physical_schema.json
+{
+  "age": {
+    "physical_dtype": "int64"
+  },
+  "gender": {
+    "physical_dtype": "object"
+  },
+  "tenure_months": {
+    "physical_dtype": "int64"
+  },
+  "contract_type": {
+    "physical_dtype": "object"
+  },
+  "payment_method": {
+    "physical_dtype": "object"
+  },
+  "internet_service": {
+    "physical_dtype": "object"
+  },
+  "support_calls_last_6m": {
+    "physical_dtype": "int64"
+  },
+  "late_payments_last_12m": {
+    "physical_dtype": "int64"
+  },
+  "avg_data_usage_gb": {
+    "physical_dtype": "float64"
+  },
+  "region": {
+    "physical_dtype": "object"
+  },
+  "churn": {
+    "physical_dtype": "int64"
+  }
+
+
+ root@921454beb0b7:/app/registry/edapre/processed/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0017# cat train_config.json
+{
+  "problem_type": "classification",
+  "metric": "roc_auc",
+
+
+root@921454beb0b7:/app/registry/edapre/processed/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0017# cat transformations.json
+[
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "customer_id",
+    "decision": "forced_drop",
+    "value": "warning_block",
+    "reason": "HIGH_CARDINALITY",
+    "metrics": {
+      "count": 100000,
+      "unique": 100000,
+      "top": null,
+      "freq": null,
+      "mean": 50000.5,
+      "std": 28867.65779668774,
+      "min": 1.0,
+      "max": 100000.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838571"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "age",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 62,
+      "top": null,
+      "freq": null,
+      "mean": 48.52599,
+      "std": 17.886767843423776,
+      "min": 18.0,
+      "max": 79.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838685"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "gender",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": "Male",
+      "freq": 50132,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.838699"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "tenure_months",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 71,
+      "top": null,
+      "freq": null,
+      "mean": 36.00714,
+      "std": 20.48695209572331,
+      "min": 1.0,
+      "max": 71.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838711"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "monthly_charges",
+    "decision": "forced_drop",
+    "value": "warning_block",
+    "reason": "LEAKAGE_PROXY",
+    "metrics": {
+      "count": 100000,
+      "unique": 12997,
+      "top": null,
+      "freq": null,
+      "mean": 85.09497959999999,
+      "std": 37.57415261438415,
+      "min": 20.0,
+      "max": 150.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838722"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "total_charges",
+    "decision": "forced_drop",
+    "value": "warning_block",
+    "reason": "LEAKAGE_PROXY",
+    "metrics": {
+      "count": 100000,
+      "unique": 95057,
+      "top": null,
+      "freq": null,
+      "mean": 5041.4979115,
+      "std": 2856.9133972202917,
+      "min": 100.02,
+      "max": 9999.95
+    },
+    "timestamp": "2026-03-04T22:01:39.838732"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "contract_type",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 3,
+      "top": "Month-to-month",
+      "freq": 59895,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.838751"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "payment_method",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 4,
+      "top": "Mailed check",
+      "freq": 25188,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.838766"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "internet_service",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 3,
+      "top": "DSL",
+      "freq": 33392,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.838781"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "support_calls_last_6m",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 11,
+      "top": null,
+      "freq": null,
+      "mean": 2.00739,
+      "std": 1.4162187135659683,
+      "min": 0.0,
+      "max": 10.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838800"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "late_payments_last_12m",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 8,
+      "top": null,
+      "freq": null,
+      "mean": 0.99959,
+      "std": 1.0035735665605363,
+      "min": 0.0,
+      "max": 7.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838820"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "streaming_tv",
+    "decision": "feature_selection",
+    "value": "drop",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": null,
+      "freq": null,
+      "mean": 0.50083,
+      "std": 0.500001811114831,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838835"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "streaming_movies",
+    "decision": "feature_selection",
+    "value": "drop",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": null,
+      "freq": null,
+      "mean": 0.49889,
+      "std": 0.5000012679110716,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838847"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "online_security",
+    "decision": "feature_selection",
+    "value": "drop",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": null,
+      "freq": null,
+      "mean": 0.49803,
+      "std": 0.49999861908428395,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838858"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "online_backup",
+    "decision": "feature_selection",
+    "value": "drop",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": null,
+      "freq": null,
+      "mean": 0.50004,
+      "std": 0.5000024984187421,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838872"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "device_protection",
+    "decision": "feature_selection",
+    "value": "drop",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": null,
+      "freq": null,
+      "mean": 0.50096,
+      "std": 0.5000015784132927,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838884"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "paperless_billing",
+    "decision": "forced_drop",
+    "value": "warning_block",
+    "reason": "LEAKAGE_PROXY",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": null,
+      "freq": null,
+      "mean": 0.50037,
+      "std": 0.5000023631180469,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838897"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "avg_data_usage_gb",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 42873,
+      "top": null,
+      "freq": null,
+      "mean": 251.80324200000004,
+      "std": 142.8116612758825,
+      "min": 5.01,
+      "max": 500.0
+    },
+    "timestamp": "2026-03-04T22:01:39.838909"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "region",
+    "decision": "feature_selection",
+    "value": "keep",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 4,
+      "top": "South",
+      "freq": 25080,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.838931"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "age",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 62,
+      "top": null,
+      "freq": null,
+      "mean": 48.52599,
+      "std": 17.886767843423776,
+      "min": 18.0,
+      "max": 79.0
+    },
+    "timestamp": "2026-03-04T22:01:39.843096"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "gender",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 2,
+      "top": "Male",
+      "freq": 50132,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.843132"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "tenure_months",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 71,
+      "top": null,
+      "freq": null,
+      "mean": 36.00714,
+      "std": 20.48695209572331,
+      "min": 1.0,
+      "max": 71.0
+    },
+    "timestamp": "2026-03-04T22:01:39.843158"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "contract_type",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 3,
+      "top": "Month-to-month",
+      "freq": 59895,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.843174"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "payment_method",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 4,
+      "top": "Mailed check",
+      "freq": 25188,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.843182"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "internet_service",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 3,
+      "top": "DSL",
+      "freq": 33392,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.843192"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "support_calls_last_6m",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 11,
+      "top": null,
+      "freq": null,
+      "mean": 2.00739,
+      "std": 1.4162187135659683,
+      "min": 0.0,
+      "max": 10.0
+    },
+    "timestamp": "2026-03-04T22:01:39.843206"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "late_payments_last_12m",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 8,
+      "top": null,
+      "freq": null,
+      "mean": 0.99959,
+      "std": 1.0035735665605363,
+      "min": 0.0,
+      "max": 7.0
+    },
+    "timestamp": "2026-03-04T22:01:39.843218"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "avg_data_usage_gb",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 42873,
+      "top": null,
+      "freq": null,
+      "mean": 251.80324200000004,
+      "std": 142.8116612758825,
+      "min": 5.01,
+      "max": 500.0
+    },
+    "timestamp": "2026-03-04T22:01:39.843230"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "region",
+    "decision": "leakage_policy",
+    "value": "ok",
+    "reason": "heuristics",
+    "metrics": {
+      "count": 100000,
+      "unique": 4,
+      "top": "South",
+      "freq": 25080,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "timestamp": "2026-03-04T22:01:39.843239"
+  },
+  {
+    "trace_id": "autosage-0a22b3e16b6a",
+    "column": "__dataset__",
+    "decision": "split_strategy",
+    "value": "random",
+    "reason": "temporal detection",
+    "metrics": {},
+    "timestamp": "2026-03-04T22:01:39.844427"
+  }

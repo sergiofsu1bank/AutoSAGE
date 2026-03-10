@@ -1,0 +1,440 @@
+AutoSAGE Monitor — Documento Base de Desenvolvimento
+1. Objetivo
+
+Este documento define o escopo inicial e congelado do AutoSAGE Monitor.
+Seu objetivo é orientar o desenvolvimento sem expansão de escopo, utilizando exclusivamente os dados já persistidos pelo sistema.
+
+O monitor deve responder de forma clara:
+
+Como um modelo foi produzido a partir de um dataset dentro do AutoSAGE.
+
+O sistema deve permitir visualizar:
+
+dataset
+↓
+análise exploratória
+↓
+decisões de feature engineering
+↓
+transformações
+↓
+treinamento
+↓
+modelo final
+
+Nenhuma nova coleta de métricas será criada neste momento.
+O monitor será apenas uma camada de leitura e interpretação.
+
+2. Princípios de Arquitetura
+2.1 Orientação por Dataset
+
+A navegação do monitor será dataset-centric.
+
+O usuário inicia a navegação conhecendo:
+
+dataset_name
+
+Fluxo principal de navegação:
+
+Dataset
+↓
+Pipeline Runs
+↓
+Run Details
+2.2 Execução como Unidade Científica
+
+Cada execução do pipeline representa um experimento científico completo.
+
+Identificador principal:
+
+trace_id
+
+Um trace_id conecta todos os registros do pipeline.
+
+2.3 O Monitor Não Modifica Dados
+
+O monitor:
+
+não escreve dados
+
+não altera pipeline
+
+não cria novas tabelas
+
+Ele apenas consulta dados existentes.
+
+3. Fontes de Dados
+
+O monitor utiliza exclusivamente as seguintes tabelas.
+
+3.1 pipeline_metrics
+
+Responsável por registrar estado e execução da pipeline.
+
+Principais campos:
+
+trace_id
+pipeline
+pipeline_version
+stage
+status
+started_at
+finished_at
+duration_ms
+error_code
+error_message
+dataset_name
+
+Usado para:
+
+timeline da pipeline
+
+status de execução
+
+diagnóstico de falhas
+
+3.2 dcp_monitor_event
+
+Responsável por registrar snapshot do dataset ingerido.
+
+Principais campos:
+
+dataset_name
+dataset_hash
+schema_hash
+rows_count
+columns_count
+memory_mb
+artifact_path
+columns_metadata
+null_analysis
+
+Usado para:
+
+versão do dataset
+
+tamanho do dataset
+
+estrutura de dados
+
+perfil de nulls
+
+3.3 eda_explore_snapshot
+
+Responsável por registrar análise exploratória do dataset.
+
+Principais campos:
+
+baseline_accuracy
+baseline_auc
+max_separability
+majority_class_ratio
+numeric_columns
+categorical_columns
+identifier_columns
+statistics_json
+warnings_json
+target_distribution_json
+
+Usado para:
+
+avaliar qualidade do dataset
+
+detectar desbalanceamento
+
+avaliar separabilidade
+
+3.4 eda_prepare_snapshots
+
+Responsável por registrar preparação de dados e feature engineering.
+
+Principais campos:
+
+problem_type
+metric
+split_strategy
+n_features
+dropped_features_count
+forced_drops_count
+feature_schema_json
+transformations_json
+train_config_json
+warnings_json
+registry_path
+
+Usado para:
+
+entender transformações aplicadas
+
+decisões sobre colunas
+
+configuração de treinamento
+
+3.5 ml_experiment_result
+
+Responsável por registrar resultado final do treinamento.
+
+Principais campos:
+
+experiment_id
+problem_type
+strategy_name
+metric_name
+metric_value
+model_name
+decision
+reason
+training_report
+
+Usado para:
+
+identificar modelo treinado
+
+identificar métrica utilizada
+
+registrar decisão final
+
+4. Artefatos do Registry
+
+Além das tabelas, o monitor pode consultar artefatos gerados pelo pipeline.
+
+Localização:
+
+registry/edapre/processed/<dataset>/<version>/
+
+Arquivos principais:
+
+feature_schema.json
+
+Define como as features foram transformadas.
+
+Campos típicos:
+
+name
+type
+encoding
+scaler
+missing_policy
+outlier_policy
+physical_schema.json
+
+Define o tipo físico das colunas.
+
+Exemplo:
+
+age → int64
+gender → object
+transformations.json
+
+Registra decisões tomadas sobre colunas.
+
+Exemplo:
+
+customer_id → forced_drop → HIGH_CARDINALITY
+monthly_charges → forced_drop → LEAKAGE_PROXY
+train_config.json
+
+Define configuração de treinamento.
+
+Campos principais:
+
+problem_type
+metric
+5. Perguntas que o Monitor Deve Responder
+
+O monitor deve responder as seguintes perguntas.
+
+Categoria	Pergunta
+Dataset	O AutoSAGE já executou para este dataset?
+Dataset	Quando ocorreu a última execução?
+Dataset	O dataset mudou entre execuções?
+Dataset	Qual o tamanho do dataset?
+Dataset	Qual a distribuição de valores nulos?
+Dataset Intelligence	O dataset possui sinal para aprendizado?
+Dataset Intelligence	O dataset está desbalanceado?
+Pipeline	A pipeline executou com sucesso?
+Pipeline	Qual etapa falhou?
+Pipeline	Quanto tempo cada etapa levou?
+Feature Engineering	Quantas features foram usadas no modelo?
+Feature Engineering	Quantas features foram descartadas?
+Feature Engineering	Por que uma coluna foi removida?
+Feature Engineering	Como as features foram transformadas?
+Modelo	Qual modelo foi treinado?
+Modelo	Qual métrica foi usada?
+Modelo	Qual foi o score final?
+Modelo	Por que esse modelo foi escolhido?
+6. Telas do Monitor
+
+O monitor terá as seguintes telas.
+
+6.1 Lista de Datasets
+
+Mostra todos os datasets processados.
+
+Campos exibidos:
+
+dataset_name
+runs
+last_run
+
+Fonte:
+
+dcp_monitor_event
+6.2 Dataset Overview
+
+Mostra resumo do dataset.
+
+Campos exibidos:
+
+rows_count
+columns_count
+memory_mb
+schema_hash
+dataset_hash
+
+Fonte:
+
+dcp_monitor_event
+6.3 Pipeline Runs
+
+Lista execuções do pipeline para o dataset.
+
+Campos exibidos:
+
+trace_id
+pipeline_version
+status
+duration
+created_at
+
+Fonte:
+
+pipeline_metrics
+6.4 Pipeline Timeline
+
+Mostra execução da pipeline por etapa.
+
+Campos exibidos:
+
+stage
+status
+duration_ms
+started_at
+finished_at
+
+Fonte:
+
+pipeline_metrics
+6.5 Dataset Intelligence
+
+Mostra análise exploratória.
+
+Campos exibidos:
+
+baseline_accuracy
+baseline_auc
+max_separability
+majority_class_ratio
+numeric_columns
+categorical_columns
+
+Fonte:
+
+eda_explore_snapshot
+6.6 Feature Engineering
+
+Mostra preparação do dataset.
+
+Campos exibidos:
+
+n_features
+dropped_features_count
+forced_drops_count
+problem_type
+metric
+split_strategy
+
+Fonte:
+
+eda_prepare_snapshots
+6.7 Feature Decisions
+
+Mostra decisões tomadas sobre colunas.
+
+Fonte:
+
+transformations_json
+6.8 Feature Schema
+
+Mostra contrato das features usadas no modelo.
+
+Fonte:
+
+feature_schema.json
+6.9 Model Result
+
+Mostra resultado final do treinamento.
+
+Campos exibidos:
+
+model_name
+metric_name
+metric_value
+strategy_name
+decision
+reason
+
+Fonte:
+
+ml_experiment_result
+7. Relação entre Tabelas
+
+Todos os dados são conectados através de:
+
+trace_id
+
+Fluxo científico reconstruído pelo monitor:
+
+dcp_monitor_event
+↓
+eda_explore_snapshot
+↓
+eda_prepare_snapshots
+↓
+ml_experiment_result
+
+Estado da execução:
+
+pipeline_metrics
+8. Pergunta Central do Monitor
+
+O AutoSAGE Monitor existe para responder:
+
+Como este modelo foi criado a partir deste dataset?
+
+O monitor expõe claramente o fluxo científico:
+
+dataset
+↓
+análise exploratória
+↓
+decisões sobre colunas
+↓
+feature engineering
+↓
+treinamento
+↓
+modelo final
+9. Escopo Congelado
+
+Durante o desenvolvimento inicial do monitor:
+
+Não será permitido:
+
+criar novas métricas
+
+alterar pipeline
+
+alterar estrutura das tabelas
+
+expandir escopo do monitor

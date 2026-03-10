@@ -1,0 +1,293 @@
+📘 AutoSAGE — Guia Didático com Exemplos Comentados
+🧠 1. O que é o AutoSAGE?
+
+Imagine que você pode criar uma equipe de especialistas virtuais.
+
+Por exemplo:
+
+👤 Um analista de marketing
+👤 Um crítico estratégico
+👤 Um revisor final
+
+Você conecta esses especialistas em sequência.
+
+Eles analisam um texto e entregam uma resposta estruturada.
+Isso é o AutoSAGE.
+🏗 Como funciona a estrutura?
+Você cria:
+Um agente (um especialista virtual)
+(Opcional) Uma base de conhecimento
+Um pipeline (ordem de execução)
+
+Executa
+🔹 PASSO 1 — Criar um Agente
+O que é um agente?
+
+Um agente é um especialista com:
+Nome
+Papel (o que ele faz)
+Modelo de IA
+Configuração de criatividade
+Uso ou não de base própria
+
+📡 API que você usa:
+POST /agents
+
+📤 O que você envia:
+{
+  "name": "analista_marketing",
+  "role": "Você analisa campanhas de marketing e identifica proposta de valor, público-alvo e clareza da mensagem.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.2,
+  "max_tokens": 600,
+  "use_rag": true
+}
+
+📝 Explicação linha por linha:
+"name": "analista_marketing"
+
+
+👉 Nome interno do especialista.
+"role": "Você analisa campanhas..."
+
+
+👉 Instrução que define o comportamento do agente.
+"model": "gpt-4o-mini"
+
+
+👉 Modelo de IA utilizado.
+"temperature": 0.2
+
+
+👉 Nível de criatividade.
+0.0 = técnico e objetivo
+1.0 = criativo
+"max_tokens": 600
+
+👉 Tamanho máximo da resposta.
+"use_rag": true
+
+
+👉 Se for verdadeiro, o agente só responde usando a base de conhecimento enviada.
+📥 Resposta que você recebe:
+{
+  "agent_id": "uuid-gerado",
+  "status": "created"
+}
+
+
+Guarde o agent_id.
+Ele será usado nos próximos passos.
+
+{
+  "agent_id": "98562f0a-1b39-480b-a0b0-05fbd5192501",
+  "status": "created"
+}
+
+
+
+🔹 PASSO 2 — Enviar Base de Conhecimento (RAG)
+
+Se você quiser que o agente responda apenas com base em documentos internos.
+
+📡 API:
+POST /knowledge
+
+📤 Enviar:
+{
+  "agent_id": "98562f0a-1b39-480b-a0b0-05fbd5192501",
+  "documents": [
+    "Documento 1: Nossa empresa vende soluções de IA para automação de marketing.",
+    "Documento 2: análise de público-alvo e proposta de valor."
+  ]
+}
+
+{
+  "knowledge_id": "kb-773ca91925dc4b2daf58ef95678d07eb",
+  "status": "indexed"
+}
+
+
+📝 Explicação:
+"agent_id"
+
+
+👉 Qual especialista vai receber esse conhecimento.
+
+"content"
+
+
+👉 Texto que será indexado.
+"source"
+
+
+👉 Nome do documento (apenas para organização).
+🔒 Com RAG ativado:
+
+O agente:
+Não inventa informação
+Não usa conhecimento externo
+Só responde com base no que você enviou
+
+🔹 PASSO 3 — Criar um Pipeline
+Um pipeline é a sequência dos especialistas.
+
+📡 API:
+POST /pipeline
+
+📤 Enviar:
+{
+  "name": "pipeline_marketing_orion"
+}
+
+{
+  "status": "already_exists",
+  "pipeline_id": "1aa05232-e4b2-4bcf-91cd-7b539659d126"
+}
+🔹 PASSO 4 — Adicionar Especialistas ao Pipeline
+
+Cada especialista vira um “nó”.
+
+📡 API:
+POST /pipeline/node
+
+📤 Exemplo:
+{
+  "pipeline_name": "pipeline_marketing_orion",
+  "node_id": "n1",
+  "agent_id": "98562f0a-1b39-480b-a0b0-05fbd5192501"
+}
+
+{
+  "status": "node_added"
+}
+📝 Explicação:
+"node_id": "n1"
+
+
+👉 Identificador interno da etapa.
+"agent_id"
+
+👉 Qual especialista será usado nessa etapa.
+
+Você pode adicionar:
+
+n1 = analista
+
+n2 = crítico
+
+n3 = revisor
+
+🔹 PASSO 5 — Conectar as Etapas
+
+Agora você diz qual etapa vem depois da outra.
+
+📡 API:
+POST /pipeline/edge
+
+📤 Conectar n1 → n2
+{
+  "pipeline_name": "pipeline_marketing_orion",
+  "source_node_id": "n1",
+  "target_node_id": "n2",
+  "condition": null
+}
+
+📝 Explicação:
+"condition": null
+
+
+👉 Sempre executar o próximo.
+
+Se você quiser condicional:
+
+{
+  "type": "expression",
+  "expression": "contains(previous_output, 'risco')"
+}
+
+
+Isso significa:
+Só executa se a palavra “risco” aparecer.
+
+🔹 PASSO 6 — Executar
+
+Agora você envia o texto que deseja analisar.
+
+📡 API:
+POST /pipeline/run
+
+📤 Enviar:
+{
+  "pipeline_name": "pipeline_marketing_orion",
+  "input": "Garantimos aumento de 300% nas vendas em 24 horas."
+}
+
+📥 Você recebe:
+{
+  "outputs": {
+    "n1": "Análise inicial...",
+    "n2": "Crítica estratégica...",
+    "n3": "Versão consolidada..."
+  }
+}
+
+🧠 O que aconteceu internamente?
+
+n1 analisou
+
+n2 criticou
+
+n3 consolidou
+
+Você criou uma cadeia de raciocínio estruturada.
+
+🛑 Erros Comuns
+404
+
+Pipeline não encontrado → Nome errado.
+
+422
+
+JSON mal formatado → Verifique vírgulas.
+
+Informação não encontrada
+
+Pergunta não está na base enviada.
+
+🎯 Exemplo de Uso Real
+Marketing
+
+Análise → Crítica → Reescrita final
+
+Jurídico
+
+Leitura de contrato → Identificação de risco → Sugestão de cláusula
+
+Produto
+
+Análise técnica → Avaliação estratégica → Recomendação executiva
+
+📌 Conceitos Simplificados
+Termo	Significado
+Agente	Especialista virtual
+RAG	Base de conhecimento própria
+Pipeline	Sequência de especialistas
+Node	Uma etapa
+Edge	Conexão entre etapas
+Condition	Regra condicional
+🧭 Resumo Final
+
+Você pode:
+
+Criar especialistas
+
+Controlar o conhecimento deles
+
+Organizar raciocínio em etapas
+
+Automatizar análises complexas
+
+Garantir respostas fundamentadas
+
+Tudo via API.

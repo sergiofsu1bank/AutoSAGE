@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "AutoSAGE LLM - Julgamento Previdenciário",
+    "_postman_id": "autosage-llm-previdenciario-001",
+    "description": "Fluxo completo de criação de agentes, knowledge, pipeline e execução do julgamento previdenciário.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8010"
+    }
+  ],
+  "item": [
+    {
+      "name": "Criar Agente - Advogado Segurado",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/agents",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"advogado_segurado_previdenciario\",\n  \"role\": \"Você é advogado previdenciarista e sustenta o reconhecimento de 7 anos como contribuinte individual.\",\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.2,\n  \"max_tokens\": 1200,\n  \"use_rag\": true\n}"
+        }
+      }
+    },
+    {
+      "name": "Criar Agente - Advogado INSS",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/agents",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"advogado_inss\",\n  \"role\": \"Você representa o INSS e sustenta que sem recolhimento não há tempo computável.\",\n  \"model\": \"gpt-4o-mini\",\n  \"temperature\": 0.1,\n  \"max_tokens\": 1000,\n  \"use_rag\": true\n}"
+        }
+      }
+    },
+    {
+      "name": "Criar Pipeline",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/pipelines",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"pipeline_julgamento_previdenciario\",\n  \"nodes\": [\n    { \"node_id\": \"n1\", \"agent_id\": \"advogado_segurado_previdenciario\" },\n    { \"node_id\": \"n2\", \"agent_id\": \"advogado_inss\" }\n  ]\n}"
+        }
+      }
+    },
+    {
+      "name": "Executar Pipeline",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/execute",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pipeline_name\": \"pipeline_julgamento_previdenciario\",\n  \"input\": {\n    \"text\": \"Segurado possui 28 anos CLT e 7 anos como PJ com emissão de nota fiscal e CNAE compatível. Empresa recolhia CSLL, mas não houve recolhimento previdenciário.\"\n  }\n}"
+        }
+      }
+    }
+  ]
+}

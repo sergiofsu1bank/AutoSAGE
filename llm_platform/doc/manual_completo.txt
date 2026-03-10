@@ -1,0 +1,225 @@
+📘 Manual Completo — Como Usar a Plataforma AutoSAGE (Passo a Passo)
+
+Este guia ensina como:
+
+Criar agentes (especialistas virtuais)
+(Opcional) Enviar base de conhecimento (RAG)
+Criar um pipeline
+Adicionar etapas (nodes)
+Conectar etapas (edges)
+Executar o pipeline
+Interpretar resultados
+Tudo com exemplos reais de JSON.
+
+🧠 Visão Geral da Plataforma
+
+A plataforma funciona assim:
+Agente → (Opcional) Base de Conhecimento → Pipeline → Execução
+
+Você monta uma cadeia de especialistas que analisam algo em sequência.
+🔹 PASSO 1 — Criar um Agente
+Um agente é um especialista virtual com:
+Nome
+Papel (instrução de comportamento)
+Modelo
+Configuração
+Uso ou não de base própria
+
+📡 Endpoint
+POST /agents
+
+📤 Exemplo JSON
+{
+  "name": "analista_criterios",
+  "role": "Você analisa informações recebidas e identifica critérios relevantes para tomada de decisão.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.2,
+  "max_tokens": 800,
+  "use_rag": true
+}
+
+📥 Resposta esperada
+{
+  "agent_id": "a3f42c8e-88d7-4d7a-9e22-0b3e5c3e2b11",
+  "status": "created"
+}
+
+
+Guarde o agent_id. Ele será usado nos próximos passos.
+🔹 PASSO 2 — Enviar Base de Conhecimento (Opcional)
+
+Se o agente deve responder apenas com base em documentos específicos.
+📡 Endpoint
+POST /knowledge
+
+📤 Exemplo JSON
+{
+  "agent_id": "a3f42c8e-88d7-4d7a-9e22-0b3e5c3e2b11",
+  "documents": [
+    "Critério A: O solicitante deve ter no mínimo 5 anos de experiência.",
+    "Critério B: Deve possuir certificação válida.",
+    "Critério C: A análise deve considerar documentação formal."
+  ]
+}
+
+📥 Resposta
+{
+  "knowledge_id": "kb-5b8f7c91aa324bb2bfa8d3e91a7e5c44",
+  "status": "indexed"
+}
+
+
+Se use_rag = true, o agente:
+Não usará conhecimento externo
+Não inventará informações
+Só responderá com base nos documentos enviados
+
+🔹 PASSO 3 — Criar um Pipeline
+Pipeline é a sequência de execução dos especialistas.
+
+📡 Endpoint
+POST /pipeline
+
+📤 JSON
+{
+  "name": "pipeline_decisao_estruturada"
+}
+
+📥 Resposta
+{
+  "status": "created",
+  "pipeline_id": "9c92c8f2-5f2e-4aa4-b5f4-0c9c5e2d9c55"
+}
+
+🔹 PASSO 4 — Adicionar Nodes (Etapas)
+
+Cada node representa uma etapa da análise.
+📡 Endpoint
+POST /pipeline/node
+
+📤 Exemplo 1 — Node n1
+{
+  "pipeline_name": "pipeline_decisao_estruturada",
+  "node_id": "n1",
+  "agent_id": "a3f42c8e-88d7-4d7a-9e22-0b3e5c3e2b11"
+}
+
+📤 Exemplo 2 — Node n2
+{
+  "pipeline_name": "pipeline_decisao_estruturada",
+  "node_id": "n2",
+  "agent_id": "b2e91d1a-22c4-4e1b-b8e1-91e8f3c2a5aa"
+}
+
+📥 Resposta
+{
+  "status": "node_added"
+}
+
+🔹 PASSO 5 — Conectar Nodes (Edges)
+Agora você define a ordem.
+
+📡 Endpoint
+POST /pipeline/edge
+
+🔹 Conectar n1 → n2 (sempre executar)
+{
+  "pipeline_name": "pipeline_decisao_estruturada",
+  "source_node_id": "n1",
+  "target_node_id": "n2",
+  "condition": null
+}
+
+🔹 Conexão condicional (opcional)
+
+Exemplo: só executar próximo node se a palavra “incompleto” aparecer.
+{
+  "pipeline_name": "pipeline_decisao_estruturada",
+  "source_node_id": "n1",
+  "target_node_id": "n2",
+  "condition": {
+    "type": "expression",
+    "expression": "contains(previous_output, 'incompleto')"
+  }
+}
+
+Expressões disponíveis
+Você pode usar:
+
+contains(text, 'palavra')
+len(output) > 200
+len(output) < 100
+
+🔹 PASSO 6 — Executar o Pipeline
+
+Agora você envia o problema real.
+📡 Endpoint
+POST /pipeline/run
+
+📤 Exemplo JSON
+{
+  "pipeline_name": "pipeline_decisao_estruturada",
+  "input": "O candidato possui 3 anos de experiência e não apresentou certificação."
+}
+
+📥 Resposta esperada
+{
+  "outputs": {
+    "n1": "Identificados os seguintes critérios relevantes...",
+    "n2": "Após análise, verifica-se que os requisitos não foram integralmente atendidos..."
+  }
+}
+
+
+Cada node produz sua própria saída.
+🧩 Exemplo Completo de Pipeline Estruturado
+
+Exemplo de 3 etapas:
+Node	Função
+n1	Extrair critérios
+n2	Avaliar cumprimento
+n3	Emitir decisão
+
+Fluxo:
+n1 → n2 → n3
+
+
+Todas as conexões com condition: null.
+📌 Erros Comuns
+404 Pipeline não encontrado
+Nome incorreto.
+
+422 JSON inválido
+
+Verifique vírgulas e aspas.
+
+“Informação não encontrada na base”
+
+A pergunta não está coberta pelos documentos enviados.
+
+🏁 Resumo Operacional
+
+Para usar a plataforma:
+
+Criar agente
+
+(Opcional) Indexar conhecimento
+
+Criar pipeline
+
+Adicionar nodes
+
+Conectar nodes
+
+Executar
+
+Tudo é controlado via JSON.
+
+🎯 Conceitos Simplificados
+Termo	Significado
+Agent	Especialista virtual
+RAG	Base de conhecimento própria
+Pipeline	Sequência de especialistas
+Node	Etapa
+Edge	Conexão
+Condition	Regra condicional

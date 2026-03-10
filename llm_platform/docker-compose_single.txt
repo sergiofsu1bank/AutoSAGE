@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+
+  llm-platform-db:
+    image: pgvector/pgvector:pg16
+    container_name: llm-platform-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: llm_platform
+    command: ["postgres", "-p", "5444"]
+    ports:
+      - "5444:5444"
+    volumes:
+      - llm_platform_pgdata:/var/lib/postgresql/data
+
+  llm-platform-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llm-platform-api
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    environment:
+      DATABASE_HOST: llm-platform-db
+      DATABASE_PORT: 5444
+      DATABASE_NAME: llm_platform
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      LLM_PLATFORM_REGISTRY_BASE: /app/registry/llm-platform
+
+    volumes:
+      - ./registry:/app/registry
+
+    depends_on:
+      - llm-platform-db
+
+volumes:
+  llm_platform_pgdata:

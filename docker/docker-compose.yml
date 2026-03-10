@@ -1,0 +1,194 @@
+version: "3.9"
+
+services:
+
+  # =================================================
+  # POSTGRES (Único - Relacional + Vetorial)
+  # =================================================
+  autosage-postgres:
+    image: pgvector/pgvector:pg16
+    container_name: autosage-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: autosage
+    ports:
+      - "5432:5432"
+    volumes:
+      - autosage_postgres_data:/var/lib/postgresql/data
+      - ./data:/data
+
+
+  # =================================================
+  # LLM PLATFORM API
+  # =================================================
+  llm-platform-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llm-platform-api
+    restart: unless-stopped
+    ports:
+      - "8010:8010"
+    environment:
+      DATABASE_HOST: autosage-postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: autosage
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      LLM_PLATFORM_REGISTRY_BASE: /app/registry/llm-platform
+    volumes:
+      - ./registry:/app/registry
+    depends_on:
+      - autosage-postgres
+
+
+  # =================================================
+  # ORCHESTRATOR
+  # =================================================
+  autosage-orc:
+    build:
+      context: ./dev/orc_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-orc
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      ORC_REGISTRY_BASE: "/app/registry/orc"
+      METRICS_BASE_URL: "http://autosage-mtrcs:8001"
+      DCP_BASE_URL: "http://autosage-dcp:8002"
+      EDAEXP_BASE_URL: "http://autosage-edaexp:8003"
+      EDAPRE_BASE_URL: "http://autosage-edapre:8004"
+      ML_BASE_URL: "http://autosage-ml:8005"
+      MONITOR_BASE_URL: "http://autosage-ml:8005"
+      LLM_BASE_URL: "http://llm-platform-api:8010"
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/orc_pipeline/src:/app/src
+
+
+  # =================================================
+  # METRICS
+  # =================================================
+  autosage-mtrcs:
+    build:
+      context: ./dev/mtrcs_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-mtrcs
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      METRICS_REGISTRY_BASE: "/app/registry/mtrcs"
+      METRICS_POSTGRES_HOST: autosage-postgres
+      METRICS_POSTGRES_PORT: "5432"
+      METRICS_POSTGRES_DATABASE: autosage
+      METRICS_POSTGRES_USER: postgres
+      METRICS_POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/mtrcs_pipeline/src:/app/src
+
+
+  # =================================================
+  # DCP
+  # =================================================
+  autosage-dcp:
+    build:
+      context: ./dev/dcp_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-dcp
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    environment:
+      METRICS_BASE_URL: "http://autosage-mtrcs:8001"
+      MONITOR_BASE_URL: "http://autosage-ml:8005"
+      DCP_POSTGRES_HOST: autosage-postgres
+      DCP_POSTGRES_PORT: "5432"
+      DCP_POSTGRES_USER: postgres
+      DCP_POSTGRES_PASSWORD: postgres
+      DCP_POSTGRES_DATABASE: autosage
+      DCP_REGISTRY_BASE: "/app/registry/dcp"
+      DCP_BATCH_SIZE: "5000"
+      DCP_PREVIEW_ROWS: "5"
+      DCP_NORMALIZATION: "none"
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/dcp_pipeline/src:/app/src
+
+
+  # =================================================
+  # EDA EXPLORE
+  # =================================================
+  autosage-edaexp:
+    build:
+      context: ./dev/edaexp_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-edaexp
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    environment:
+      METRICS_BASE_URL: "http://autosage-mtrcs:8001"
+      MONITOR_BASE_URL: "http://autosage-ml:8005"
+      EDAEXPL_REGISTRY_BASE: "/app/registry/edaexp"
+      EDAEXPL_REPORTS_PATH: "/app/registry/edaexp/reports"
+      EDAEXPL_OUTPUT_PATH: "/app/registry/edaexp/statistics"
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/edaexp_pipeline/src:/app/src
+
+
+  # =================================================
+  # EDA PREPARE
+  # =================================================
+  autosage-edapre:
+    build:
+      context: ./dev/edapre_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-edapre
+    restart: unless-stopped
+    ports:
+      - "8004:8004"
+    environment:
+      METRICS_BASE_URL: "http://autosage-mtrcs:8001"
+      MONITOR_BASE_URL: "http://autosage-ml:8005"
+      EDAPRE_REGISTRY_BASE: "/app/registry/edapre"
+      EDAPRE_OUTPUT_PATH: "/app/registry/edapre/processed"
+      EDAPRE_ERROR_PATH: "/app/registry/edapre/errors"
+      EDAPRE_REPORTS_PATH: "/app/registry/edapre/reports"
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/edapre_pipeline/src:/app/src
+
+
+  # =================================================
+  # ML
+  # =================================================
+  autosage-ml:
+    build:
+      context: ./dev/ml_pipeline
+      dockerfile: Dockerfile
+    container_name: autosage-ml
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+    environment:
+      METRICS_BASE_URL: "http://autosage-mtrcs:8001"
+      MONITOR_BASE_URL: "http://autosage-ml:8005"
+      ML_REGISTRY_BASE: "/app/registry/ml"
+      AUTOSAGE_REGISTRY_BASE: "/app/registry"
+      ML_OUTPUT_PATH: "/app/registry/ml/processed"
+      ML_ERROR_PATH: "/app/registry/ml/errors"
+      ML_REPORTS_PATH: "/app/registry/ml/reports"
+    volumes:
+      - ./registry:/app/registry
+      - ./dev/ml_pipeline/src:/app/src
+
+
+volumes:
+  autosage_postgres_data:

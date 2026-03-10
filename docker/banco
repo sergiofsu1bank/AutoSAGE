@@ -1,0 +1,853 @@
+./import_autosage_dataset.sh
+./import_autosage_dataset.sh
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+DROP TABLE IF EXISTS autosage_drift_dataset_1M;
+
+CREATE TABLE autosage_drift_dataset_1M (
+    event_time TIMESTAMP,
+    user_id INTEGER,
+    session_length DOUBLE PRECISION,
+    pages_viewed INTEGER,
+    click_rate DOUBLE PRECISION,
+    time_on_site DOUBLE PRECISION,
+    product_views INTEGER,
+    cart_additions INTEGER,
+    wishlist_additions INTEGER,
+    discount_used INTEGER,
+    device_type INTEGER,
+    browser_type INTEGER,
+    traffic_source INTEGER,
+    day_of_week INTEGER,
+    hour_of_day INTEGER,
+    previous_purchases INTEGER,
+    avg_purchase_value DOUBLE PRECISION,
+    returns_last_year INTEGER,
+    support_tickets INTEGER,
+    purchase INTEGER
+);
+COPY autosage_drift_dataset_1M
+FROM '/data/autosage_drift_dataset_1M.csv'
+WITH (FORMAT csv, HEADER true);
+"
+
+
+COPY autosage_drift_dataset_1M
+FROM '/data/autosage_drift_dataset_1M.csv'
+WITH (FORMAT csv, HEADER true);
+
+"
+
+echo "4 - Atualizando estatísticas..."
+
+docker compose exec $CONTAINER psql -U $USER -d $DB -c "
+
+ANALYZE autosage_drift_dataset_1M;
+
+"
+
+echo "5 - Validando import..."
+
+docker compose exec $CONTAINER psql -U $USER -d $DB -c "
+
+SELECT COUNT(*) FROM autosage_drift_dataset_1M;
+
+"
+
+echo "======================================="
+echo "Import finalizado"
+echo "======================================="
+
+
+
+
+
+
+
+
+
+
+
+docker exec autosage-postgres pg_dump -U postgres -d autosage --schema-only --no-owner --no-privileges
+docker exec autosage-postgres pg_dump -U postgres -d autosage --schema-only --no-owner --no-privileges > autosage_schema.sql
+
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+
+TRUNCATE telecom_customer_behavior_balanced_1milhao;
+
+COPY telecom_customer_behavior_balanced_1milhao
+FROM '/data/telecom_customer_behavior_balanced_1milhao.csv'
+WITH (FORMAT csv, HEADER true);
+
+"
+
+
+
+
+CREATE TABLE pipeline_metrics (
+    id BIGSERIAL PRIMARY KEY,
+    trace_id TEXT NOT NULL,
+    pipeline TEXT NOT NULL,
+    pipeline_version INTEGER,
+    stage TEXT,
+    status TEXT,
+    started_at TIMESTAMP,
+    finished_at TIMESTAMP,
+    duration_ms INTEGER,
+    vendor TEXT,
+    dataset_name TEXT,
+    error_code TEXT,
+    error_message TEXT
+);
+
+CREATE INDEX idx_pipeline_metrics_trace_id
+ON pipeline_metrics(trace_id);
+
+CREATE INDEX idx_pipeline_metrics_dataset
+ON pipeline_metrics(dataset_name);
+
+CREATE INDEX idx_pipeline_metrics_pipeline_version
+ON pipeline_metrics(pipeline_version);
+
+
+
+CREATE TABLE dcp_monitor_event (
+    id BIGSERIAL PRIMARY KEY,
+    trace_id TEXT NOT NULL,
+    dataset_name TEXT NOT NULL,
+    pipeline_version INTEGER,
+    vendor TEXT,
+    rows_count BIGINT,
+    columns_count INTEGER,
+    memory_mb NUMERIC,
+    schema_hash TEXT,
+    artifact_path TEXT,
+    artifact_size_mb NUMERIC,
+    columns_metadata JSONB,
+    null_analysis JSONB,
+    created_at TIMESTAMP,
+    dataset_hash TEXT
+);
+
+CREATE INDEX idx_dcp_dataset
+ON dcp_monitor_event(dataset_name);
+
+CREATE INDEX idx_dcp_trace
+ON dcp_monitor_event(trace_id);
+
+CREATE INDEX idx_dcp_created
+ON dcp_monitor_event(created_at);
+
+
+
+
+
+CREATE TABLE eda_explore_snapshot (
+    id BIGSERIAL PRIMARY KEY,
+    trace_id TEXT NOT NULL,
+    pipeline TEXT,
+    pipeline_version INTEGER,
+    vendor TEXT,
+    dataset_name TEXT,
+    rows_count BIGINT,
+    columns_count INTEGER,
+    target_name TEXT,
+    majority_class_ratio NUMERIC,
+    baseline_accuracy NUMERIC,
+    baseline_auc NUMERIC,
+    max_separability NUMERIC,
+    numeric_columns INTEGER,
+    categorical_columns INTEGER,
+    identifier_columns INTEGER,
+    schema_json JSONB,
+    statistics_json JSONB,
+    target_distribution_json JSONB,
+    separability_json JSONB,
+    warnings_json JSONB,
+    report_path TEXT,
+    created_at TIMESTAMP
+);
+
+CREATE INDEX idx_eda_explore_dataset
+ON eda_explore_snapshot(dataset_name);
+
+CREATE INDEX idx_eda_explore_trace
+ON eda_explore_snapshot(trace_id);
+
+
+
+CREATE TABLE eda_prepare_snapshots (
+    id BIGSERIAL PRIMARY KEY,
+    trace_id TEXT NOT NULL,
+    pipeline TEXT,
+    pipeline_version INTEGER,
+    vendor TEXT,
+    dataset_name TEXT,
+    target_name TEXT,
+    created_at TIMESTAMP,
+    rows_count BIGINT,
+    columns_count INTEGER,
+    numeric_columns INTEGER,
+    categorical_columns INTEGER,
+    identifier_columns INTEGER,
+    problem_type TEXT,
+    metric TEXT,
+    split_strategy TEXT,
+    n_features INTEGER,
+    dropped_features_count INTEGER,
+    forced_drops_count INTEGER,
+    schema_json JSONB,
+    statistics_json JSONB,
+    feature_schema_json JSONB,
+    physical_schema_json JSONB,
+    transformations_json JSONB,
+    train_config_json JSONB,
+    warnings_json JSONB,
+    problem_details_json JSONB,
+    registry_path TEXT,
+    report_path TEXT
+);
+
+CREATE INDEX idx_eda_prepare_dataset
+ON eda_prepare_snapshots(dataset_name);
+
+CREATE INDEX idx_eda_prepare_trace
+ON eda_prepare_snapshots(trace_id);
+
+
+
+CREATE TABLE ml_experiment_result (
+    id BIGSERIAL PRIMARY KEY,
+    trace_id TEXT NOT NULL,
+    pipeline TEXT,
+    pipeline_version INTEGER,
+    vendor TEXT,
+    dataset_name TEXT,
+    experiment_id TEXT,
+    problem_type TEXT,
+    strategy_name TEXT,
+    metric_name TEXT,
+    metric_value NUMERIC,
+    decision TEXT,
+    reason TEXT,
+    model_name TEXT,
+    training_report JSONB,
+    created_at TIMESTAMP
+);
+
+CREATE INDEX idx_ml_dataset
+ON ml_experiment_result(dataset_name);
+
+CREATE INDEX idx_ml_trace
+ON ml_experiment_result(trace_id);
+
+CREATE INDEX idx_ml_experiment
+ON ml_experiment_result(experiment_id);
+
+
+
+CREATE INDEX idx_pipeline_metrics_lookup
+ON pipeline_metrics(pipeline, vendor, dataset_name, pipeline_version DESC);
+
+
+//////////////////////////
+
+
+
+
+
+
+CREATE TABLE ml_experiment_result (
+
+    -- Identidade do experimento
+    experiment_id TEXT PRIMARY KEY,
+
+    -- Contexto governança
+    pipeline_version INTEGER NOT NULL,
+    dataset_name TEXT NOT NULL,
+    vendor TEXT NOT NULL,
+    problem_type TEXT NOT NULL,
+    strategy_name TEXT NOT NULL,
+
+    -- Resultado científico
+    metric_name TEXT NOT NULL,
+    metric_value DOUBLE PRECISION NOT NULL,
+    decision TEXT NOT NULL CHECK (
+        decision IN ('APPROVED', 'REJECTED', 'TERMINATED')
+    ),
+    reason TEXT NOT NULL,
+
+    -- Modelo aprovado (pode ser nulo)
+    model_name TEXT NULL,
+
+    -- Relatório completo do treino
+    training_report JSONB NOT NULL,
+
+    -- Auditoria mínima
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+
+
+    def get_runs(self, dataset_name: str):
+
+        conn = self.connector.get_conn()
+        cursor = conn.cursor()
+
+        query = """
+        SELECT
+            pm.pipeline_version,
+            ml.model_name,
+            ml.metric_name,
+            ml.metric_value,
+            pm.duration_ms
+        FROM pipeline_metrics pm
+
+        LEFT JOIN ml_experiment_result ml
+            ON pm.trace_id = ml.trace_id
+
+        WHERE pm.dataset_name = %s
+        ORDER BY pm.pipeline_version DESC
+        LIMIT 20
+        """
+
+        cursor.execute(query, (dataset_name,))
+        rows = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+
+        results = []
+
+        for row in rows:
+            results.append({
+                "pipeline_version": row[0],
+                "model_name": row[1],
+                "metric_name": row[2],
+                "metric_value": row[3],
+                "duration_ms": row[4]
+            })
+
+        return results
+
+
+
+-- Remove a tabela se existir
+DROP TABLE IF EXISTS ml_experiment_result;
+
+-- Criação da tabela completa
+CREATE TABLE ml_experiment_result (
+
+    -- Identidade técnica da execução
+    trace_id TEXT NOT NULL,
+    pipeline TEXT NOT NULL,
+    pipeline_version INTEGER NOT NULL,
+    vendor TEXT NOT NULL,
+    dataset_name TEXT NOT NULL,
+
+    -- Identidade do experimento
+    experiment_id TEXT PRIMARY KEY,
+
+    -- Governança científica
+    problem_type TEXT NOT NULL,
+    strategy_name TEXT NOT NULL,
+
+    -- Resultado científico principal
+    metric_name TEXT NOT NULL,
+    metric_value DOUBLE PRECISION NOT NULL,
+    decision TEXT NOT NULL CHECK (
+        decision IN ('APPROVED', 'REJECTED', 'TERMINATED')
+    ),
+    reason TEXT NOT NULL,
+
+    -- Modelo aprovado (opcional)
+    model_name TEXT NULL,
+
+    -- Relatório completo do treinamento
+    training_report JSONB NULL,
+
+    -- Auditoria
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- Índices auxiliares para consulta analítica
+CREATE INDEX idx_ml_trace_id
+    ON ml_experiment_result (trace_id);
+
+CREATE INDEX idx_ml_dataset_name
+    ON ml_experiment_result (dataset_name);
+
+CREATE INDEX idx_ml_problem_type
+    ON ml_experiment_result (problem_type);
+
+CREATE INDEX idx_ml_strategy_name
+    ON ml_experiment_result (strategy_name);
+
+CREATE INDEX idx_ml_decision
+    ON ml_experiment_result (decision);
+
+CREATE INDEX idx_ml_pipeline_version
+    ON ml_experiment_result (pipeline_version);
+
+
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage
+-- ============================================================
+-- DCP Monitor Event Table
+-- Responsabilidade: armazenar perfil estrutural da ingestão
+-- Módulo: DCP (Data Connector Pipeline)
+-- Versionado por dataset_version
+-- ============================================================
+
+-- ------------------------------------------------------------
+-- 1. Criação da tabela
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS dcp_monitor_event (
+    id BIGSERIAL PRIMARY KEY,
+
+    trace_id VARCHAR(100) NOT NULL,
+
+    dataset_name VARCHAR(255) NOT NULL,
+    dataset_version INTEGER NOT NULL,
+
+    vendor VARCHAR(50) NOT NULL,
+
+    rows_count BIGINT NOT NULL CHECK (rows_count >= 0),
+    columns_count INTEGER NOT NULL CHECK (columns_count >= 0),
+    memory_mb NUMERIC(12,2),
+
+    schema_hash VARCHAR(128) NOT NULL,
+
+    artifact_path TEXT NOT NULL,
+    artifact_size_mb NUMERIC(12,2),
+
+    columns_metadata JSONB NOT NULL,
+    null_analysis JSONB,
+
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+
+    CONSTRAINT uq_dataset_version UNIQUE (dataset_name, dataset_version)
+);
+
+-- ------------------------------------------------------------
+-- 2. Índices estruturais
+-- ------------------------------------------------------------
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_dataset
+ON dcp_monitor_event (dataset_name);
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_dataset_version
+ON dcp_monitor_event (dataset_name, dataset_version);
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_schema_hash
+ON dcp_monitor_event (schema_hash);
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_created_at
+ON dcp_monitor_event (created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_trace_id
+ON dcp_monitor_event (trace_id);
+
+-- ------------------------------------------------------------
+-- 3. Índices JSONB (GIN)
+-- ------------------------------------------------------------
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_columns_metadata_gin
+ON dcp_monitor_event
+USING GIN (columns_metadata);
+
+CREATE INDEX IF NOT EXISTS idx_dcp_monitor_null_analysis_gin
+ON dcp_monitor_event
+USING GIN (null_analysis);"
+
+
+
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+-- ============================================
+-- DROP PARA GARANTIR CONSISTÊNCIA
+-- ============================================
+
+DROP TABLE IF EXISTS execution_stages CASCADE;
+DROP TABLE IF EXISTS execution_metrics CASCADE;
+DROP TABLE IF EXISTS execution_payload CASCADE;
+DROP TABLE IF EXISTS execution_metadata CASCADE;
+
+-- ============================================
+-- 1) EXECUTION METADATA
+-- ============================================
+
+CREATE TABLE execution_metadata (
+
+    id BIGSERIAL PRIMARY KEY,
+
+    execution_id TEXT NOT NULL UNIQUE,
+    trace_id TEXT NOT NULL,
+
+    dataset_name TEXT NOT NULL,
+    dataset_version TEXT NOT NULL,
+
+    execution_version INTEGER NOT NULL,
+
+    pipeline TEXT NOT NULL,
+    pipeline_version INTEGER NOT NULL,
+
+    model_name TEXT,
+    problem_type TEXT,
+    metric_primary TEXT,
+
+    status TEXT NOT NULL,
+
+    started_at TIMESTAMPTZ DEFAULT NOW(),
+    finished_at TIMESTAMPTZ,
+
+    UNIQUE (dataset_name, dataset_version, execution_version)
+);
+
+CREATE INDEX idx_execution_metadata_execution_id
+ON execution_metadata (execution_id);
+
+-- ============================================
+-- 2) EXECUTION PAYLOAD
+-- ============================================
+
+CREATE TABLE execution_payload (
+
+    id BIGSERIAL PRIMARY KEY,
+
+    execution_id TEXT NOT NULL
+        REFERENCES execution_metadata(execution_id)
+        ON DELETE CASCADE,
+
+    payload JSONB NOT NULL,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_execution_payload_execution_id
+ON execution_payload (execution_id);
+
+CREATE INDEX idx_execution_payload_json
+ON execution_payload USING GIN (payload);
+
+-- ============================================
+-- 3) EXECUTION METRICS
+-- ============================================
+
+CREATE TABLE execution_metrics (
+
+    id BIGSERIAL PRIMARY KEY,
+
+    execution_id TEXT NOT NULL
+        REFERENCES execution_metadata(execution_id)
+        ON DELETE CASCADE,
+
+    metric_name TEXT NOT NULL,
+    metric_value DOUBLE PRECISION NOT NULL,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_execution_metrics_execution_id
+ON execution_metrics (execution_id);
+
+-- ============================================
+-- 4) EXECUTION STAGES
+-- ============================================
+
+CREATE TABLE execution_stages (
+
+    id BIGSERIAL PRIMARY KEY,
+
+    execution_id TEXT NOT NULL
+        REFERENCES execution_metadata(execution_id)
+        ON DELETE CASCADE,
+
+    stage_name TEXT NOT NULL,
+    status TEXT NOT NULL,
+
+    artifact_path TEXT,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_execution_stages_execution_id
+ON execution_stages (execution_id);
+"
+
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+DROP TABLE IF EXISTS telecom_customer_behavior_balanced;
+
+CREATE TABLE telecom_customer_behavior_balanced (
+    customer_id INTEGER,
+    age INTEGER,
+    gender TEXT,
+    tenure_months INTEGER,
+    monthly_charges DOUBLE PRECISION,
+    total_charges DOUBLE PRECISION,
+    contract_type TEXT,
+    payment_method TEXT,
+    internet_service TEXT,
+    support_calls_last_6m INTEGER,
+    late_payments_last_12m INTEGER,
+    streaming_tv INTEGER,
+    streaming_movies INTEGER,
+    online_security INTEGER,
+    online_backup INTEGER,
+    device_protection INTEGER,
+    paperless_billing INTEGER,
+    avg_data_usage_gb DOUBLE PRECISION,
+    region TEXT,
+    churn INTEGER
+);
+
+COPY telecom_customer_behavior_balanced
+FROM '/data/telecom_customer_behavior_balanced_100k.csv'
+DELIMITER ','
+CSV HEADER;
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+DROP TABLE IF EXISTS telecom_customer_behavior_balanced_1milhao;
+CREATE TABLE telecom_customer_behavior_balanced_1milhao (
+    customer_id INTEGER,
+    age INTEGER,
+    gender TEXT,
+    tenure_months INTEGER,
+    monthly_charges DOUBLE PRECISION,
+    total_charges DOUBLE PRECISION,
+    contract_type TEXT,
+    payment_method TEXT,
+    internet_service TEXT,
+    support_calls_last_6m INTEGER,
+    late_payments_last_12m INTEGER,
+    streaming_tv INTEGER,
+    streaming_movies INTEGER,
+    online_security INTEGER,
+    online_backup INTEGER,
+    device_protection INTEGER,
+    paperless_billing INTEGER,
+    avg_data_usage_gb DOUBLE PRECISION,
+    region TEXT,
+    churn INTEGER
+);
+
+COPY telecom_customer_behavior_balanced
+FROM '/data/telecom_customer_behavior_balanced_100k.csv'
+DELIMITER ','
+CSV HEADER;"
+
+
+
+
+SELECT COUNT(*) FROM telecom_customer_behavior_balanced;
+"
+
+
+
+
+Write-Host "=== Rebuild API ==="
+docker compose build llm-platform-api
+docker compose up -d
+
+Write-Host "=== Inicializando Banco ==="
+docker exec -it llm-platform-api python -c "from src.db.session import init_db; init_db(); print('DB OK')"
+
+Write-Host "=== Verificando Tabela document_chunks ==="
+docker exec -it llm-platform-db psql -U postgres -p 5444 -d llm_platform -c "\d document_chunks"
+
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+DROP TABLE IF EXISTS customer_churn;
+
+CREATE TABLE customer_churn (
+    tenure_months           NUMERIC,
+    monthly_charges         NUMERIC,
+    total_usage_hours       NUMERIC,
+    support_tickets_6m      NUMERIC,
+    days_since_last_login   NUMERIC,
+    avg_session_duration    NUMERIC,
+    usage_trend_3m          NUMERIC,
+    login_frequency_30d     NUMERIC,
+    contract_type           TEXT,
+    payment_method          TEXT,
+    region                  TEXT,
+    customer_segment        TEXT,
+    churn                   INT
+);
+
+COPY customer_churn
+FROM '/data/customer_churn_realistic_v1.csv'
+DELIMITER ','
+CSV HEADER
+NULL '';
+"
+
+
+Carga no banco
+
+docker compose exec autosage-postgres psql -U postgres -d autosage -c "
+DROP TABLE IF EXISTS pipeline_metrics;
+CREATE TABLE IF NOT EXISTS pipeline_metrics (
+    id SERIAL PRIMARY KEY,
+    trace_id TEXT NOT NULL,
+    pipeline TEXT NOT NULL,
+    pipeline_version INTEGER NOT NULL,
+    stage TEXT NOT NULL,
+    status TEXT NOT NULL,
+    started_at TIMESTAMPTZ,
+    finished_at TIMESTAMPTZ,
+    duration_ms INTEGER,
+    vendor TEXT,
+    dataset_name TEXT,
+    error_code TEXT,
+    error_message TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_pipeline_metrics_trace_id
+    ON pipeline_metrics(trace_id);
+
+CREATE INDEX IF NOT EXISTS idx_pipeline_metrics_pipeline
+    ON pipeline_metrics(pipeline, pipeline_version);
+
+DROP TABLE IF EXISTS model_metrics;
+CREATE TABLE IF NOT EXISTS model_metrics (
+    id SERIAL PRIMARY KEY,
+
+    trace_id TEXT NOT NULL,
+    pipeline TEXT NOT NULL,
+    pipeline_version TEXT NOT NULL,
+
+    model_name TEXT NOT NULL,
+    model_version TEXT NOT NULL,
+    algorithm TEXT NOT NULL,
+
+    metric_name TEXT NOT NULL,
+    metric_value DOUBLE PRECISION NOT NULL,
+
+    training_time_ms INTEGER,
+    training_rows INTEGER,
+    training_features INTEGER,
+
+    dataset_version TEXT NOT NULL,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_model_metrics_trace_id
+    ON model_metrics(trace_id);
+
+CREATE INDEX IF NOT EXISTS idx_model_metrics_model
+    ON model_metrics(model_name, model_version);
+
+DROP TABLE IF EXISTS decision_metrics;
+CREATE TABLE IF NOT EXISTS decision_metrics (
+    id SERIAL PRIMARY KEY,
+
+    trace_id TEXT NOT NULL,
+    pipeline TEXT NOT NULL,
+    pipeline_version TEXT NOT NULL,
+
+    decision_type TEXT NOT NULL,
+    decision TEXT NOT NULL,
+    justification TEXT,
+
+    latency_ms INTEGER,
+    model_version TEXT NOT NULL,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_decision_metrics_trace_id
+    ON decision_metrics(trace_id);
+
+DROP TABLE IF EXISTS customer_churn;
+
+CREATE TABLE customer_churn (
+    customer_id       INT,
+    age               INT,
+    gender            TEXT,
+    tenure_months     INT,
+    monthly_charges   NUMERIC,
+    total_charges     NUMERIC,
+    contract_type     TEXT,
+    payment_method    TEXT,
+    internet_service  TEXT,
+    churn             TEXT
+);
+
+COPY customer_churn
+FROM '/data/customer_churn.csv'
+DELIMITER ','
+CSV HEADER
+NULL '';
+
+UPDATE customer_churn
+SET churn = CASE
+    WHEN churn = 'Yes' THEN TRUE
+    WHEN churn = 'No' THEN FALSE
+    ELSE NULL
+END;
+
+ALTER TABLE customer_churn
+ALTER COLUMN churn TYPE BOOLEAN USING churn::BOOLEAN;
+"
+
+
+docker compose exec autosage-postgres psql -U postgres -d dcp -c "
+DROP TABLE IF EXISTS customer_churn;
+
+CREATE TABLE customer_churn (
+    customer_id       INT,
+    age               INT,
+    gender            TEXT,
+    tenure_months     INT,
+    monthly_charges   NUMERIC,
+    total_charges     NUMERIC,
+    contract_type     TEXT,
+    payment_method    TEXT,
+    internet_service  TEXT,
+    churn             TEXT
+);
+
+COPY customer_churn
+FROM '/data/customer_churn.csv'
+DELIMITER ','
+CSV HEADER
+NULL '';
+
+UPDATE customer_churn
+SET churn = CASE
+    WHEN churn = 'Yes' THEN TRUE
+    WHEN churn = 'No' THEN FALSE
+    ELSE NULL
+END;
+
+ALTER TABLE customer_churn
+ALTER COLUMN churn TYPE BOOLEAN USING churn::BOOLEAN;
+"
+
+
+
+docker exec -it autosage-mnt sqlite3 data/metrics.db
+docker cp autosage-mnt:/app/data/metrics.db ./metrics.db
+sqlite3 metrics.db
+.tables
+SELECT
+  pipeline,
+  stage,
+  event_type,
+  trace_id,
+  created_at
+FROM pipeline_events
+ORDER BY created_at DESC;

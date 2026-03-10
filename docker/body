@@ -1,0 +1,602 @@
+{
+  "vendor": "postgres",
+  "dataset": "telecom_customer_behavior_balanced",
+  "query": "SELECT * FROM telecom_customer_behavior_balanced",
+  "target_name": "churn",
+  "user_story": "Quero prever quais clientes têm maior probabilidade de cancelar o serviço para reduzir churn."
+}
+
+{
+  "vendor": "postgres",
+  "dataset": "telecom_customer_behavior_balanced_1milhao",
+  "query": "SELECT * FROM telecom_customer_behavior_balanced_1milhao",
+  "target_name": "churn",
+  "user_story": "Quero prever quais clientes têm maior probabilidade de cancelar o serviço para reduzir churn."
+}
+
+{
+  "vendor": "postgres",
+  "dataset": "autosage_drift_dataset_1m",
+  "query": "SELECT * FROM autosage_drift_dataset_1m",
+  "target_name": "purchase",
+  "user_story": "Quero prever quais sessões de usuários têm maior probabilidade de resultar em uma compra, para priorizar ofertas, personalizar recomendações e aumentar a taxa de conversão.
+"
+}
+
+
+{
+  "success": true,
+  "trace_id": "autosage-7bbed566ec0e",
+  "data": {
+    "dcp_sample": {
+      "success": true,
+      "trace_id": "autosage-7bbed566ec0e",
+      "data": {
+        "columns": [
+          "customer_id",
+          "age",
+          "gender",
+          "tenure_months",
+          "monthly_charges",
+          "total_charges",
+          "contract_type",
+          "payment_method",
+          "internet_service",
+          "support_calls_last_6m",
+          "late_payments_last_12m",
+          "streaming_tv",
+          "streaming_movies",
+          "online_security",
+          "online_backup",
+          "device_protection",
+          "paperless_billing",
+          "avg_data_usage_gb",
+          "region",
+          "churn"
+        ],
+        "sample_rows": [
+          {
+            "customer_id": 1,
+            "age": 56,
+            "gender": "Male",
+            "tenure_months": 2,
+            "monthly_charges": 37.81,
+            "total_charges": 102.34,
+            "contract_type": "Month-to-month",
+            "payment_method": "Bank transfer",
+            "internet_service": "Fiber optic",
+            "support_calls_last_6m": 2,
+            "late_payments_last_12m": 0,
+            "streaming_tv": 0,
+            "streaming_movies": 1,
+            "online_security": 0,
+            "online_backup": 0,
+            "device_protection": 0,
+            "paperless_billing": 1,
+            "avg_data_usage_gb": 235.38,
+            "region": "East",
+            "churn": 0
+          },
+          {
+            "customer_id": 2,
+            "age": 69,
+            "gender": "Female",
+            "tenure_months": 21,
+            "monthly_charges": 45.11,
+            "total_charges": 3382.98,
+            "contract_type": "One year",
+            "payment_method": "Bank transfer",
+            "internet_service": "DSL",
+            "support_calls_last_6m": 1,
+            "late_payments_last_12m": 0,
+            "streaming_tv": 0,
+            "streaming_movies": 1,
+            "online_security": 0,
+            "online_backup": 0,
+            "device_protection": 1,
+            "paperless_billing": 0,
+            "avg_data_usage_gb": 107.62,
+            "region": "East",
+            "churn": 0
+          },
+          {
+            "customer_id": 3,
+            "age": 46,
+            "gender": "Male",
+            "tenure_months": 42,
+            "monthly_charges": 113.46,
+            "total_charges": 6298.58,
+            "contract_type": "Two year",
+            "payment_method": "Electronic check",
+            "internet_service": "DSL",
+            "support_calls_last_6m": 2,
+            "late_payments_last_12m": 3,
+            "streaming_tv": 0,
+            "streaming_movies": 1,
+            "online_security": 0,
+            "online_backup": 0,
+            "device_protection": 0,
+            "paperless_billing": 1,
+            "avg_data_usage_gb": 487.69,
+            "region": "West",
+            "churn": 0
+          }
+        ]
+      }
+    },
+    "llm-target": {
+      "approved": true,
+      "confidence": 0.95,
+      "reason": "A variável target 'churn' está presente no dataset e é relevante para prever a probabilidade de cancelamento do serviço.",
+      "warnings": []
+    },
+    "dcp": {
+      "trace_id": "autosage-7bbed566ec0e",
+      "success": true,
+      "status": "INGESTION_COMPLETED",
+      "dataset_name": "telecom_customer_behavior_balanced",
+      "pipeline_version": 1,
+      "artifact_path": "/app/registry/dcp/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0001.parquet",
+      "rows": 100000
+    },
+    "eda_explore": {
+      "trace_id": "autosage-7bbed566ec0e",
+      "pipeline": "eda-exp",
+      "pipeline_version": 1,
+      "vendor": "postgres",
+      "dataset_name": "telecom_customer_behavior_balanced",
+      "dataset_version": "telecom_customer_behavior_balanced_v0001",
+      "rows": 100000,
+      "base_path": "/app/registry/edaexp/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0001",
+      "artifacts": {
+        "schema": "schema.json",
+        "statistics": "statistics.json",
+        "sample": "sample.parquet",
+        "warnings": "warnings.json",
+        "report": "telecom_customer_behavior_balanced_v0001_explore_report.html",
+        "target_diagnostics": "target_diagnostics.json"
+      },
+      "created_at": "2026-02-23T20:45:46.209312"
+    },
+    "eda_prepare": {
+      "trace_id": "autosage-7bbed566ec0e",
+      "dataset": {
+        "name": "telecom_customer_behavior_balanced",
+        "version": "telecom_customer_behavior_balanced_v0001",
+        "rows": 1000,
+        "target": "churn"
+      },
+      "diagnosis": {
+        "n_features": 10
+      },
+      "train_config": {
+        "problem_type": "classification",
+        "metric": "roc_auc",
+        "random_seed": 42
+      },
+      "prepare_plan": {
+        "registry_path": "/app/registry/edapre/processed/telecom_customer_behavior_balanced/telecom_customer_behavior_balanced_v0001"
+      },
+      "next_step": "ml"
+    },
+    "ml": {
+      "experiment_id": "exp_71d57729679bb5df",
+      "status": "APPROVED",
+      "model": {
+        "name": "LogisticRegression"
+      },
+      "registry": null,
+      "diagnostics": {
+        "reason": "signal_above_minimum_threshold",
+        "metric_name": "roc_auc",
+        "metric_value": 0.75405,
+        "user_message": null
+      }
+    }
+  }
+}
+
+Request OCR
+
+{
+  "vendor": "postgres",
+  "dataset": "customer_churn",
+  "query": "",
+  "target_name": "churn",
+  "user_story": "Quero prever quais clientes têm maior probabilidade de cancelar o serviço nos próximos 30 dias para agir preventivamente."
+}
+
+
+{
+  "trace_id": "autosage-9f3c2a7b81d4",
+  "pipeline": "mtcs_pipeline",
+  "pipeline_version": "v1.0.0",
+  "stage": "INGEST",
+  "status": "SUCCESS",
+  "started_at": "2025-12-20T17:06:14.882Z",
+  "finished_at": "2025-12-20T17:06:15.214Z",
+  "duration_ms": 332,
+  "dataset_name": "customer_churn",
+  "vendor": "postgres",
+  "error_code": null,
+  "error_message": null
+}
+
+{
+  "trace_id": "autosage-4c8a9f21de33",
+  "pipeline": "mtcs_pipeline",
+  "pipeline_version": "v1.0.0",
+  "model_name": "customer_churn_classifier",
+  "model_version": "v0003",
+  "algorithm": "xgboost",
+  "metric_name": "roc_auc",
+  "metric_value": 0.8724,
+  "training_time_ms": 18432,
+  "training_rows": 100000,
+  "training_features": 42,
+  "dataset_version": "customer_churn_v5"
+}
+
+{
+  "trace_id": "autosage-8d21f4c9a0b7",
+  "pipeline": "mtcs_pipeline",
+  "pipeline_version": "v1.0.0",
+  "decision_type": "classification",
+  "decision": "CHURN_HIGH_RISK",
+  "justification": "Customer has high monthly charges, short tenure, and multiple recent service complaints",
+  "latency_ms": 27,
+  "model_version": "customer_churn_classifier_v0003"
+}
+
+{
+  "success": true,
+  "trace_id": "autosage-7af5f8f79240",
+  "target_name": "churn",
+  "pipeline": {
+    "dcp": {
+      "trace_id": "autosage-7af5f8f79240",
+      "status": "INGESTION_COMPLETED",
+      "data": {
+        "artifact_path": "/app/registry/dcp/customer_churn/v0001/customer_churn.parquet",
+        "rows": 1000
+      }
+    },
+    "eda_explore": {
+      "schema": {
+        "customer_id": "int64",
+        "age": "int64",
+        "gender": "object",
+        "tenure_months": "int64",
+        "monthly_charges": "object",
+        "total_charges": "object",
+        "contract_type": "object",
+        "payment_method": "object",
+        "internet_service": "object",
+        "churn": "bool"
+      },
+      "statistics": {
+        "customer_id": {
+          "count": 1000,
+          "unique": null,
+          "top": null,
+          "freq": null,
+          "mean": 500.5,
+          "std": 288.8194360957494,
+          "min": 1,
+          "25%": 250.75,
+          "50%": 500.5,
+          "75%": 750.25,
+          "max": 1000
+        },
+        "age": {
+          "count": 1000,
+          "unique": null,
+          "top": null,
+          "freq": null,
+          "mean": 49.857,
+          "std": 18.114267240981007,
+          "min": 18,
+          "25%": 35,
+          "50%": 50,
+          "75%": 66,
+          "max": 79
+        },
+        "gender": {
+          "count": 1000,
+          "unique": 2,
+          "top": "Male",
+          "freq": 523,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        },
+        "tenure_months": {
+          "count": 1000,
+          "unique": null,
+          "top": null,
+          "freq": null,
+          "mean": 34.452,
+          "std": 20.320596020358817,
+          "min": 1,
+          "25%": 17,
+          "50%": 33.5,
+          "75%": 52,
+          "max": 71
+        },
+        "monthly_charges": {
+          "count": 1000,
+          "unique": 952,
+          "top": 48.25,
+          "freq": 3,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        },
+        "total_charges": {
+          "count": 1000,
+          "unique": 999,
+          "top": 746.4000000000001,
+          "freq": 2,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        },
+        "contract_type": {
+          "count": 1000,
+          "unique": 3,
+          "top": "Two year",
+          "freq": 348,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        },
+        "payment_method": {
+          "count": 1000,
+          "unique": 3,
+          "top": "Electronic check",
+          "freq": 346,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        },
+        "internet_service": {
+          "count": 1000,
+          "unique": 3,
+          "top": "None",
+          "freq": 343,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        },
+        "churn": {
+          "count": 1000,
+          "unique": 2,
+          "top": false,
+          "freq": 524,
+          "mean": null,
+          "std": null,
+          "min": null,
+          "25%": null,
+          "50%": null,
+          "75%": null,
+          "max": null
+        }
+      },
+      "sample": [
+        {
+          "customer_id": 717,
+          "age": 40,
+          "gender": "Female",
+          "tenure_months": 65,
+          "monthly_charges": 116.41,
+          "total_charges": 7566.65,
+          "contract_type": "Two year",
+          "payment_method": "Bank transfer",
+          "internet_service": "None",
+          "churn": false
+        },
+        {
+          "customer_id": 1,
+          "age": 56,
+          "gender": "Male",
+          "tenure_months": 7,
+          "monthly_charges": 34.89,
+          "total_charges": 244.23000000000002,
+          "contract_type": "Month-to-month",
+          "payment_method": "Credit card",
+          "internet_service": "DSL",
+          "churn": false
+        },
+        {
+          "customer_id": 2,
+          "age": 69,
+          "gender": "Male",
+          "tenure_months": 9,
+          "monthly_charges": 50.56,
+          "total_charges": 455.04,
+          "contract_type": "Two year",
+          "payment_method": "Credit card",
+          "internet_service": "None",
+          "churn": false
+        },
+        {
+          "customer_id": 3,
+          "age": 46,
+          "gender": "Female",
+          "tenure_months": 48,
+          "monthly_charges": 107.67,
+          "total_charges": 5168.16,
+          "contract_type": "Two year",
+          "payment_method": "Credit card",
+          "internet_service": "DSL",
+          "churn": false
+        },
+        {
+          "customer_id": 4,
+          "age": 32,
+          "gender": "Male",
+          "tenure_months": 59,
+          "monthly_charges": 119.63,
+          "total_charges": 7058.17,
+          "contract_type": "One year",
+          "payment_method": "Bank transfer",
+          "internet_service": "Fiber optic",
+          "churn": false
+        },
+        {
+          "customer_id": 5,
+          "age": 60,
+          "gender": "Male",
+          "tenure_months": 39,
+          "monthly_charges": 56.83,
+          "total_charges": 2216.37,
+          "contract_type": "Two year",
+          "payment_method": "Electronic check",
+          "internet_service": "Fiber optic",
+          "churn": true
+        },
+        {
+          "customer_id": 6,
+          "age": 25,
+          "gender": "Female",
+          "tenure_months": 18,
+          "monthly_charges": 64.86,
+          "total_charges": 1167.48,
+          "contract_type": "One year",
+          "payment_method": "Credit card",
+          "internet_service": "None",
+          "churn": true
+        },
+        {
+          "customer_id": 7,
+          "age": 78,
+          "gender": "Male",
+          "tenure_months": 59,
+          "monthly_charges": 92.21,
+          "total_charges": 5440.389999999999,
+          "contract_type": "Two year",
+          "payment_method": "Bank transfer",
+          "internet_service": "Fiber optic",
+          "churn": false
+        },
+        {
+          "customer_id": 8,
+          "age": 38,
+          "gender": "Male",
+          "tenure_months": 17,
+          "monthly_charges": 108.62,
+          "total_charges": 1846.54,
+          "contract_type": "Two year",
+          "payment_method": "Credit card",
+          "internet_service": "DSL",
+          "churn": true
+        },
+        {
+          "customer_id": 9,
+          "age": 56,
+          "gender": "Male",
+          "tenure_months": 14,
+          "monthly_charges": 79.3,
+          "total_charges": 1110.2,
+          "contract_type": "Two year",
+          "payment_method": "Credit card",
+          "internet_service": "None",
+          "churn": true
+        }
+      ],
+      "report": "/app/registry/eda/reports/customer_churn_explore_report.html",
+      "warnings": []
+    },
+    "llm": {
+      "success": true,
+      "trace_id": "autosage-7af5f8f79240",
+      "approved": true,
+      "reason": "O target 'churn' é semanticamente coerente com a história do usuário, pois representa o cancelamento do serviço nos próximos 30 dias. Estatisticamente, o campo está presente, é binário e plausível. Não há indícios de leakage óbvio no schema apresentado. O target está alinhado com o objetivo de negócio descrito.",
+      "suggested_target": null,
+      "validated_at": "2025-12-17T20:33:16.930070"
+    },
+    "eda_prepare": {
+      "success": true,
+      "trace_id": "autosage-7af5f8f79240",
+      "data": {
+        "success": true,
+        "trace_id": "autosage-7af5f8f79240",
+        "processed_path": "/app/registry/eda/processed/customer_churn_processed.parquet",
+        "report_path": "/app/registry/eda/reports/customer_churn_prepare_report.html"
+      }
+    },
+    "ml": {
+      "success": true,
+      "trace_id": "autosage-7af5f8f79240",
+      "data": {
+        "model_path": "/app/registry/ml/models/autosage_model_autosage_dataset_logistic_regression.pkl",
+        "metrics": {
+          "accuracy": 0.49,
+          "f1": 0.47980416156670747,
+          "roc_auc": 0.49774436090225566
+        },
+        "report_path": "/app/registry/ml/reports/customer_churn_report.html"
+      },
+      "error": null
+    }
+  }
+}
+
+
+MNT
+{
+  "event_type": "pipeline_started | pipeline_finished | pipeline_failed",
+  "pipeline": "orc | dcp | eda | ml | llm",
+  "stage": "string",
+  "trace_id": "autosage-xxxxxxxx",
+  "status": "success | error | running",
+  "duration_ms": 12345,
+  "timestamp": "2025-12-17T18:42:10Z",
+  "metadata": {
+    "dataset": "customer_churn",
+    "target": "churn",
+    "rows_processed": 120345,
+    "model": "random_forest",
+    "llm_provider": "openai",
+    "llm_task": "target_validation",
+    "error_type": "ValueError",
+    "error_message": "Target column not found"
+  }
+}
+
+
+DCP
+{
+  "pipeline": "dcp",
+  "stage": "ingestion",
+  "event_type": "pipeline_started",
+  "trace_id": "autosage-xxxx",
+  "payload": {
+    "vendor": "postgres",
+    "dataset": "customer_churn"
+  }
+}

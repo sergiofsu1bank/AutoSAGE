@@ -1,0 +1,157 @@
+🔥 1) ORC – disparar pipeline completo
+
+Endpoint:
+
+POST http://localhost:8000/orc/start
+
+
+Body:
+
+{
+  "vendor": "postgres",
+  "dataset": "customer_churn",
+  "query": ""
+}
+
+
+Isso dispara toda a pipeline:
+
+Gera trace-id
+
+Chama DCP
+
+Chama EDA
+
+Chama ML
+
+Retorna tudo agregado
+
+🔥 2) DCP – testar ingestão isolada
+
+Endpoint:
+
+POST http://autosage-dcp:8001/start
+
+
+Body:
+
+{
+  "data": {
+    "vendor": "postgres",
+    "dataset": "customer_churn",
+    "query": ""
+  }
+}
+
+
+O DCP vai gerar:
+
+/registry/dcp/customer_churn/v0001.parquet
+
+🔥 3) EDA – testar EDA isolado
+
+Pega o artefato gerado pelo DCP, por exemplo:
+
+/registry/dcp/customer_churn/customer_churn_v0001.parquet
+
+
+Endpoint:
+
+POST http://autosage-eda:8002/eda/run
+
+
+Body:
+
+{
+  "trace_id": "123456789",
+  "data": {
+    "artifact_path": "/registry/dcp/customer_churn/customer_churn_v0001.parquet"
+  }
+}
+
+
+Retorno esperado:
+
+/registry/eda/customer_churn/customer_churn_v0001.parquet
+
+🔥 4) ML – testar ML isolado
+
+Pega o artefato retornado pela EDA:
+
+/registry/eda/customer_churn/customer_churn_v0001.parquet
+
+
+Endpoint:
+
+POST http://autosage-ml:8003/internal/run
+
+
+Body:
+
+{
+  "trace_id": "123456789",
+  "data": {
+    "artifact_path": "/registry/eda/customer_churn/customer_churn_v0001.parquet",
+    "task_name": "classification",
+    "parameters": {}
+  }
+}
+
+
+Retorno esperado:
+
+{
+  "success": true,
+  "trace_id": "123456789",
+  "data": {
+    "processed_files": [
+      "/registry/ml/processed/customer_churn_clean.csv"
+    ]
+  },
+  "error": null
+}
+
+🔥 5) Request para testar ML com target manual
+{
+  "trace_id": "abc-123",
+  "data": {
+    "artifact_path": "/registry/eda/customer_churn/customer_churn_v0002.parquet",
+    "task_name": "classification",
+    "parameters": {
+      "target": "Churn"
+    }
+  }
+}
+
+🔥 6) Request para testar erro de arquivo inexistente
+
+Bom para validar o schema:
+
+{
+  "trace_id": "erro-test",
+  "data": {
+    "artifact_path": "/registry/eda/inexistente.parquet",
+    "task_name": "classification",
+    "parameters": {}
+  }
+}
+
+
+Retorno esperado:
+
+{
+  "success": false,
+  "trace_id": "erro-test",
+  "data": null,
+  "error": { "message": "Artifact not found: ..." }
+}
+
+🎯 Quer que eu gere agora:
+✅ Coleção pronta do Postman?
+✅ Coleção do Insomnia?
+✅ Scripts curl organizados?
+✅ Scripts Python para testes automatizados?
+
+Só pedir.
+
+O ChatGPT pode cometer erros. C

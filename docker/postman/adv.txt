@@ -1,0 +1,212 @@
+edge📘 AutoSAGE — Cenário Jurídico Previdenciário Completo
+🎯 Caso
+
+Segurado:
+
+28 anos CLT reconhecidos
+
+7 anos como PJ com emissão de nota fiscal
+
+CNAE compatível com atividade exercida
+
+Empresa recolhia CSLL
+
+Não houve recolhimento previdenciário
+
+Busca reconhecimento de tempo para aposentadoria
+
+🔹 PASSO 1 — Criar os Agentes
+1️⃣ Advogado Previdenciarista
+POST /agents
+{
+  "name": "adv_previdenciario",
+  "role": "Especialista em reconhecimento de tempo de contribuição, indenização previdenciária retroativa, análise de CNAE e comprovação de atividade como contribuinte individual.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.2,
+  "max_tokens": 1200,
+  "use_rag": true
+}
+
+
+Guarde o agent_id.
+
+2️⃣ Procurador do INSS
+POST /agents
+{
+  "name": "procurador_inss",
+  "role": "Representa o INSS impugnando pedidos sem recolhimento previdenciário e analisando ausência de contribuição obrigatória.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.2,
+  "max_tokens": 1200,
+  "use_rag": true
+}
+
+3️⃣ Perito Contábil
+POST /agents
+{
+  "name": "perito_contabil",
+  "role": "Analisa notas fiscais, CNAE, tributos recolhidos, CSLL e viabilidade de indenização retroativa.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.1,
+  "max_tokens": 1000,
+  "use_rag": true
+}
+
+4️⃣ Juiz Federal
+POST /agents
+{
+  "name": "juiz_federal",
+  "role": "Decide com base na legislação previdenciária, provas materiais, contraditório e jurisprudência.",
+  "model": "gpt-4o-mini",
+  "temperature": 0.1,
+  "max_tokens": 1500,
+  "use_rag": true
+}
+
+🔹 PASSO 2 — Base de Conhecimento (RAG)
+Para o Advogado
+POST /knowledge
+{
+  "agent_id": "AGENT_ID_ADV",
+  "documents": [
+    "Lei 8.213/91 Art. 55 - Comprovação de tempo de serviço mediante início de prova material.",
+    "Lei 8.212/91 Art. 45-A - Possibilidade de indenização de contribuições previdenciárias.",
+    "STJ Tema 629 - Necessidade de início de prova material para reconhecimento de tempo."
+  ]
+}
+
+Para o Procurador do INSS
+POST /knowledge
+{
+  "agent_id": "AGENT_ID_INSS",
+  "documents": [
+    "Contribuição previdenciária é obrigatória para contagem de tempo.",
+    "CSLL não substitui contribuição previdenciária.",
+    "Ausência de recolhimento impede contagem automática."
+  ]
+}
+
+Para o Perito Contábil
+POST /knowledge
+{
+  "agent_id": "AGENT_ID_PERITO",
+  "documents": [
+    "Notas fiscais são indício de atividade econômica.",
+    "CNAE compatível reforça exercício da atividade.",
+    "Indenização retroativa exige comprovação de exercício efetivo."
+  ]
+}
+
+Para o Juiz
+POST /knowledge
+{
+  "agent_id": "AGENT_ID_JUIZ",
+  "documents": [
+    "Decisão deve considerar contraditório.",
+    "Prova material é indispensável.",
+    "Indenização pode suprir ausência de recolhimento."
+  ]
+}
+
+🔹 PASSO 3 — Criar Pipeline
+POST /pipeline
+{
+  "name": "pipeline_julgamento_previdenciario"
+}
+
+🔹 PASSO 4 — Adicionar Nós
+n1 — Advogado
+POST /pipeline/node
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "node_id": "n1",
+  "agent_id": "AGENT_ID_ADV"
+}
+
+n2 — Procurador INSS
+POST /pipeline/node
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "node_id": "n2",
+  "agent_id": "AGENT_ID_INSS"
+}
+
+n3 — Perito
+POST /pipeline/node
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "node_id": "n3",
+  "agent_id": "AGENT_ID_PERITO"
+}
+
+n4 — Juiz
+POST /pipeline/node
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "node_id": "n4",
+  "agent_id": "AGENT_ID_JUIZ"
+}
+
+🔹 PASSO 5 — Conectar (Edges)
+Advogado → Procurador
+POST /pipeline/edge
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "source_node_id": "n1",
+  "target_node_id": "n2",
+  "condition": null
+}
+
+Procurador → Perito
+POST /pipeline/edge
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "source_node_id": "n2",
+  "target_node_id": "n3",
+  "condition": null
+}
+
+Perito → Juiz
+POST /pipeline/edge
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "source_node_id": "n3",
+  "target_node_id": "n4",
+  "condition": null
+}
+
+🔹 PASSO 6 — Executar
+POST /pipeline/run
+{
+  "pipeline_name": "pipeline_julgamento_previdenciario",
+  "input": "Segurado possui 28 anos CLT reconhecidos e 7 anos como pessoa jurídica com emissão de notas fiscais para empresa cujo CNAE corresponde à atividade exercida. A empresa recolhia CSLL. Não houve recolhimento previdenciário no período. Busca reconhecimento do tempo para aposentadoria."
+}
+
+🧠 O que acontece internamente
+
+n1 → constrói tese favorável
+n2 → impugna
+n3 → analisa provas e viabilidade de indenização
+n4 → decide fundamentando
+
+🔥 Edge Cases agora contemplados
+
+✔ CNAE compatível
+✔ CSLL ≠ INSS
+✔ Ausência de recolhimento
+✔ Possibilidade de indenização retroativa
+✔ Contraditório
+✔ Decisão fundamentada
+
+🎯 Resultado Esperado
+
+Você recebe:
+
+{
+  "outputs": {
+    "n1": "Tese jurídica favorável...",
+    "n2": "Impugnação técnica...",
+    "n3": "Laudo contábil...",
+    "n4": "Sentença fundamentada..."
+  }
+}

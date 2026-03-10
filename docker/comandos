@@ -1,0 +1,143 @@
+Copia arquivo do registry
+docker cp autosage-edaexp:/app/registry/edaexp/reports/customer_churn_v0039_explore_report.html d:/u1/autosage/data/
+docker cp autosage-edaexp:/app/registry/edaexp/reports/customer_churn_v0053_explore_report.html d:/u1/autosage/data/
+
+$env:ML_REGISTRY_BASE="D:\autosage\registry"
+docker cp autosage-edapre:/app/registry D:\autosage\registry
+
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+docker build -t mnt_pipeline:0.0.1 .\dev\mnt_pipeline
+docker exec -it autosage-eda find /app/src -name "__pycache__" -type d -exec rm -rf {} +
+docker compose build autosage-eda --no-cache
+docker compose up autosage-eda
+
+docker compose down --volumes --remove-orphans
+docker compose build --no-cache
+docker compose up -build
+
+docker rm $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker volume rm $(docker volume ls -q)
+docker network rm $(docker network ls -q)
+
+sudo systemctl stop docker
+sudo rm -rf /var/lib/docker
+sudo systemctl start docker
+
+docker compose down --rmi all --volumes
+docker exec -it autosage-ml ls /app/src/app/routers
+
+docker stop $(docker ps -aq)
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker volume rm $(docker volume ls -q)
+docker network rm $(docker network ls -q 2>/dev/null | grep -v "bridge" | grep -v "host" | grep -v "none")
+
+docker system prune -af --volumes
+///////////////////
+docker stop $(docker ps -aq) ; docker rm -f $(docker ps -aq) ; docker rmi -f $(docker images -aq) ; docker volume rm $(docker volume ls -q) ; docker system prune -af --volumes
+
+
+Compactar Projeto
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-orc.zip -Force
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-dcp.zip -Force
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-eda.zip -Force
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-ml.zip -Force
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-llm.zip -Force
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-mnt.zip -Force
+Compress-Archive -Path src,requirements.txt,Dockerfile -DestinationPath autosage-mnt.zip -Force
+Compress-Archive -Path src,requirements.txt -DestinationPath autosage-llm.zip -Force
+
+docker-compose down -v
+docker system prune -af
+docker-compose up --build
+
+Instalar postgres
+docker run --name postgres-dcp -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=dcp -p 5432:5432 -d postgres:16
+Teste de Conexao
+
+docker exec -it postgres-dcp psql -U postgres -d dcp
+Subir o banco
+docker start autosage-pg
+
+docker ps
+docker-compose up --build
+
+docker stop autosage-dcp autosage-eda autosage-ml
+docker rm autosage-dcp autosage-eda autosage-ml
+docker rmi autosage-dcp autosage-eda autosage-ml
+docker system prune -a --volumes -f
+docker compose down --volumes
+
+docker-compose build eda
+docker-compose up
+
+Ou, se quiser limpar tudo antes:
+docker-compose down
+docker-compose up --build
+
+cd D:\u1\autosage
+docker-compose down -v
+docker-compose build --no-cache
+docker-compose up
+
+limpar tudo
+cd ..
+
+pegar logs
+docker logs autosage-orc
+docker logs autosage-ml
+docker logs autosage-dcp > dcp.log
+docker logs autosage-eda > eda.log
+docker logs autosage-postgres > postgres.log
+
+docker logs autosage-mtrcs
+
+
+docker compose exec autosage-dcp sh -c "apt-get update >/dev/null 2>&1 && apt-get install -y curl >/dev/null 2>&1 && curl -sS http://autosage-eda:8002/docs | head -n 5"
+
+Entra no container
+docker exec -it autosage-edapre bash
+docker exec -it autosage-dcp bash
+docker exec -it autosage-ml bash
+docker exec -it autosage-mtrcs bash
+
+
+cat /app/logs/eda_pipeline.log
+ls -R /registry/eda
+
+
+instalar o curl no container
+docker compose exec autosage-dcp sh -c "apt-get update && apt-get install -y curl"
+teste o servico
+docker compose exec autosage-dcp sh -c "curl -v -X POST http://localhost:8001/test"
+formato correto do body
+docker compose exec autosage-dcp sh -c "curl -s http://localhost:8001/docs | grep test -n"
+
+Ver log
+docker compose logs autosage-postgres
+docker compose logs autosage-dcp
+docker compose logs autosage-eda
+docker compose logs autosage-orc
+
+Tempo real
+docker logs -f autosage-dcp
+docker logs -f autosage-dcp
+docker logs -f autosage-eda
+docker logs -f autosage-ml
+docker logs -f autosage-mnt
+docker logs -f autosage-mtrcs
+
+Entrar do docker e limpar arquivos
+docker compose exec autosage-dcp sh
+ls -R /app/src
+rm -rf /app/src/logs/*
+rm -rf /app/src/tmp/*
+rm -rf /app/src/data/*
+rm -rf /app/src/logs
+mkdir /app/src/logs
+
+
+
+
+

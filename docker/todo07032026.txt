@@ -1,0 +1,423 @@
+# AutoSAGE Monitor — Checkpoint de Desenvolvimento
+
+Data: 2026-03-07
+
+## 1. Objetivo do Monitor
+
+O **AutoSAGE Monitor** é o serviço responsável por fornecer **observabilidade da plataforma AutoSAGE**, incluindo:
+
+* saúde da plataforma
+* execução de pipelines
+* histórico de modelos
+* métricas de execução
+* timeline de processamento de datasets
+
+Ele funciona como **camada de inspeção operacional da plataforma**.
+
+Arquiteturalmente ele **não executa pipelines**, apenas **consulta e consolida informações** vindas de:
+
+* banco Postgres
+* serviços da plataforma
+
+---
+
+# 2. Arquitetura do Monitor
+
+Estrutura atual do projeto:
+
+```
+src
+├─ api
+│  └─ router
+│       dataset_router.py
+│
+└─ app
+   ├─ config
+   ├─ connectors
+   │     connector_postgres.py
+   │
+   ├─ domain
+   │     dataset_run_history.py
+   │
+   ├─ repository
+   │     dataset_run_repository.py
+   │
+   ├─ schemas
+   │
+   ├─ services
+   │     dataset_run_service.py
+   │
+   └─ tools
+```
+
+Separação de responsabilidades:
+
+| Camada     | Responsabilidade           |
+| ---------- | -------------------------- |
+| API        | exposição HTTP             |
+| Service    | regras de negócio          |
+| Repository | acesso ao banco            |
+| Domain     | modelos de dados           |
+| Connectors | conexão com infraestrutura |
+
+Essa estrutura segue **Clean Architecture simplificada**.
+
+---
+
+# 3. Endpoint Principal de Observabilidade
+
+## Health da plataforma
+
+Endpoint:
+
+```
+GET /platform/health
+```
+
+Objetivo:
+
+Verificar **saúde de todos os serviços da plataforma AutoSAGE**.
+
+Serviços monitorados:
+
+```
+ORC
+DCP
+EDA Explore
+EDA Prepare
+ML
+LLM
+Metrics
+Monitor
+```
+
+As URLs são fornecidas por variáveis de ambiente.
+
+### Variáveis de ambiente
+
+```
+MNT_ORC_URL
+MNT_DCP_URL
+MNT_EDA_EXPLORE_URL
+MNT_EDA_PREPARE_URL
+MNT_ML_URL
+MNT_LLM_URL
+MNT_METRICS_URL
+MNT_MONITOR_URL
+```
+
+---
+
+# 4. Endpoints de Dataset
+
+## 4.1 Pipeline Execution
+
+Endpoint:
+
+```
+GET /datasets/{dataset_name}/pipeline
+```
+
+Retorna:
+
+* versões de pipeline
+* modelo treinado
+* métrica utilizada
+* valor da métrica
+* tempo de execução
+
+Query principal:
+
+```
+SELECT
+    pm.pipeline_version,
+    ml.model_name,
+    ml.metric_name,
+    ml.metric_value,
+    pm.duration_ms
+FROM pipeline_metrics pm
+LEFT JOIN ml_experiment_result ml
+    ON pm.trace_id = ml.trace_id
+WHERE pm.dataset_name = %s
+ORDER BY pm.pipeline_version DESC
+LIMIT 20
+```
+
+---
+
+## 4.2 Runs de Dataset
+
+Classe utilizada:
+
+```
+DatasetRunHistory
+```
+
+Modelo:
+
+```
+pipeline_version
+model_name
+metric_name
+metric_value
+duration_ms
+```
+
+Função:
+
+```
+get_runs(dataset_name)
+```
+
+Retorna lista de execuções recentes.
+
+---
+
+## 4.3 Timeline do Pipeline
+
+Endpoint:
+
+```
+GET /datasets/{dataset_name}/timeline
+```
+
+Objetivo:
+
+Mostrar **linha temporal da execução do pipeline**, incluindo:
+
+* ingestão
+* eda explore
+* eda prepare
+* ml
+* métricas
+
+Cada etapa deve conter:
+
+```
+stage
+created_at
+duration
+status
+```
+
+Implementação parcialmente iniciada.
+
+---
+
+# 5. Service Layer
+
+Classe:
+
+```
+DatasetRunService
+```
+
+Responsabilidades:
+
+* orquestrar consultas
+* chamar repository
+* estruturar resposta da API
+
+Métodos implementados:
+
+```
+get_runs()
+get_pipeline_execution()
+get_pipeline_timeline()
+get_platform_health()
+```
+
+---
+
+# 6. Repository Layer
+
+Classe:
+
+```
+DatasetRunRepository
+```
+
+Responsável por:
+
+* consultas SQL
+* acesso ao Postgres
+
+Usa:
+
+```
+ConnectorPostgres
+```
+
+---
+
+# 7. Banco de Dados Utilizado
+
+O monitor consulta principalmente:
+
+### pipeline_metrics
+
+Armazena execução de pipeline.
+
+Campos relevantes:
+
+```
+dataset_name
+pipeline_version
+trace_id
+created_at
+duration_ms
+```
+
+---
+
+### ml_experiment_result
+
+Resultados do treinamento.
+
+Campos:
+
+```
+trace_id
+model_name
+metric_name
+metric_value
+```
+
+---
+
+# 8. Integração com a Plataforma
+
+O monitor consulta os serviços via HTTP:
+
+```
+/health
+```
+
+Cada serviço expõe:
+
+```
+GET /health
+```
+
+Retorno esperado:
+
+```
+{
+  "status": "ok"
+}
+```
+
+---
+
+# 9. Logs
+
+Todos os endpoints utilizam logger padronizado:
+
+Formato:
+
+```
+[MNT][trace_id] stage=<stage> action=<action>
+```
+
+Exemplo:
+
+```
+[MNT][123] stage=get action=/platform/health
+```
+
+---
+
+# 10. Integração com Docker
+
+O serviço roda na porta:
+
+```
+9000
+```
+
+Serviço no docker compose:
+
+```
+autosage-monitor
+```
+
+---
+
+# 11. Funcionalidades já prontas
+
+✔ Estrutura de projeto
+✔ Router FastAPI
+✔ Service layer
+✔ Repository layer
+✔ Conector Postgres
+✔ Endpoint `/platform/health`
+✔ Endpoint `/datasets/{dataset}/pipeline`
+✔ Modelo `DatasetRunHistory`
+✔ Consulta SQL de execução de pipeline
+
+---
+
+# 12. Funcionalidades em andamento
+
+⏳ Timeline completa de pipeline
+⏳ Consolidação de status de todos serviços
+⏳ Endpoint de métricas agregadas
+⏳ Dashboard futuro
+
+---
+
+# 13. Próximos passos recomendados
+
+Ordem sugerida de desenvolvimento:
+
+1️⃣ finalizar endpoint
+
+```
+/datasets/{dataset}/timeline
+```
+
+2️⃣ consolidar resposta do endpoint
+
+```
+/platform/health
+```
+
+3️⃣ adicionar endpoint
+
+```
+/datasets
+```
+
+para listar datasets monitorados.
+
+4️⃣ criar endpoint
+
+```
+/datasets/{dataset}/metrics
+```
+
+para histórico de métricas.
+
+5️⃣ adicionar cache leve para reduzir consultas.
+
+---
+
+# 14. Visão final do Monitor
+
+O AutoSAGE Monitor será responsável por:
+
+```
+observabilidade completa da plataforma
+```
+
+Incluindo:
+
+* execução de pipelines
+* modelos treinados
+* métricas
+* estado dos serviços
+* histórico de datasets
+
+Ele funcionará como **control tower da plataforma AutoSAGE**.
+
+---

@@ -1,0 +1,119 @@
+Checkpoint de Continuidade – AutoSAGE Monitor
+
+Estado atual da plataforma:
+
+Toda a infraestrutura está operacional via Docker Compose, com os seguintes serviços ativos: ORC, Metrics, DCP, EDA Explore, EDA Prepare, ML, LLM, LLM Platform, Monitor e Postgres (pgvector). Todos os containers estão rodando corretamente e as APIs FastAPI estão acessíveis via Swagger.
+
+O módulo AutoSAGE Monitor já foi implementado com arquitetura limpa seguindo o padrão da plataforma:
+
+Router → Service → Repository → Connector → PostgreSQL
+
+Endpoints implementados até o momento:
+
+1. GET /datasets/{dataset_name}/latest
+   Retorna o último run executado para um dataset específico.
+
+Dados reconstruídos a partir das tabelas:
+
+* pipeline_metrics
+* dcp_monitor_event
+* ml_experiment_result
+
+Campos retornados:
+
+* dataset_name
+* pipeline_version
+* rows_count
+* columns_count
+* model_name
+* metric_name
+* metric_value
+* duration_ms
+
+2. GET /datasets/{dataset_name}/runs
+   Retorna histórico das últimas execuções da pipeline para o dataset.
+
+Campos retornados:
+
+* pipeline_version
+* model_name
+* metric_name
+* metric_value
+* duration_ms
+
+Arquitetura atual do monitor:
+
+src
+├ web
+│   └ dataset_router.py
+│
+└ app
+├ connectors
+│   └ connector_postgres.py
+│
+├ domain
+│   ├ dataset_run.py
+│   └ dataset_run_history.py
+│
+├ repository
+│   └ dataset_run_repository.py
+│
+└ services
+└ dataset_run_service.py
+
+Objetivo da próxima sessão:
+
+Expandir o monitor para visão completa da plataforma.
+
+Próximos passos planejados:
+
+1. Criar endpoint:
+   GET /datasets
+
+Objetivo:
+Listar todos datasets conhecidos pela plataforma usando pipeline_metrics.
+
+Campos esperados:
+
+* dataset_name
+* last_pipeline_version
+* last_run_timestamp
+* last_metric_value
+* last_model
+
+2. Criar endpoint de reconstrução da pipeline:
+
+GET /datasets/{dataset}/pipeline
+
+Objetivo:
+Reconstruir execução completa da pipeline:
+
+DCP → EDA Explore → EDA Prepare → ML
+
+Usando as tabelas:
+
+* dcp_monitor_event
+* eda_explore_snapshot
+* eda_prepare_snapshots
+* ml_experiment_result
+
+3. Evoluir monitor para camada de observabilidade da plataforma AutoSAGE.
+
+Resultado esperado:
+Uma API capaz de reconstruir a execução completa de qualquer dataset dentro da plataforma.
+
+Regra arquitetural que deve ser mantida:
+ 
+Classes em domain nunca devem acessar banco ou executar lógica de infraestrutura.
+Toda consulta SQL permanece exclusivamente no repository.
+
+Ponto de retomada amanhã:
+
+Implementação do endpoint:
+
+GET /datasets
+
+dentro de:
+dataset_run_repository
+dataset_run_service
+dataset_router
